@@ -11,8 +11,7 @@ def rootFolders = [
     provisionFolder
 ]
 def environments = [
-    "dev",
-    "staging"
+    "dev"
 ]
 def provisionJobs = [
     "kakfa",
