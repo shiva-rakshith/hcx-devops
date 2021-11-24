@@ -18,7 +18,7 @@ def provisionJobs = [
     "kakfa",
     "elasticsearch"
 ]
-def deplymentJobs = [
+def deploymentJobs = [
     "hcx-api"
 ]
 
@@ -41,10 +41,38 @@ environments.each {
     folder("$deployFolder/$env") {
         description("Folder for $env")
     }
+    folder("$provisionFolder/$env") {
+        description("Folder for $env")
+    }
+}
+
+// Creating provision jobs
+provisionJobs.each {
+    provisionJobName ->
+    environments.each {
+        env ->
+        pipelineJob("$provisionFolder/$env/$provisionJobName") {
+          definition {
+            cpsScm {
+              scm {
+                git {
+                  remote {
+                    url('https://github.com/rjshrjndrn/hcx-devops')
+                    credentials("github-cred")
+                  }
+                  branch("*/${githubDefaultBranch}")
+                }
+              }
+              lightweight()
+              scriptPath("application/pipelines/provision/${provisionJobName}/Jenkinsfile")
+            }
+          }
+        }
+    }
 }
 
 // Creating deployment jobs
-deplymentJobs.each {
+deploymentJobs.each {
     deployJobName ->
     environments.each {
         env ->
