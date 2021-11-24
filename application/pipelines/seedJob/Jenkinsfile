@@ -1,0 +1,14 @@
+// vim: ft=groovy et ts=2 sw=2:
+
+node('ansible') {
+    ansiColor('xterm') {
+      stage("Creating Jobs") {
+          container('ansible'){
+            // Checking out public repo
+            checkout scm
+            jobDsl targets: 'application/pipelines/seedJob/*.groovy'
+          }
+      }
+    }
+}
+
