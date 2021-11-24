@@ -14,7 +14,7 @@ def environments = [
     "dev"
 ]
 def provisionJobs = [
-    "kakfa",
+    "kafka",
     "elasticsearch"
 ]
 def deploymentJobs = [
