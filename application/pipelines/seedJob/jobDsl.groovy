@@ -3,12 +3,14 @@
 // Ref jobDSL doc: http://your_jenkins_ip:8080/plugin/job-dsl/api-viewer/index.html
 String deployFolder = "deploy"
 String provisionFolder = "provision"
+String buildFolder = "build"
 String githubCredID = "github-cred"
 String githubDefaultBranch = "main"
 
 def rootFolders = [
     deployFolder,
-    provisionFolder
+    provisionFolder,
+    buildFolder
 ]
 def environments = [
     "dev"
@@ -20,6 +22,32 @@ def provisionJobs = [
 def deploymentJobs = [
     "hcx-api"
 ]
+def buildJobs = [
+    "hcx-api": [
+        "repo": "https://github.com/rjshrjndrn/hcx-platform",
+        "scriptPath": "hcx-apis/Jenkinsfile"
+    ]
+]
+
+buildJob = {
+        jobName,repo,jenkinsFilePath ->
+        pipelineJob("$buildFolder/$jobName") {
+          definition {
+            cpsScm {
+              scm {
+                git {
+                  remote {
+                    url("$repo")
+                  }
+                  branch("*/main")
+                }
+              }
+              lightweight()
+              scriptPath("$jenkinsFilePath")
+            }
+          }
+        }
+}
 
 // Crating root folders
 rootFolders.each {
@@ -43,6 +71,13 @@ environments.each {
     folder("$provisionFolder/$env") {
         description("Folder for $env")
     }
+}
+
+// Creating build jobs
+buildJobs.each {
+    jobName ->
+    println(jobName)
+    buildJob(jobName.key, buildJobs[jobName.key].repo, buildJobs[jobName.key].scriptPath)
 }
 
 // Creating provision jobs

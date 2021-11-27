@@ -6,6 +6,7 @@ node('ansible') {
           container('ansible'){
             // Checking out public repo
             checkout scm
+            shell 'printenv'
             jobDsl targets: 'application/pipelines/seedJob/*.groovy'
           }
       }
