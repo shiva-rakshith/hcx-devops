@@ -1,6 +1,8 @@
 // Ref source code / examples: https://github.com/jenkinsci/job-dsl-plugin/wiki/Tutorial---Using-the-Jenkins-Job-DSL
 // Ref groovy code syntax: https://riptutorial.com/groovy/example/18003/iterate-over-a-collection
 // Ref jobDSL doc: http://your_jenkins_ip:8080/plugin/job-dsl/api-viewer/index.html
+// Online playground: https://groovyide.com/playground
+
 String deployFolder = "deploy"
 String provisionFolder = "provision"
 String buildFolder = "build"
@@ -20,7 +22,7 @@ def provisionJobs = [
     "elasticsearch"
 ]
 def deploymentJobs = [
-    "hcx-api"
+    "hcx-api": ["autoTriggerPath":"build/hcx-api"]
 ]
 def buildJobs = [
     "hcx-api": [
@@ -110,7 +112,13 @@ deploymentJobs.each {
     deployJobName ->
     environments.each {
         env ->
-        pipelineJob("$deployFolder/$env/$deployJobName") {
+        pipelineJob("$deployFolder/$env/$deployJobName.key") {
+          println("deploy job: "+deployJobName)
+          if (deployJobName.value['autoTriggerPath']) {
+              triggers {
+                upstream(deployJobName.value['autoTriggerPath'], 'SUCCESS')
+              }
+          }
           definition {
             cpsScm {
               scm {
@@ -123,7 +131,7 @@ deploymentJobs.each {
                 }
               }
               lightweight()
-              scriptPath("application/pipelines/deploy/${deployJobName}/Jenkinsfile")
+              scriptPath("application/pipelines/deploy/${deployJobName.key}/Jenkinsfile")
             }
           }
         }
