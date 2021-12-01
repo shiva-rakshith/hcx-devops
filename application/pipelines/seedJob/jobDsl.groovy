@@ -22,7 +22,9 @@ def provisionJobs = [
     "elasticsearch"
 ]
 def deploymentJobs = [
-    "hcx-api": ["autoTriggerPath":"build/hcx-api"]
+    "hcx-api": ["autoTriggerPath":"build/hcx-api"],
+    "payer-api": [],
+    "provider-api": []
 ]
 def buildJobs = [
     "hcx-api": [
@@ -31,7 +33,7 @@ def buildJobs = [
     ]
 ]
 
-buildJob = {
+buildJobTemplate = {
         jobName,repo,jenkinsFilePath ->
         pipelineJob("$buildFolder/$jobName") {
           definition {
@@ -46,6 +48,54 @@ buildJob = {
               }
               lightweight()
               scriptPath("$jenkinsFilePath")
+            }
+          }
+        }
+}
+
+provisionJobTemplate = {
+        env, provisionJobName ->
+        pipelineJob("$provisionFolder/$env/$provisionJobName") {
+          definition {
+            cpsScm {
+              scm {
+                git {
+                  remote {
+                    url('https://github.com/rjshrjndrn/hcx-devops')
+                    credentials("github-cred")
+                  }
+                  branch("*/${githubDefaultBranch}")
+                }
+              }
+              lightweight()
+              scriptPath("application/pipelines/provision/${provisionJobName}/Jenkinsfile")
+            }
+          }
+        }
+
+}
+deployJobTemplate = {
+        env, deployJobName ->
+        pipelineJob("$deployFolder/$env/$deployJobName.key") {
+          println("deploy job: "+deployJobName)
+          if (deployJobName.value['autoTriggerPath']) {
+              triggers {
+                upstream(deployJobName.value['autoTriggerPath'], 'SUCCESS')
+              }
+          }
+          definition {
+            cpsScm {
+              scm {
+                git {
+                  remote {
+                    url('https://github.com/rjshrjndrn/hcx-devops')
+                    credentials("github-cred")
+                  }
+                  branch("*/${githubDefaultBranch}")
+                }
+              }
+              lightweight()
+              scriptPath("application/pipelines/deploy/${deployJobName.key}/Jenkinsfile")
             }
           }
         }
@@ -79,7 +129,7 @@ environments.each {
 buildJobs.each {
     jobName ->
     println(jobName)
-    buildJob(jobName.key, buildJobs[jobName.key].repo, buildJobs[jobName.key].scriptPath)
+    buildJobTemplate(jobName.key, buildJobs[jobName.key].repo, buildJobs[jobName.key].scriptPath)
 }
 
 // Creating provision jobs
@@ -87,23 +137,7 @@ provisionJobs.each {
     provisionJobName ->
     environments.each {
         env ->
-        pipelineJob("$provisionFolder/$env/$provisionJobName") {
-          definition {
-            cpsScm {
-              scm {
-                git {
-                  remote {
-                    url('https://github.com/rjshrjndrn/hcx-devops')
-                    credentials("github-cred")
-                  }
-                  branch("*/${githubDefaultBranch}")
-                }
-              }
-              lightweight()
-              scriptPath("application/pipelines/provision/${provisionJobName}/Jenkinsfile")
-            }
-          }
-        }
+        provisionJobTemplate(env, provisionJobName)
     }
 }
 
@@ -112,28 +146,6 @@ deploymentJobs.each {
     deployJobName ->
     environments.each {
         env ->
-        pipelineJob("$deployFolder/$env/$deployJobName.key") {
-          println("deploy job: "+deployJobName)
-          if (deployJobName.value['autoTriggerPath']) {
-              triggers {
-                upstream(deployJobName.value['autoTriggerPath'], 'SUCCESS')
-              }
-          }
-          definition {
-            cpsScm {
-              scm {
-                git {
-                  remote {
-                    url('https://github.com/rjshrjndrn/hcx-devops')
-                    credentials("github-cred")
-                  }
-                  branch("*/${githubDefaultBranch}")
-                }
-              }
-              lightweight()
-              scriptPath("application/pipelines/deploy/${deployJobName.key}/Jenkinsfile")
-            }
-          }
-        }
+        deployJobTemplate(env,deployJobName)
     }
 }
