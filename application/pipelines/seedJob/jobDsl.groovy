@@ -83,6 +83,15 @@ deployJobTemplate = {
                 upstream(deployJobName.value['autoTriggerPath'], 'SUCCESS')
               }
           }
+          parameters {
+            string {
+                name("artifact_version")
+                defaultValue("")
+                description("Artifact version to deploy")
+                // Strip whitespace from the beginning and end of the string.
+                trim(true)
+            } 
+          }
           definition {
             cpsScm {
               scm {
