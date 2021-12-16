@@ -1,0 +1,42 @@
+# If your ingress controller has the SSL Termination, you can add the following env vars in extraEnvVars
+# Ref: https://github.com/bitnami/charts/tree/master/bitnami/keycloak/#use-with-ingress-offloading-ssl
+# extraEnvVars:
+#   - name: KEYCLOAK_PROXY_ADDRESS_FORWARDING
+#     value: "true"
+#   - name: KEYCLOAK_FRONTEND_URL
+#     value: "https://keycloak.xxx"
+
+fullnameOverride: keycloak
+
+auth:
+  ## @param auth.createAdminUser Create administrator user on boot
+  ##
+  createAdminUser: true
+  ## @param auth.adminUser Keycloak administrator user
+  ##
+  adminUser: admin
+  ## @param auth.adminPassword Keycloak administrator password for the new user
+  ##
+  adminPassword: "{{ keycloak_admin_password }}"
+
+postgresql:
+  enabled: false
+
+## External database configuration
+##
+externalDatabase:
+  ## @param externalDatabase.host Host of the external database
+  ##
+  host: "{{ keycloak_postgresql_host }}"
+  ## @param externalDatabase.port Database port
+  ##
+  port: 5432
+  ## @param externalDatabase.user non admin username for Keycloak Database
+  ##
+  user: "{{ keycloak_postgresql_user }}"
+  ## @param externalDatabase.password Database password
+  ##
+  password: "{{ keycloak_postgresql_password }}"
+  ## @param externalDatabase.database Database name
+  ##
+  database: keycloak
