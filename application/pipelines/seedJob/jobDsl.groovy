@@ -25,7 +25,7 @@ def deploymentJobs = [
     "hcx-api": ["autoTriggerPath":"build/hcx-api"],
     "payer-api": [],
     "provider-api": [],
-    "keycloak": []
+    "keycloak": ["artifactVersion":"No"]
 ]
 def buildJobs = [
     "hcx-api": [
@@ -87,7 +87,7 @@ deployJobTemplate = {
           parameters {
             string {
                 name("artifact_version")
-                defaultValue("")
+                defaultValue(deployJobName.value['artifactVersion'] ?: "")
                 description("Artifact version to deploy")
                 // Strip whitespace from the beginning and end of the string.
                 trim(true)
