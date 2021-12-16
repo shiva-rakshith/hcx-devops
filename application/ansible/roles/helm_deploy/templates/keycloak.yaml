@@ -8,6 +8,11 @@
 
 fullnameOverride: keycloak
 
+image:
+  ## Set to true if you would like to see extra information on logs
+  ##
+  debug: true
+
 auth:
   ## @param auth.createAdminUser Create administrator user on boot
   ##
@@ -40,3 +45,11 @@ externalDatabase:
   ## @param externalDatabase.database Database name
   ##
   database: keycloak
+
+# resources:
+#   limits:
+#      cpu: 1
+#      memory: 4
+#   requests:
+#      cpu: 500m
+#      memory: 3

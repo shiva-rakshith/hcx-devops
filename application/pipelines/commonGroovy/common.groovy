@@ -25,22 +25,32 @@ checkoutPrivate = {
 deployHelm = {
     // Application to deploy, from which job the artifact information to be copied.
     // If null default value will be "build/deployAppName"
-    appName, copyArtifactJob ->
-
+    // args can be passed as "-e name=job -e namespace=monitoing"
+    appName, copyArtifactJob, args ->
+    
     if(copyArtifactJob == null) {
         copyArtifactJob = "build/$appName"
     }
     
+    additionalVariables = "-e namespace=${envName} -e chart_path=${chartPath}"
     // Overriding artifact version to deploy
     imageTag = params.artifact_version ?: ""
-    if(imageTag == "") {
-        copyArtifacts filter: 'metadata.json', fingerprintArtifacts: true, projectName: copyArtifactJob
-        imageTag = sh(returnStdout: true, script: 'jq -r .image_tag metadata.json').trim()
+
+    // If we deploy generic chart, there's nothing to build and copy.
+    if(copyArtifactJob != "false") {
+        if(imageTag == "") {
+            copyArtifacts filter: 'metadata.json', fingerprintArtifacts: true, projectName: copyArtifactJob
+            imageTag = sh(returnStdout: true, script: 'jq -r .image_tag metadata.json').trim()
+        }
+        additionalVariables = "-e image_tag=${imageTag} -e namespace=${envName} -e chart_path=${chartPath}"
     }
+
+    additionalVariables = additionalVariables + " " + args
+
     sh """
       echo ${appName}:${imageTag}
       cd application/ansible
-      ansible-playbook -i ../../private/hcx/ansible/inventory/${envName}/hosts helm.yaml -e application=$appName -e image_tag=$imageTag -e namespace=${envName} -e chart_path=${chartPath} -v
+      ansible-playbook -i ../../private/hcx/ansible/inventory/${envName}/hosts helm.yaml -e application=$appName $additionalVariables -v
     """
 }
 
