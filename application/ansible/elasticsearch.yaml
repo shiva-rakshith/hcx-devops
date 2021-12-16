@@ -1,4 +1,5 @@
 - hosts: elasticsearch
+  become: yes
   roles:
-    - jdk-1.8.0_121
+    - geerlingguy.java
     - elasticsearch
