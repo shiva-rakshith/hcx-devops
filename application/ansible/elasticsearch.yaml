@@ -1,0 +1,4 @@
+- hosts: elasticsearch
+  roles:
+    - jdk-1.8.0_121
+    - elasticsearch
