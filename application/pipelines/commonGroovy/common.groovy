@@ -33,6 +33,7 @@ deployHelm = {
     }
     
     additionalVariables = "-e namespace=${envName} -e chart_path=${chartPath}"
+    additionalArgs = args ?: " "
     // Overriding artifact version to deploy
     imageTag = params.artifact_version ?: ""
 
@@ -45,7 +46,7 @@ deployHelm = {
         additionalVariables = "-e image_tag=${imageTag} -e namespace=${envName} -e chart_path=${chartPath}"
     }
 
-    additionalVariables = additionalVariables + " " + args
+    additionalVariables = additionalVariables + " " + additionalArgs
 
     sh """
       echo ${appName}:${imageTag}
