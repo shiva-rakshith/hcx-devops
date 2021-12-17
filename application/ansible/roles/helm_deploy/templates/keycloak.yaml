@@ -8,48 +8,22 @@
 
 fullnameOverride: keycloak
 
-image:
-  ## Set to true if you would like to see extra information on logs
-  ##
-  debug: true
+env:
+  DB_VENDOR: postgres
+  DB_ADDR: '{{ keycloak_postgresql_host }}'
+  DB_PORT: 5432
+  DB_DATABASE: keycloak
+  DB_USER: '{{ keycloak_postgresql_user }}'
+  DB_PASSWORD: '{{ keycloak_postgresql_password }}'
+  KEYCLOAK_USER: admin
+  KEYCLOAK_PASSWORD: '{{ keycloak_admin_password }}'
+  # Comment below if you don't want to initialize the realm
+  KEYCLOAK_IMPORT: /opt/jboss/keycloak/imports/realm-export.json
 
-auth:
-  ## @param auth.createAdminUser Create administrator user on boot
-  ##
-  createAdminUser: true
-  ## @param auth.adminUser Keycloak administrator user
-  ##
-  adminUser: admin
-  ## @param auth.adminPassword Keycloak administrator password for the new user
-  ##
-  adminPassword: "{{ keycloak_admin_password }}"
-
-postgresql:
-  enabled: false
-
-## External database configuration
-##
-externalDatabase:
-  ## @param externalDatabase.host Host of the external database
-  ##
-  host: "{{ keycloak_postgresql_host }}"
-  ## @param externalDatabase.port Database port
-  ##
-  port: 5432
-  ## @param externalDatabase.user non admin username for Keycloak Database
-  ##
-  user: "{{ keycloak_postgresql_user }}"
-  ## @param externalDatabase.password Database password
-  ##
-  password: "{{ keycloak_postgresql_password }}"
-  ## @param externalDatabase.database Database name
-  ##
-  database: keycloak
-
-# resources:
-#   limits:
-#      cpu: 1
-#      memory: 4
-#   requests:
-#      cpu: 500m
-#      memory: 3
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+  requests:
+    cpu: 512m
+    memory: 1Gi
