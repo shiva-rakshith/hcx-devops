@@ -8,6 +8,10 @@
 
 fullnameOverride: keycloak
 
+service:
+  type: LoadBalancer
+  port: 8080
+
 env:
   DB_VENDOR: postgres
   DB_ADDR: '{{ keycloak_postgresql_host }}'
