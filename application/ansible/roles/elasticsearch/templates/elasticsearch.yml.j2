@@ -1,91 +1,82 @@
-# {{ ansible_managed }}
-# ======================== Elasticsearch Configuration =========================
-#
-# NOTE: Elasticsearch comes with reasonable defaults for most settings.
-#       Before you set out to tweak and tune the configuration, make sure you
-#       understand what are you trying to accomplish and the consequences.
-#
-# The primary way of configuring a node is via this file. This template lists
-# the most important settings you may want to configure for a production cluster.
-#
-# Please consult the documentation for further information on configuration options:
-# https://www.elastic.co/guide/en/elasticsearch/reference/index.html
-#
-# ---------------------------------- Cluster -----------------------------------
-#
-# Use a descriptive name for your cluster:
-#
-#cluster.name: my-application
-#
-# ------------------------------------ Node ------------------------------------
-#
-# Use a descriptive name for the node:
-#
-#node.name: node-1
-#
-# Add custom attributes to the node:
-#
-#node.attr.rack: r1
-#
-# ----------------------------------- Paths ------------------------------------
-#
-# Path to directory where to store the data (separate multiple locations by comma):
-#
-path.data: /var/lib/elasticsearch
-#
-# Path to log files:
-#
-path.logs: /var/log/elasticsearch
-#
-# ----------------------------------- Memory -----------------------------------
-#
-# Lock the memory on startup:
-#
-#bootstrap.memory_lock: true
-#
-# Make sure that the heap size is set to about half the memory available
-# on the system and that the owner of the process is allowed to use this
-# limit.
-#
-# Elasticsearch performs poorly when the system is swapping the memory.
-#
-# ---------------------------------- Network -----------------------------------
-#
-# Set the bind address to a specific IP (IPv4 or IPv6):
-#
-network.host: {{ elasticsearch_network_host }}
-#
-# Set a custom port for HTTP:
-#
-http.port: {{ elasticsearch_http_port }}
-#
-# For more information, consult the network module documentation.
-#
-# --------------------------------- Discovery ----------------------------------
-#
-# Pass an initial list of hosts to perform discovery when new node is started:
-# The default list of hosts is ["127.0.0.1", "[::1]"]
-#
-#discovery.zen.ping.unicast.hosts: ["host1", "host2"]
-#
-# Prevent the "split brain" by configuring the majority of nodes (total number of master-eligible nodes / 2 + 1):
-#
-#discovery.zen.minimum_master_nodes:
-#
-# For more information, consult the zen discovery module documentation.
-#
-# ---------------------------------- Gateway -----------------------------------
-#
-# Block initial recovery after a full cluster restart until N nodes are started:
-#
-#gateway.recover_after_nodes: 3
-#
-# For more information, consult the gateway module documentation.
-#
-# ---------------------------------- Various -----------------------------------
-#
-# Require explicit names when deleting indices:
-#
-#action.destructive_requires_name: true
 
-{{ elasticsearch_extra_options }}
+{% if es_config %}
+{{ es_config | to_nice_yaml(indent=2) }}
+{% endif %}
+
+{% if es_config['cluster.name'] is not defined %}
+cluster.name: elasticsearch
+{% endif %}
+
+{% if es_config['node.name'] is not defined %}
+node.name: {{inventory_hostname}}
+{% endif %}
+
+#################################### Paths ####################################
+
+# Path to directory containing configuration (this file and logging.yml):
+
+path.data: {{ es_data_dirs | array_to_str }}
+
+path.logs: {{ es_log_dir }}
+
+{% if es_path_repo is defined %}
+path.repo: {{ es_path_repo }}
+{% endif %}
+
+{% if es_action_auto_create_index == true %}
+action.auto_create_index: true
+{% elif not es_action_auto_create_index %}
+action.auto_create_index: false
+{% else %}
+action.auto_create_index: {{ es_action_auto_create_index }}
+{% endif %}
+
+{% if not oss_version and es_api_basic_auth_username is defined and es_api_basic_auth_password is defined %}
+xpack.security.enabled: true
+
+{% if es_enable_transport_ssl and es_enable_auto_ssl_configuration %}
+xpack.security.transport.ssl.enabled: true
+xpack.security.transport.ssl.verification_mode: "{{ es_ssl_verification_mode }}"
+{% if es_ssl_keystore and es_ssl_truststore %}
+xpack.security.transport.ssl.keystore.path: "{{ es_ssl_certificate_path }}/{{ es_ssl_keystore | basename }}"
+xpack.security.transport.ssl.truststore.path: "{{ es_ssl_certificate_path }}/{{ es_ssl_truststore | basename }}"
+{% elif es_ssl_key and  es_ssl_certificate %}
+xpack.security.transport.ssl.key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }}"
+xpack.security.transport.ssl.certificate: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate | basename }}"
+{% if es_ssl_certificate_authority %}
+xpack.security.transport.ssl.certificate_authorities: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate_authority | basename }}"
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if es_enable_http_ssl and es_enable_auto_ssl_configuration %}
+xpack.security.http.ssl.enabled: true
+{% if es_ssl_keystore and es_ssl_truststore %}
+xpack.security.http.ssl.keystore.path: "{{ es_ssl_certificate_path }}/{{ es_ssl_keystore | basename }}"
+xpack.security.http.ssl.truststore.path: "{{ es_ssl_certificate_path }}/{{ es_ssl_truststore | basename }}"
+{% elif es_ssl_key and  es_ssl_certificate %}
+xpack.security.http.ssl.key: "{{ es_ssl_certificate_path }}/{{ es_ssl_key | basename }}"
+xpack.security.http.ssl.certificate: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate | basename }}"
+{% if es_ssl_certificate_authority %}
+xpack.security.http.ssl.certificate_authorities: "{{ es_ssl_certificate_path }}/{{ es_ssl_certificate_authority | basename }}"
+{% endif %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if es_mail_config is defined %}
+xpack.notification.email:
+  account:
+    {{ es_mail_config['account'] }}:
+      profile: {{ es_mail_config['profile'] }}
+      email_defaults:
+        from: {{ es_mail_config['from'] }}
+      smtp:
+        auth: {{ es_mail_config['require_auth'] }}
+        host: {{ es_mail_config['host'] }}
+        port: {{ es_mail_config['port'] }}
+        {% if es_mail_config['require_auth'] == true -%}
+        user: {{ es_mail_config['user'] }}
+        password: {{ es_mail_config['pass'] }}
+        {%- endif %}
+{% endif %}

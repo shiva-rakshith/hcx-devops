@@ -1,5 +1,10 @@
-*.retry
-*/__pycache__
+.kitchen/
+license*.json
 *.pyc
-.cache
-
+.vendor
+.bundle
+Converging
+TODO
+.idea/
+elasticsearch.iml
+!/vars/RedHat.yml

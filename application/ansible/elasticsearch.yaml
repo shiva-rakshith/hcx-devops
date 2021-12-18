@@ -1,5 +1,7 @@
 - hosts: elasticsearch
   become: yes
+  vars:
+    es_version: 7.16.1
   roles:
     - geerlingguy.java
     - elasticsearch
