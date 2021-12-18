@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "api-gateway.fullname" . }}
+  name: {{ include "hcx-registry.fullname" . }}
   labels:
-    {{- include "api-gateway.labels" . | nindent 4 }}
+    {{- include "hcx-registry.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "api-gateway.selectorLabels" . | nindent 6 }}
+      {{- include "hcx-registry.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "api-gateway.selectorLabels" . | nindent 8 }}
+        {{- include "hcx-registry.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "api-gateway.serviceAccountName" . }}
+      serviceAccountName: {{ include "hcx-registry.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -40,7 +40,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
-              containerPort: 8095
+              containerPort: 8081
               protocol: TCP
           args:
             - /bin/sh
@@ -55,6 +55,13 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+          - name: registryschemas
+            mountPath: /home/opensaber/config/public/_schemas
+      volumes:
+      - name: registryschemas
+        configMap:
+          name: registryschemas
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

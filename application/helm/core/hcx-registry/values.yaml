@@ -1,27 +1,33 @@
-# Default values for api-gateway.
+# Default values for hcx-registry.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
 image:
-  repository: rjshrjndrn/api-gateway
+  repository: rjshrjndrn/registry
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "f9b6d37_22"
+  tag: "1027195_8"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-env:
-  SERVER_PORT : 8095
-  JWT_ENABLED : true
-  JWT_ISSUER : ""
-  JWT_AUDIENCE : ""
-  JWT_JWK_URL : http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/sunbird-rc/protocol/openid-connect/certs
-  JWT_NS_PATH : "$.realm_access.roles"
-  HCX_API_BASEPATH : http://a54c5bc648f1a41b8871b77ac01060ed-1840123973.ap-south-1.elb.amazonaws.com:8080
+env: 
+  connectionInfo_uri : jdbc:postgresql://terraform-20211111045938760100000001.culmyp72rbwi.ap-south-1.rds.amazonaws.com:5432/registry
+  connectionInfo_username : hcxpostgresql
+  connectionInfo_password : SuperSecurePassword
+  sunbird_sso_url : http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth
+  sunbird_sso_realm : sunbird-rc
+  sunbird_sso_client_id : client
+  sunbird_sso_admin_client_id : admin-api
+  sunbird_sso_admin_client_secret : d9835b8b-c5c1-4da5-980f-56e86aed8e44
+  search_providerName : io.opensaber.registry.service.ElasticSearchService
+  elastic_search_enabled : true
+  elastic_search_connection_url : 10.0.1.18:9200
+  signature_enabled: false
+  claims_url : http://localhost:8082
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -47,7 +53,7 @@ securityContext: {}
 
 service:
   type: LoadBalancer
-  port: 8095
+  port: 8081
 
 ingress:
   enabled: false
