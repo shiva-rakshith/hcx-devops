@@ -25,6 +25,10 @@ def deploymentJobs = [
     "hcx-api": ["autoTriggerPath":"build/hcx-api"],
     "payer-api": [],
     "provider-api": [],
+    "claimsjob": [],
+    "coverageeligibility": [],
+    "paymentsjob": [],
+    "preauthjob": [],
     "keycloak": ["artifactVersion":"No"]
 ]
 def buildJobs = [
