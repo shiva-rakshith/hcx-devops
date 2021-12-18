@@ -2,6 +2,22 @@
   become: yes
   vars:
     es_version: 7.16.1
+    es_heap_size: "{{ es_heap_size_override | d('4g') }}"
   roles:
     - geerlingguy.java
-    - elasticsearch
+    - { role: elasticsearch,
+        es_config: {
+          discovery.zen.ping.unicast.hosts: "{{ groups['elasticsearch'] }}",
+          http.port: 9200,
+          transport.tcp.port: 9300,
+          # Ref: https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-network.html
+          network.host: "0.0.0.0",
+          # Ref: https://stackoverflow.com/questions/37970187/elasticsearch-cluster-master-not-discovered-exception
+          network.publish_host: "_site_",
+          node.data: "{{ es_etc_node_data | default('true') }}",
+          node.master: "{{ es_etc_node_master | default('true') }}",
+          cluster.initial_master_nodes: "{{ groups['elasticsearch'] }}",
+          bootstrap.memory_lock: true,
+        },
+        es_etc_discovery_zen_ping_unicast_hosts: "{{ groups['elasticsearch'] }}",
+      }

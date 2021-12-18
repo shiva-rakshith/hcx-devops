@@ -6,3 +6,5 @@ RUN cd /tmp && \
     chmod +x /usr/local/bin/helm && \
     yum install jq -y && \
     yum clean all
+# Installing general ansible deps
+RUN ansible-galaxy collection install community.general
