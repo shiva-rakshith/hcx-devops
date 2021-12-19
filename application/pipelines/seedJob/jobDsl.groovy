@@ -25,16 +25,20 @@ def deploymentJobs = [
     "hcx-api": ["autoTriggerPath":"build/hcx-api"],
     "payer-api": [],
     "provider-api": [],
-    "claimsjob": [],
-    "coverageeligibility": [],
-    "paymentsjob": [],
-    "preauthjob": [],
+    "claimsjob": ["autoTriggerPath":"build/hcx-api"],
+    "coverageeligibility": ["autoTriggerPath":"build/hcx-api"],
+    "paymentsjob": ["autoTriggerPath":"build/hcx-api"],
+    "preauthjob": ["autoTriggerPath":"build/hcx-api"],
     "keycloak": ["artifactVersion":"No"]
 ]
 def buildJobs = [
     "hcx-api": [
         "repo": "https://github.com/rjshrjndrn/hcx-platform",
         "scriptPath": "hcx-apis/Jenkinsfile"
+    ],
+    "flink": [
+        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
+        "scriptPath": "hcx-pipeline-jobs/Jenkinsfile"
     ]
 ]
 
@@ -48,7 +52,7 @@ buildJobTemplate = {
                   remote {
                     url("$repo")
                   }
-                  branch("*/main")
+                  branch("*/sprint-2")
                 }
               }
               lightweight()
