@@ -8,7 +8,7 @@ image:
   repository: rjshrjndrn/api-gateway
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "f9b6d37_22"
+  tag: "66c81ec_24"
 
 imagePullSecrets: []
 nameOverride: ""
