@@ -7,7 +7,7 @@ String deployFolder = "deploy"
 String provisionFolder = "provision"
 String buildFolder = "build"
 String githubCredID = "github-cred"
-String githubDefaultBranch = "main"
+String githubDefaultBranch = "sprint-2"
 
 def rootFolders = [
     deployFolder,
@@ -36,7 +36,7 @@ def buildJobs = [
         "repo": "https://github.com/rjshrjndrn/hcx-platform",
         "scriptPath": "hcx-apis/Jenkinsfile"
     ],
-    "flink": [
+    "pipeline-jobs": [
         "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
         "scriptPath": "hcx-pipeline-jobs/Jenkinsfile"
     ]
