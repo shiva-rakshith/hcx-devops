@@ -106,7 +106,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ .Release.Name }}-jobmanager
-        image: "{{ .Values.dockerhub }}/{{ .Values.repository }}:{{ .Values.image_tag }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: Always
         workingDir: /opt/flink
         command: ["/opt/flink/bin/standalone-job.sh"]
@@ -182,7 +182,7 @@ spec:
       {{- end }}
       containers:
       - name: {{ .Release.Name }}-taskmanager
-        image: "{{ .Values.dockerhub }}/{{ .Values.repository }}:{{ .Values.image_tag }}"
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: Always
         workingDir: {{ .Values.taskmanager.flink_work_dir }}
         command: ["/opt/flink/bin/taskmanager.sh"]

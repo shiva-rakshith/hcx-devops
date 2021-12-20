@@ -1,8 +1,12 @@
+image:
+  repository: maheshkg/hcx-apis
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
 namespace: flink
 imagePullSecrets: []
 dockerhub: "maheshkg"
 repository: "hcx-flink-jobs"
-image_tag: "s2-6.0"
 serviceMonitor:
   enabled: false
 replicaCount: 1

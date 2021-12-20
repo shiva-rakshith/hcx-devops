@@ -1,3 +1,6 @@
+image:
+  tag: "{{ image_tag }}"
+  repository: "{{ docker_repo }}/hcx-pipeline-jobs"
 job_classname: "org.swasth.dp.payments.task.PaymentsStreamTask"
 taskManagerAdditionalArgs: []
   # For example
