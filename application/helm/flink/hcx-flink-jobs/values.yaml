@@ -138,7 +138,7 @@ base_config: |
       port = "9042"
     }
     registry {
-      endPointUrl = "http://a2aab11985f46432cb2905d56b8b923f-628388358.ap-south-1.elb.amazonaws.com:8081/api/v1/Organisation/search"
+      endPointUrl = "http://hcx-registry.dev.svc.cluster.local:8081/api/v1/Organisation/search"
     }
 
 coverageeligibility:
