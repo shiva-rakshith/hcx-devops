@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: rjshrjndrn/registry
+  repository: swasth2021/registry
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "1027195_8"
+  tag: "40fc02e_10"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -18,7 +18,7 @@ env:
   connectionInfo_uri : jdbc:postgresql://terraform-20211111045938760100000001.culmyp72rbwi.ap-south-1.rds.amazonaws.com:5432/registry
   connectionInfo_username : hcxpostgresql
   connectionInfo_password : SuperSecurePassword
-  sunbird_sso_url : http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth
+  sunbird_sso_url : http://keycloak.keycloak.svc.cluster.local:8080/auth
   sunbird_sso_realm : sunbird-rc
   sunbird_sso_client_id : client
   sunbird_sso_admin_client_id : admin-api
