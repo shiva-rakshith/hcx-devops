@@ -25,6 +25,7 @@ def provisionJobs = [
 def deploymentJobs = [
     "hcx-api": ["autoTriggerPath":"build/hcx-api"],
     "payer-api": [],
+    "api-gateway": [],
     "provider-api": [],
     "claimsjob": ["autoTriggerPath":"build/hcx-api"],
     "coverageeligibility": ["autoTriggerPath":"build/hcx-api"],
@@ -37,6 +38,10 @@ def buildJobs = [
     "hcx-api": [
         "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
         "scriptPath": "hcx-apis/Jenkinsfile"
+    ],
+    "api-gateway": [
+        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
+        "scriptPath": "api-gateway/Jenkinsfile"
     ],
     "pipeline-jobs": [
         "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
