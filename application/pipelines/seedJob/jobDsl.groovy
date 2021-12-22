@@ -19,7 +19,8 @@ def environments = [
 ]
 def provisionJobs = [
     "kafka",
-    "elasticsearch"
+    "elasticsearch",
+    "redis"
 ]
 def deploymentJobs = [
     "hcx-api": ["autoTriggerPath":"build/hcx-api"],
@@ -29,7 +30,8 @@ def deploymentJobs = [
     "coverageeligibility": ["autoTriggerPath":"build/hcx-api"],
     "paymentsjob": ["autoTriggerPath":"build/hcx-api"],
     "preauthjob": ["autoTriggerPath":"build/hcx-api"],
-    "keycloak": ["artifactVersion":"No"]
+    "keycloak": ["artifactVersion":"No"],
+    "kafka-topics": [],
 ]
 def buildJobs = [
     "hcx-api": [
