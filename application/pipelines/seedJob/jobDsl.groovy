@@ -33,6 +33,7 @@ def deploymentJobs = [
     "preauthjob": ["autoTriggerPath":"build/hcx-api"],
     "keycloak": ["artifactVersion":"No"],
     "kafka-topics": [],
+    "registry": [],
 ]
 def buildJobs = [
     "hcx-api": [
@@ -46,6 +47,10 @@ def buildJobs = [
     "pipeline-jobs": [
         "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
         "scriptPath": "hcx-pipeline-jobs/Jenkinsfile"
+    ],
+    "registry": [
+        "repo": "https://github.com/shiva-rakshith/sunbird-rc-core-0.0.1",
+        "scriptPath": "Jenkinsfile"
     ]
 ]
 
