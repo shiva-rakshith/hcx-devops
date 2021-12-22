@@ -16,3 +16,6 @@
   roles:
     - zookeeper
     - kafka
+  post_tasks:
+    - name: Creating kafka_topics
+      include_tasks: kafka_topics.yaml

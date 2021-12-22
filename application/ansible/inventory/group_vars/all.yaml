@@ -1,0 +1,10 @@
+env: dev
+docker_repo: swasth2021
+keycloak_postgresql_host: ""
+keycloak_postgresql_user: ""
+# Ref: https://www.middlewareinventory.com/blog/ansible-get-ip-address/
+elasticsearch_network_host: "hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]"
+
+kafka_topics:
+  - "exampleTopic"
+
