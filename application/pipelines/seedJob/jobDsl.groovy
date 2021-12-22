@@ -35,7 +35,7 @@ def deploymentJobs = [
 ]
 def buildJobs = [
     "hcx-api": [
-        "repo": "https://github.com/rjshrjndrn/hcx-platform",
+        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
         "scriptPath": "hcx-apis/Jenkinsfile"
     ],
     "pipeline-jobs": [
@@ -72,7 +72,7 @@ provisionJobTemplate = {
               scm {
                 git {
                   remote {
-                    url('https://github.com/rjshrjndrn/hcx-devops')
+                    url('https://github.com/Swasth-Digital-Health-Foundation/hcx-devops')
                     credentials("github-cred")
                   }
                   branch("*/${githubDefaultBranch}")
@@ -108,7 +108,7 @@ deployJobTemplate = {
               scm {
                 git {
                   remote {
-                    url('https://github.com/rjshrjndrn/hcx-devops')
+                    url('https://github.com/Swasth-Digital-Health-Foundation/hcx-devops')
                     credentials("github-cred")
                   }
                   branch("*/${githubDefaultBranch}")
