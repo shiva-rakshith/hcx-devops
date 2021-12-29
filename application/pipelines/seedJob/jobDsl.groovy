@@ -34,6 +34,7 @@ def deploymentJobs = [
     "keycloak": ["artifactVersion":"No"],
     "kafka-topics": [],
     "registry": [],
+    "secor": ["autoTriggerPath":"build/secor"],
 ]
 def buildJobs = [
     "hcx-api": [
@@ -51,6 +52,10 @@ def buildJobs = [
     "registry": [
         "repo": "https://github.com/shiva-rakshith/sunbird-rc-core-0.0.1",
         "scriptPath": "Jenkinsfile"
+    ],
+    "secor": [
+        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-devops",
+        "scriptPath": "application/pipelines/Build/Secor/Jenkinsfile"
     ]
 ]
 
