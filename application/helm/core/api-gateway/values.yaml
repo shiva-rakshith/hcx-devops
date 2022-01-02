@@ -22,6 +22,9 @@ env:
   JWT_JWK_URL : http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/sunbird-rc/protocol/openid-connect/certs
   JWT_NS_PATH : "$.realm_access.roles"
   HCX_API_BASEPATH : http://hcx-api.dev.svc.cluster.local:8080
+  REGISTRY_BASE_PATH : http://hcx-registry.dev.svc.cluster.local:8081
+  REDIS_HOST : redis-master.dev.svc.cluster.local
+  REDIS_PORT : 6379
 
 serviceAccount:
   # Specifies whether a service account should be created
