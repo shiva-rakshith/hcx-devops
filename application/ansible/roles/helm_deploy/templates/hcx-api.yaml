@@ -12,3 +12,4 @@ env:
   postgres_user: "hcxpostgresql"
   postgres_password: "SuperSecurePassword"
   postgres_tablename: "payload"
+  registry_basePath: "http://hcx-registry.dev.svc.cluster.local:8081"
