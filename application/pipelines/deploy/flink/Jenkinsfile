@@ -17,6 +17,11 @@ node('ansible') {
             // Checking out private repo
             commonCode.checkoutPrivate()
             // Deploy helm
+            // This is a workaround for flink jobs,
+            // As they are using kind: Jobs and the image tag is immutable
+            // We've to wait till External LB is removed.
+            sh"helm uninstall -n flink $appName --wait; sleep 30"
+            //
             commonCode.deployHelm(appName)
           }
       }
