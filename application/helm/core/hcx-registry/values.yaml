@@ -28,7 +28,6 @@ env:
   elastic_search_connection_url : 10.0.1.18:9200
   signature_enabled: false
   claims_url : http://localhost:8082
-  database_uuidPropertyName : participant_code
 
 serviceAccount:
   # Specifies whether a service account should be created
