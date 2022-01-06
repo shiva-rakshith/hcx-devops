@@ -1,0 +1,31 @@
+// vim: ft=groovy et ts=2 sw=2:
+
+node('ansible') {
+    ansiColor('xterm') {
+      stage("Warming up") {
+        container('ansible') {
+          // Checking out public repo
+          checkout scm
+          // Loading library
+          commonCode = load "${env.WORKSPACE}/application/pipelines/commonGroovy/common.groovy"
+        }
+      }
+      stage("Deploy") {
+          container('ansible'){
+            // Gathering all required variables
+            commonCode.commonVariables()
+            // Checking out private repo
+            commonCode.checkoutPrivate()
+            // Deploy helm
+            // Deploying multiple jobs
+            // ${params.jobNames.split(',')}.each {
+            // TODO: have to change this to user parameters.
+            def jobNames = ['raw-telemetry-backup']
+            jobNames.each {
+              jobName ->
+              commonCode.deployHelm(appName,"build/secor", "-e application=$jobName")
+            }
+          }
+      }
+    }
+}
