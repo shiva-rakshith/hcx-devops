@@ -1,0 +1,95 @@
+# Choose what to fill according to the service you are using
+# in the choice option you can fill S3, GS, Swift or Azure
+
+## Note: we'll mount `secor.$cloudProvider.properties` inside secor config
+## So if you're creating new config file for a cloud provider, please create
+## configmap `secor.$cloudProvider.properties`
+## For example, gcp
+## secor.GS.properties
+
+cloudProvider: S3
+
+# Azure config
+azure_account: "secoraccount"
+azure_secret: "blob_storage_key"
+azure_container_name: "telemetry-data-store"
+
+## AWS config
+awsBucket: "secorbackup"
+awsRegion: "ap-south-1"
+awsAccessKey: ""
+awsSecretKey: ""
+
+namespace: "secor"
+
+secor_jobs:
+  raw-telemetry-backup:
+    replicas: 1
+    consumer_group: "{{env_name}}.telemetry.raw.backup"
+    service_name: "raw_telemetry_backup"
+    base_path: "raw"
+    timestamp_key: "syncts"
+    fallback_timestamp_key: "@timestamp"
+    topic: "{{env_name}}.telemetry.raw"
+    kafka_broker_host: "{{ groups['processing-cluster-kafka']|join(',') }}"
+    zookeeper_quorum: "{{ groups['processing-cluster-zookeepers']|join(':2181,')}}:2181"
+    max_file_size: 100000000
+    max_file_age: 14400
+    partition_prefix_enabled: "false"
+    partition_prefix_key: ""
+    partition_prefix_mapping: "{}"
+    message_channel_identifier: ""
+    output_file_pattern: "{partition}-{currentTimestamp}.json"
+    message_parser: "com.pinterest.secor.parser.PatternDateMessageParser"
+    storage:
+      size: 10Gi
+    requests:
+      cpu: 500m
+      memory: 500Mi
+    lag_threshold_warning: 50000
+    lag_threshold_critical: 100000
+
+image:
+  repository: "secor"
+  tag: 0.29
+  pullPolicy: IfNotPresent
+
+secor:
+  zookeeper:
+    quorum: "zookeeper:2181"
+    path: "/"
+  partition:
+    configFile: /opt/secor/config/secor.partition.properties
+    logConfigFile: /opt/secor/config/log4j.docker.properties
+    monitor:
+      logConfigFile: /opt/secor/config/log4j.docker-warn.properties
+    storage:
+      class: standard
+      size: 20Gi
+    jvm:
+      memory: 512m
+    resources:
+      requests:
+        cpu: 800m
+        memory: 768Mi
+ 
+
+exporter:
+  image:
+    repository: prom/statsd-exporter
+    tag: latest
+    pullPolicy: IfNotPresent
+
+prometheus_rule_selector_app: prometheus-operator
+prometheus_rule_selector_release: prometheus-operator
+
+# If you enable this, secor lag alert rules will be created in the flink cluster.
+# In our case the consumer group lag metrics available in core prometheus.
+# So we need to create the secor lag alert rule in core prometheus.
+# By adding this condition we are avoiding creating the secor lag alert rule in flink cluster. 
+alertrules:
+  enabled: false
+
+# This condition is whether to create the secor lag alert rule or not.
+secor_alertrule:
+  enabled: false
