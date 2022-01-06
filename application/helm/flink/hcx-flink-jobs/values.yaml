@@ -140,6 +140,13 @@ base_config: |
     registry {
       endPointUrl = "http://hcx-registry.dev.svc.cluster.local:8081/api/v1/Organisation/search"
     }
+    keycloak {
+      url = "http://keycloak.keycloak.svc.cluster.local:8080/auth"
+      client_id = "registry-frontend"
+      username = "hcxgateway@gmail.com"
+      password = "Opensaber@123"
+      realm = "sunbird-rc"
+    }
 
 coverageeligibility:
   coverageeligibility: |+
