@@ -21,32 +21,33 @@ awsRegion: "ap-south-1"
 awsAccessKey: ""
 awsSecretKey: ""
 
-secor_jobs:
-  raw-telemetry-backup:
-    replicas: 1
-    consumer_group: "{{env_name}}.telemetry.raw.backup"
-    service_name: "raw_telemetry_backup"
-    base_path: "raw"
-    timestamp_key: "syncts"
-    fallback_timestamp_key: "@timestamp"
-    topic: "dev.telemetry.raw"
-    kafka_broker_host: "kafka1,kafka2"
-    zookeeper_quorum: "zoo1:2181,zoo2:2181"
-    max_file_size: 100000000
-    max_file_age: 14400
-    partition_prefix_enabled: "false"
-    partition_prefix_key: ""
-    partition_prefix_mapping: "{}"
-    message_channel_identifier: ""
-    output_file_pattern: "{partition}-{currentTimestamp}.json"
-    message_parser: "com.pinterest.secor.parser.PatternDateMessageParser"
-    storage:
-      size: 10Gi
-    requests:
-      cpu: 500m
-      memory: 500Mi
-    lag_threshold_warning: 50000
-    lag_threshold_critical: 100000
+# Over ride this config
+# secor_jobs:
+#   raw-telemetry-backup:
+#     replicas: 1
+#     consumer_group: "dev.telemetry.raw.backup"
+#     service_name: "raw_telemetry_backup"
+#     base_path: "raw"
+#     timestamp_key: "syncts"
+#     fallback_timestamp_key: "@timestamp"
+#     topic: "dev.telemetry.raw"
+#     kafka_broker_host: "kafka1,kafka2"
+#     zookeeper_quorum: "zoo1:2181,zoo2:2181"
+#     max_file_size: 100000000
+#     max_file_age: 14400
+#     partition_prefix_enabled: "false"
+#     partition_prefix_key: ""
+#     partition_prefix_mapping: "{}"
+#     message_channel_identifier: ""
+#     output_file_pattern: "{partition}-{currentTimestamp}.json"
+#     message_parser: "com.pinterest.secor.parser.PatternDateMessageParser"
+#     storage:
+#       size: 10Gi
+#     requests:
+#       cpu: 500m
+#       memory: 500Mi
+#     lag_threshold_warning: 50000
+#     lag_threshold_critical: 100000
 
 image:
   repository: "secor"
