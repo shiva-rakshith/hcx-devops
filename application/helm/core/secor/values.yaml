@@ -8,6 +8,7 @@
 ## secor.GS.properties
 
 cloudProvider: S3
+storageClass: gp2
 
 # Azure config
 azure_account: "secoraccount"
