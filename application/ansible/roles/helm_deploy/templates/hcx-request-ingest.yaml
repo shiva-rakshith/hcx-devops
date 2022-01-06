@@ -1,5 +1,10 @@
+awsBucket: "hcx{{env}}secor"
+awsRegion: "ap-south-1"
+awsAccessKey: "{{secor_aws_access_key}}"
+awsSecretKey: "{{secor_aws_secret_key}}"
+
 secor_jobs:
-  raw-telemetry-backup:
+  hcx-request-ingest:
     replicas: 1
     consumer_group: "{{env}}.hcx.request.ingest"
     service_name: "dev_hcx_request_ingest"

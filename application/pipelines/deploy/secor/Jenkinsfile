@@ -20,7 +20,7 @@ node('ansible') {
             // Deploying multiple jobs
             // ${params.jobNames.split(',')}.each {
             // TODO: have to change this to user parameters.
-            def jobNames = ['raw-telemetry-backup']
+            def jobNames = ['hcx-request-ingest']
             jobNames.each {
               jobName ->
               commonCode.deployHelm(appName,"build/secor", "-e application=$jobName")
