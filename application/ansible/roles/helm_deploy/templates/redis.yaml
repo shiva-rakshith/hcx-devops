@@ -1,0 +1,9 @@
+architecture: standalone
+auth:
+  enabled: false
+
+fullnameOverride: redis
+
+replica:
+  replicacount: 0
+  disableCommands: []
