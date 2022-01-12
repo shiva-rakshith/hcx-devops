@@ -4,5 +4,5 @@
   - name: init kafka_topics
     shell: |
       kafka-topics.sh --create --bootstrap-server {{ groups['kafka'][0] }}:9092 --topic {{ item }} || true
-    wit_items:
+    with_items:
       - "{{ kafka_topics }}"
