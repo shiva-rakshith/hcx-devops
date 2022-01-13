@@ -145,7 +145,7 @@ base_config: |
       client_id = "registry-frontend"
       username = "hcxgateway@gmail.com"
       password = "Opensaber@123"
-      realm = "sunbird-rc"
+      realm = "swasth-health-claim-exchange"
     }
 
 coverageeligibility:
