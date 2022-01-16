@@ -6,5 +6,12 @@ keycloak_postgresql_user: ""
 elasticsearch_network_host: "hostvars[inventory_hostname]['ansible_env'].SSH_CONNECTION.split(' ')[2]"
 
 kafka_topics:
-  - "exampleTopic"
-
+  - "{{ env }}.hcx.audit"
+  - "{{ env }}.hcx.request.claim"
+  - "{{ env }}.hcx.request.coverageeligibility"
+  - "{{ env }}.hcx.request.ingest"
+  - "{{ env }}.hcx.request.payload"
+  - "{{ env }}.hcx.request.payment"
+  - "{{ env }}.hcx.request.preauth"
+  - "{{ env }}.hcx.request.retry"
+  - "{{ env }}.hcx.request.search"
