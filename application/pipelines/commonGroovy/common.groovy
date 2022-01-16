@@ -18,6 +18,12 @@ checkoutPrivate = {
                   credentialsId: "${env.GH_REPO_CRED}",
                   url: "${env.GH_PRIVATE_REPO}"
           ]]])
+          // Merging public and private repo
+          sh """
+                set -x
+                public_inventory_dir=``
+                cp -rf private/hcx/ansible/inventory/${envName}/* `find ./application -iname "inventory" -type d`/
+             """
 }
 
 // Groovy closure
@@ -51,7 +57,7 @@ deployHelm = {
     sh """
       echo ${appName}:${imageTag}
       cd application/ansible
-      ansible-playbook -i ../../private/hcx/ansible/inventory/${envName}/hosts helm.yaml -e application=$appName $additionalVariables -v
+      ansible-playbook -i inventory/hosts helm.yaml -e application=$appName $additionalVariables -v
     """
 }
 
@@ -61,7 +67,7 @@ deployAnsible = {
     sh """
       echo ${appName}
       cd application/ansible
-      ansible-playbook -i ../../private/hcx/ansible/inventory/${envName}/hosts ${ansibleCommands}
+      ansible-playbook -i inventory/hosts ${ansibleCommands}
     """
 }
 // Ref: https://stackoverflow.com/questions/37800195/how-do-you-load-a-groovy-file-and-execute-it
