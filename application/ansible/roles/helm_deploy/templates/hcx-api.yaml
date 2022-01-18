@@ -8,6 +8,8 @@ env:
   kafka_preauth_topic: "{{ env }}.hcx.request.preauth"
   kafka_claim_topic: "{{ env }}.hcx.request.claim"
   kafka_payment_topic: "{{ env }}.hcx.request.payment"
+  kafka_search_topic: "{{ env }}.hcx.request.search"
+  kafka_search_response_topic: "{{ env }}.hcx.response.search"
   postgres_url: "jdbc:postgresql://terraform-20211111045938760100000001.culmyp72rbwi.ap-south-1.rds.amazonaws.com:5432/postgres"
   elasticsearch_url: "10.0.1.18:9200"
   postgres_user: "hcxpostgresql"
