@@ -15,6 +15,7 @@ kafka_topics:
   - "{{ env }}.hcx.request.preauth"
   - "{{ env }}.hcx.request.retry"
   - "{{ env }}.hcx.request.search"
+  - "{{ env }}.hcx.request.status.search"
 
 flink_job_configs:
   base_config: |
@@ -173,6 +174,35 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-claims-job-group"
       kafka.input.topic: {{ env }}.hcx.request.payment
+      kafka.audit.topic: {{ env }}.hcx.audit
+      kafka.retry.topic: {{ env }}.hcx.request.retry
+      task.consumer.parallelism :  1
+      task.parallelism :  1
+      task.downstream.operators.parallelism: 1
+      #Postgres
+      postgres.database: postgres
+      postgres.table: payload
+      #Registry
+      service.registry.basePath: "http://localhost:8081"
+      kafka.producer.max-request-size: 1572864
+      kafka.producer.batch.size: 98304
+      kafka.producer.linger.ms: 10
+      #Redis
+      redisdb.assetstore.id = 1
+
+    flink-conf: |+
+      jobmanager.memory.flink.size: 1024m
+      taskmanager.memory.flink.size: 1024m
+      taskmanager.numberOfTaskSlots: 1
+      parallelism.default: 1
+      jobmanager.execution.failover-strategy: region
+      taskmanager.memory.network.fraction: 0.1
+
+  statusjob:
+    statusjob: |+
+      include file("/data/flink/conf/base-config.conf")
+      kafka.groupId:  ${job.env}"-status-job-group"
+      kafka.input.topic: {{ env }}.hcx.request.status.search
       kafka.audit.topic: {{ env }}.hcx.audit
       kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
