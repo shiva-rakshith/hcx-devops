@@ -16,6 +16,7 @@ kafka_topics:
   - "{{ env }}.hcx.request.retry"
   - "{{ env }}.hcx.request.search"
   - "{{ env }}.hcx.request.status.search"
+  - "{{ env }}.hcx.response.search"
 
 flink_job_configs:
   base_config: |
@@ -218,6 +219,78 @@ flink_job_configs:
       kafka.producer.linger.ms: 10
       #Redis
       redisdb.assetstore.id = 1
+
+    flink-conf: |+
+      jobmanager.memory.flink.size: 1024m
+      taskmanager.memory.flink.size: 1024m
+      taskmanager.numberOfTaskSlots: 1
+      parallelism.default: 1
+      jobmanager.execution.failover-strategy: region
+      taskmanager.memory.network.fraction: 0.1
+
+  searchjob:
+    searchjob: |+
+      include file("/data/flink/conf/base-config.conf")
+      kafka.groupId:  ${job.env}"-search-request-group"
+      kafka.input.topic: {{ env }}.hcx.request.search
+      kafka.audit.topic: {{ env }}.hcx.audit
+      kafka.retry.topic: {{ env }}.hcx.request.retry
+      task.consumer.parallelism :  1
+      task.parallelism :  1
+      task.downstream.operators.parallelism: 1
+      #Postgres
+      postgres.database: postgres
+      postgres.table: payload
+      postgres.search: composite_search
+      #Registry
+      service.registry.basePath: "http://localhost:8081"
+      kafka.producer.max-request-size: 1572864
+      kafka.producer.batch.size: 98304
+      kafka.producer.linger.ms: 10
+      #Redis
+      redisdb.assetstore.id = 1
+      #Search
+      search.time.period = 24
+      search.time.maxperiod = 720
+      search.entity.types = ["predetermination", "preauth", "claim"]
+      search.expiry.time = 86400000
+      registry.hcx.code = "hcx-registry-code"
+
+    flink-conf: |+
+      jobmanager.memory.flink.size: 1024m
+      taskmanager.memory.flink.size: 1024m
+      taskmanager.numberOfTaskSlots: 1
+      parallelism.default: 1
+      jobmanager.execution.failover-strategy: region
+      taskmanager.memory.network.fraction: 0.1
+
+  searchresponsejob:
+    searchresponsejob: |+
+      include file("/data/flink/conf/base-config.conf")
+      kafka.groupId:  ${job.env}"-search-response-group"
+      kafka.input.topic: {{ env }}.hcx.response.search
+      kafka.audit.topic: {{ env }}.hcx.audit
+      kafka.retry.topic: {{ env }}.hcx.request.retry
+      task.consumer.parallelism :  1
+      task.parallelism :  1
+      task.downstream.operators.parallelism: 1
+      #Postgres
+      postgres.database: postgres
+      postgres.table: payload
+      postgres.search: composite_search
+      #Registry
+      service.registry.basePath: "http://localhost:8081"
+      kafka.producer.max-request-size: 1572864
+      kafka.producer.batch.size: 98304
+      kafka.producer.linger.ms: 10
+      #Redis
+      redisdb.assetstore.id = 1
+      #Search
+      search.time.period = 24
+      search.time.maxperiod = 720
+      search.entity.types = ["predetermination", "preauth", "claim"]
+      search.expiry.time = 86400000
+      registry.hcx.code = "hcx-registry-code"
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
