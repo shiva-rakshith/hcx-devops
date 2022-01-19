@@ -15,6 +15,7 @@ def rootFolders = [
     buildFolder
 ]
 def environments = [
+    "dev",
     "staging"
 ]
 def provisionJobs = [
