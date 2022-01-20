@@ -43,10 +43,12 @@ spec:
               containerPort: 8080
               protocol: TCP
           livenessProbe:
+            initialDelaySeconds: 15
             httpGet:
               path: /service/health
               port: http
           readinessProbe:
+            initialDelaySeconds: 15
             httpGet:
               path: /service/health
               port: http
