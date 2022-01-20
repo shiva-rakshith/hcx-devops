@@ -54,7 +54,7 @@ def buildJobs = [
     ],
     "hcx-registry": [
         "repo": "https://github.com/shiva-rakshith/sunbird-rc-core-0.0.1",
-        "scriptPath": "Jenkinsfile"
+        "scriptPath": "java/registry/Jenkinsfile"
     ],
     "secor": [
         "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-devops",
