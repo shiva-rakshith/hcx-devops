@@ -3,7 +3,6 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: registryschemas
-  namespace: dev
 data:
   Organisation.json: |-
     {
