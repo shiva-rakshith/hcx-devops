@@ -81,6 +81,9 @@ flink_job_configs:
         host = "localhost"
         port = "9042"
       }
+      es {
+        basePath = "{{ groups['elasticsearch'][0] }}:9200"
+      }
       registry {
         endPointUrl = "http://hcx-registry.{{env}}.svc.cluster.local:8081/api/v1/Organisation/search"
       }
