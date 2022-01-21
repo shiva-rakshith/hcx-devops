@@ -3,6 +3,12 @@ image:
   repository: "{{ docker_repo }}/api-gateway"
 
 env:
+  SERVER_PORT : 8095
+  JWT_ENABLED : true
+  JWT_ISSUER : ""
+  JWT_AUDIENCE : ""
+  JWT_JWK_URL : http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/certs
+  JWT_NS_PATH : "$.realm_access.roles"
   HCX_API_BASEPATH : http://hcx-api.{{ env }}.svc.cluster.local:8080
   REGISTRY_BASE_PATH : http://hcx-registry.{{ env }}.svc.cluster.local:8081
   REDIS_HOST : redis-master.{{ env }}.svc.cluster.local

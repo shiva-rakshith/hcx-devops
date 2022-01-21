@@ -14,17 +14,7 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
-env:
-  SERVER_PORT : 8095
-  JWT_ENABLED : true
-  JWT_ISSUER : ""
-  JWT_AUDIENCE : ""
-  JWT_JWK_URL : http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/certs
-  JWT_NS_PATH : "$.realm_access.roles"
-  HCX_API_BASEPATH : http://hcx-api.dev.svc.cluster.local:8080
-  REGISTRY_BASE_PATH : http://hcx-registry.dev.svc.cluster.local:8081
-  REDIS_HOST : redis-master.dev.svc.cluster.local
-  REDIS_PORT : 6379
+env: {}
 
 serviceAccount:
   # Specifies whether a service account should be created
