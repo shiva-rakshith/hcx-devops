@@ -306,3 +306,20 @@ flink_job_configs:
       parallelism.default: 1
       jobmanager.execution.failover-strategy: region
       taskmanager.memory.network.fraction: 0.1
+
+  audit-indexer:
+    audit-indexer: |+
+      include file("/data/flink/conf/base-config.conf")
+      kafka.groupId:  ${job.env}"-audit-group"
+      kafka.input.topic: {{ env }}.hcx.audit
+      task.consumer.parallelism :  1
+      task.parallelism :  1
+      timezone: "IST"
+
+    flink-conf: |+
+      jobmanager.memory.flink.size: 1024m
+      taskmanager.memory.flink.size: 1024m
+      taskmanager.numberOfTaskSlots: 1
+      parallelism.default: 1
+      jobmanager.execution.failover-strategy: region
+      taskmanager.memory.network.fraction: 0.1
