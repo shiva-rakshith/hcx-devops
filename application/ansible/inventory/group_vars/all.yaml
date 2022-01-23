@@ -32,8 +32,6 @@ flink_job_configs:
       zookeeper = "{{ groups['zookeeper'] | join(':2181,') }}:2181"
         producer {
           max-request-size = 1572864
-          batch.size = 98304
-          linger.ms = 10
         }
       }
       job {
@@ -320,6 +318,11 @@ flink_job_configs:
       task.consumer.parallelism :  1
       task.parallelism :  1
       timezone: "IST"
+      kafka.producer.max-request-size: 1572864
+      kafka.producer.batch.size: 98304
+      kafka.producer.linger.ms: 10
+      #Redis
+      redisdb.assetstore.id = 1
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
