@@ -32,6 +32,8 @@ flink_job_configs:
       zookeeper = "{{ groups['zookeeper'] | join(':2181,') }}:2181"
         producer {
           max-request-size = 1572864
+          batch.size = 98304
+          linger.ms = 10
         }
       }
       job {
