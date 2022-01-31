@@ -90,7 +90,7 @@ flink_job_configs:
       keycloak {
         url = "http://keycloak.keycloak.svc.cluster.local:8080/auth"
         client_id = "registry-frontend"
-        username = "hcxgateway@gmail.com"
+        username = "hcx@swasthapp.org"
         password = "Opensaber@123"
         realm = "swasth-health-claim-exchange"
       }
