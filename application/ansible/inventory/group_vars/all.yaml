@@ -86,11 +86,12 @@ flink_job_configs:
       }
       registry {
         endPointUrl = "http://hcx-registry.{{env}}.svc.cluster.local:8081/api/v1/Organisation/search"
+        hcx.code = "1-d2d56996-1b77-4abb-b9e9-0e6e7343c72"
       }
       keycloak {
         url = "http://keycloak.keycloak.svc.cluster.local:8080/auth"
         client_id = "registry-frontend"
-        username = "hcx@swasthapp.org"
+        username = "hcxgateway@gmail.com"
         password = "Opensaber@123"
         realm = "swasth-health-claim-exchange"
       }
