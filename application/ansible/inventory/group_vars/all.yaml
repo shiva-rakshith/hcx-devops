@@ -86,7 +86,7 @@ flink_job_configs:
       }
       registry {
         endPointUrl = "http://hcx-registry.{{env}}.svc.cluster.local:8081/api/v1/Organisation/search"
-        hcx.code = "1-d2d56996-1b77-4abb-b9e9-0e6e7343c72"
+        hcx.code = "1-d2d56996-1b77-4abb-b9e9-0e6e7343c72e"
       }
       keycloak {
         url = "http://keycloak.keycloak.svc.cluster.local:8080/auth"
