@@ -11,6 +11,8 @@ env:
   kafka_search_topic: "{{ env }}.hcx.request.search"
   kafka_search_response_topic: "{{ env }}.hcx.response.search"
   kafka_status_topic: "{{ env }}.hcx.request.status.search"
+  kafka_communication_topic: "{{ env }}.hcx.request.communication"
+  kafka_predetermination_topic: "{{ env }}.hcx.request.predetermination"
   postgres_url: "jdbc:postgresql://{{ hcx_api_postgresql_host }}/postgres"
   elasticsearch_url: "{{ groups['elasticsearch'][0] }}:9200"
   postgres_user: "{{ hcx_api_postgresql_user }}"
