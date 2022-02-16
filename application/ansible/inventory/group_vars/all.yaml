@@ -354,7 +354,7 @@ flink_job_configs:
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
       #Redis
-      redisdb.assetstore.id = 1
+      redisdb.assetstore.id = 0
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
@@ -383,7 +383,7 @@ flink_job_configs:
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
       #Redis
-      redisdb.assetstore.id = 1
+      redisdb.assetstore.id = 0
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
