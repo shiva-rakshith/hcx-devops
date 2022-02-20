@@ -8,7 +8,7 @@ taskManagerAdditionalArgs: []
 jobManagerAdditionalArgs: []
   # For example
   # - -Dfs.azure.account.key.hcxapi.blob.core.windows.net=mysupersecretpassword
-  {{ flink_job_configs | to_nice_yaml }}
+{{ flink_job_configs | to_nice_yaml }}
 
 service:
   type: ClusterIP
