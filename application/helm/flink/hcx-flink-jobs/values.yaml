@@ -99,3 +99,18 @@ resources:
   requests:
     cpu: 200m
     memory: 400Mi
+
+tolerations: {}
+
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - flink
+        topologyKey: topology.kubernetes.io/hostname

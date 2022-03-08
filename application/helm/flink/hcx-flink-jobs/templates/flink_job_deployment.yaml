@@ -213,3 +213,12 @@ spec:
           subPath: log4j-console.properties
         resources:
 {{ toYaml .Values.resources | indent 10 }}
+        {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 10 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 10 }}
+      {{- end }}
+
