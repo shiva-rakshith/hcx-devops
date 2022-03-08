@@ -212,4 +212,4 @@ spec:
           mountPath: /opt/flink/conf/log4j-console.properties
           subPath: log4j-console.properties
         resources:
-{{- toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.resources | indent 10 }}
