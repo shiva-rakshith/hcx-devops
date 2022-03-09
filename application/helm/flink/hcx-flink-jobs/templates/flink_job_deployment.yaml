@@ -148,7 +148,16 @@ spec:
         - name: flink-config-volume
           mountPath: /opt/flink/conf/log4j-console.properties
           subPath: log4j-console.properties
-
+        resources:
+{{ toYaml .Values.jobmanagerResources | indent 10 }}
+        {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 10 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 10 }}
+      {{- end }}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -212,7 +221,7 @@ spec:
           mountPath: /opt/flink/conf/log4j-console.properties
           subPath: log4j-console.properties
         resources:
-{{ toYaml .Values.resources | indent 10 }}
+{{ toYaml .Values.taskmanagerResources | indent 10 }}
         {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 10 }}
