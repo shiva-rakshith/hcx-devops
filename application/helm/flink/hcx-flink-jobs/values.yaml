@@ -95,18 +95,18 @@ paymentsjob: {}
 taskmanagerResources:
   limits:
     cpu: 200m
-    memory: 500Mi
+    memory: 1Gi
   requests:
     cpu: 200m
-    memory: 500Mi
+    memory: 800Mi
 
 jobmanagerResources:
   limits:
     cpu: 200m
-    memory: 500Mi
+    memory: 1Gi
   requests:
     cpu: 200m
-    memory: 500Mi
+    memory: 800Mi
 
 tolerations: {}
 
