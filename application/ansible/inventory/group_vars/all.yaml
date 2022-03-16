@@ -340,6 +340,9 @@ flink_job_configs:
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
+      kafka.producer.max-request-size: 1572864
+      kafka.producer.batch.size: 98304
+      kafka.producer.linger.ms: 10
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
