@@ -35,6 +35,7 @@ flink_job_configs:
         producer {
           max-request-size = 1572864
         }
+      audit.topic = {{ env }}.hcx.audit
       }
       job {
         env = "{{ env }}"
@@ -65,6 +66,8 @@ flink_job_configs:
         maxConnections = 2
         user = "{{ flink_postgresql_user | default(keycloak_postgresql_user) }}"
         password = "{{ flink_postgresql_password | default(keycloak_postgresql_password) }}"
+        database: postgres
+        table: payload
       }
       redis {
         host = redis-master.{{env}}.svc.cluster.local
@@ -73,6 +76,9 @@ flink_job_configs:
       redisdb{
         connection {
           timeout: 30000
+          }
+        assetstore {
+          id = 0
           }
         }
       redis-meta {
@@ -97,6 +103,8 @@ flink_job_configs:
         password = "Opensaber@123"
         realm = "swasth-health-claim-exchange"
       }
+      max.retry = 3
+      allowedEntitiesForRetry = ["coverageeligibility", "preauth", "claim"]
 
   coverageeligibility:
     coverageeligibility: |+
@@ -104,20 +112,12 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-coverage-eligibility-check-group"
       kafka.input.topic: {{ env }}.hcx.request.coverageeligibility
       kafka.audit.topic: {{ env }}.hcx.audit
-      kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
-      #Postgres
-      postgres.database: postgres
-      postgres.table: payload
-      #Registry
-      service.registry.basePath: "http://localhost:8081"
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
-      #Redis
-      redisdb.assetstore.id = 1
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
       taskmanager.memory.flink.size: 1024m
@@ -132,20 +132,12 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-preauth-job-group"
       kafka.input.topic: {{ env }}.hcx.request.preauth
       kafka.audit.topic: {{ env }}.hcx.audit
-      kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
-      #Postgres
-      postgres.database: postgres
-      postgres.table: payload
-      #Registry
-      service.registry.basePath: "http://localhost:8081"
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
-      #Redis
-      redisdb.assetstore.id = 1
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
       taskmanager.memory.flink.size: 1024m
@@ -160,20 +152,12 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-claims-job-group"
       kafka.input.topic: {{ env }}.hcx.request.claim
       kafka.audit.topic: {{ env }}.hcx.audit
-      kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
-      #Postgres
-      postgres.database: postgres
-      postgres.table: payload
-      #Registry
-      service.registry.basePath: "http://localhost:8081"
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
-      #Redis
-      redisdb.assetstore.id = 1
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
@@ -189,20 +173,12 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-claims-job-group"
       kafka.input.topic: {{ env }}.hcx.request.payment
       kafka.audit.topic: {{ env }}.hcx.audit
-      kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
-      #Postgres
-      postgres.database: postgres
-      postgres.table: payload
-      #Registry
-      service.registry.basePath: "http://localhost:8081"
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
-      #Redis
-      redisdb.assetstore.id = 1
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
@@ -218,15 +194,9 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-status-job-group"
       kafka.input.topic: {{ env }}.hcx.request.status.search
       kafka.audit.topic: {{ env }}.hcx.audit
-      kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
-      #Postgres
-      postgres.database: postgres
-      postgres.table: payload
-      #Registry
-      service.registry.basePath: "http://localhost:8081"
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
@@ -247,21 +217,14 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-search-request-group"
       kafka.input.topic: {{ env }}.hcx.request.search
       kafka.audit.topic: {{ env }}.hcx.audit
-      kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
       #Postgres
-      postgres.database: postgres
-      postgres.table: payload
       postgres.search: composite_search
-      #Registry
-      service.registry.basePath: "http://localhost:8081"
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
-      #Redis
-      redisdb.assetstore.id = 1
       #Search
       search.time.period = 24
       search.time.maxperiod = 720
@@ -283,21 +246,14 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-search-response-group"
       kafka.input.topic: {{ env }}.hcx.response.search
       kafka.audit.topic: {{ env }}.hcx.audit
-      kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
       #Postgres
-      postgres.database: postgres
-      postgres.table: payload
       postgres.search: composite_search
-      #Registry
-      service.registry.basePath: "http://localhost:8081"
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
-      #Redis
-      redisdb.assetstore.id = 1
       #Search
       search.time.period = 24
       search.time.maxperiod = 720
@@ -324,8 +280,6 @@ flink_job_configs:
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
-      #Redis
-      redisdb.assetstore.id = 1
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
@@ -341,20 +295,12 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-communication-group"
       kafka.input.topic: {{ env }}.hcx.request.communication
       kafka.audit.topic: {{ env }}.hcx.audit
-      kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
-      #Postgres
-      postgres.database: postgres
-      postgres.table: payload
-      #Registry
-      service.registry.basePath: "http://localhost:8081"
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
-      #Redis
-      redisdb.assetstore.id = 1
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
@@ -370,20 +316,30 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-predetermination-group"
       kafka.input.topic: {{ env }}.hcx.request.predetermination
       kafka.audit.topic: {{ env }}.hcx.audit
-      kafka.retry.topic: {{ env }}.hcx.request.retry
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
-      #Postgres
-      postgres.database: postgres
-      postgres.table: payload
-      #Registry
-      service.registry.basePath: "http://localhost:8081"
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
-      #Redis
-      redisdb.assetstore.id = 1
+
+    flink-conf: |+
+      jobmanager.memory.flink.size: 1024m
+      taskmanager.memory.flink.size: 1024m
+      taskmanager.numberOfTaskSlots: 1
+      parallelism.default: 1
+      jobmanager.execution.failover-strategy: region
+      taskmanager.memory.network.fraction: 0.1
+
+  retryjob:
+    retryjob: |+
+      include file("/data/flink/conf/base-config.conf")
+      kafka.groupId:  ${job.env}"-retry-group"
+      kafka.input.topic: {{ env }}.hcx.request.retry
+      kafka.audit.topic: {{ env }}.hcx.audit
+      task.consumer.parallelism :  1
+      task.parallelism :  1
+      task.downstream.operators.parallelism: 1
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
