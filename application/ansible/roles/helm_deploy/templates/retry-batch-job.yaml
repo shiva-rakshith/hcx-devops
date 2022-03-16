@@ -1,0 +1,16 @@
+image:
+  tag: "{{ image_tag }}"
+  repository: "{{ docker_repo }}/hcx-batch-jobs"
+env:
+  fixedDelay_in_milliseconds: 6000000
+  kafka_url: "{{ groups['kafka'][0] }}:9092"
+  kafka_group_id: "{{ env }}-retry-group"
+  kafka_topic_ouput: "{{ env }}.hcx.request.retry"
+  max_retry: 3
+  postgres_url: "jdbc:postgresql://{{ hcx_api_postgresql_host }}/postgres"
+  postgres_user: "{{ hcx_api_postgresql_user }}"
+  postgres_password: "{{ hcx_api_postgresql_password }}"
+  postgres_tablename: "payload"
+
+service:
+  type: ClusterIP
