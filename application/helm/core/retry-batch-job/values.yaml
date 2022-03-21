@@ -38,6 +38,7 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# added dummy service port, else process is throwing an error
 service:
   type: ClusterIP
   port: 8081
