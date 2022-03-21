@@ -2,7 +2,7 @@ image:
   tag: "{{ image_tag }}"
   repository: "{{ docker_repo }}/hcx-batch-jobs"
 env:
-  fixedDelay_in_milliseconds: "6000"
+  fixedDelay_in_milliseconds: "600000"
   kafka_url: "{{ groups['kafka'][0] }}:9092"
   kafka_group_id: "{{ env }}-retry-group"
   kafka_topic_ouput: "dev.hcx.request.retry"
