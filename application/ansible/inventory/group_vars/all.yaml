@@ -13,7 +13,6 @@ hcx_registry_postgresql_password: "{{ keycloak_postgresql_password }}"
 hcx_registry_postgresql_host: "{{ keycloak_postgresql_host }}"
 
 kafka_topics:
-  - "{{ env }}.hcx.audit"
   - "{{ env }}.hcx.request.claim"
   - "{{ env }}.hcx.request.coverageeligibility"
   - "{{ env }}.hcx.request.ingest"
@@ -35,7 +34,6 @@ flink_job_configs:
         producer {
           max-request-size = 1572864
         }
-      audit.topic = {{ env }}.hcx.audit
       }
       job {
         env = "{{ env }}"
@@ -105,13 +103,17 @@ flink_job_configs:
       }
       max.retry = 3
       allowedEntitiesForRetry = ["coverageeligibility", "preauth", "claim"]
+      audit {
+        index = "hcx_audit"
+        alias = "hcx_audit"
+        timezone = "IST"
+      }
 
   coverageeligibility:
     coverageeligibility: |+
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-coverage-eligibility-check-group"
       kafka.input.topic: {{ env }}.hcx.request.coverageeligibility
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -131,7 +133,6 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-preauth-job-group"
       kafka.input.topic: {{ env }}.hcx.request.preauth
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -151,7 +152,6 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-claims-job-group"
       kafka.input.topic: {{ env }}.hcx.request.claim
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -172,7 +172,6 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-claims-job-group"
       kafka.input.topic: {{ env }}.hcx.request.payment
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -193,7 +192,6 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-status-job-group"
       kafka.input.topic: {{ env }}.hcx.request.status.search
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -216,7 +214,6 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-search-request-group"
       kafka.input.topic: {{ env }}.hcx.request.search
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -245,7 +242,6 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-search-response-group"
       kafka.input.topic: {{ env }}.hcx.response.search
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -269,32 +265,11 @@ flink_job_configs:
       jobmanager.execution.failover-strategy: region
       taskmanager.memory.network.fraction: 0.1
 
-  audit-indexer:
-    audit-indexer: |+
-      include file("/data/flink/conf/base-config.conf")
-      kafka.groupId:  ${job.env}"-audit-group"
-      kafka.input.topic: {{ env }}.hcx.audit
-      task.consumer.parallelism :  1
-      task.parallelism :  1
-      timezone: "IST"
-      kafka.producer.max-request-size: 1572864
-      kafka.producer.batch.size: 98304
-      kafka.producer.linger.ms: 10
-
-    flink-conf: |+
-      jobmanager.memory.flink.size: 1024m
-      taskmanager.memory.flink.size: 1024m
-      taskmanager.numberOfTaskSlots: 1
-      parallelism.default: 1
-      jobmanager.execution.failover-strategy: region
-      taskmanager.memory.network.fraction: 0.1
-
   communicationjob:
     communicationjob: |+
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-communication-group"
       kafka.input.topic: {{ env }}.hcx.request.communication
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -315,7 +290,6 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-predetermination-group"
       kafka.input.topic: {{ env }}.hcx.request.predetermination
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -336,7 +310,6 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-retry-group"
       kafka.input.topic: {{ env }}.hcx.request.retry
-      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
