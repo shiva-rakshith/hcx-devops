@@ -89,6 +89,7 @@ flink_job_configs:
       }
       es {
         basePath = "{{ groups['elasticsearch'][0] }}:9200"
+        batchSize = 1000
       }
       registry {
         endPointUrl = "http://hcx-registry.{{env}}.svc.cluster.local:8081/api/v1/Organisation/search"
