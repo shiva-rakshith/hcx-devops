@@ -6,7 +6,7 @@ env:
   fixedDelay_in_milliseconds: "10800000"
   kafka_url: "{{ groups['kafka'][0] }}:9092"
   kafka_group_id: "{{ env }}-retry-group"
-  kafka_topic_ouput: "dev.hcx.request.retry"
+  kafka_topic_ouput: "{{ env }}.hcx.request.retry"
   max_retry: 3
   postgres_url: "jdbc:postgresql://{{ hcx_api_postgresql_host }}/postgres"
   postgres_user: "{{ hcx_api_postgresql_user }}"
