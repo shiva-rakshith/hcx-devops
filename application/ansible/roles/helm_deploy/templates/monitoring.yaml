@@ -1,0 +1,22 @@
+######################
+## Monitoring Stack
+######################
+grafana:
+  adminPassword: "{{ grafana_password }}"
+  env:
+    GF_SERVER_ROOT_URL: http://grafana.local.com/grafana
+  additionalDataSources:
+    - name: loki
+      editable: true
+      type: loki
+      url: http://loki.logging.svc.cluster.local:3001
+      version: 1
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 100Gi
