@@ -61,7 +61,7 @@ rbacConfig:
   name: "rbac_provision"
 #name of the configmap created for rbac provisioning
 rbacVolume:
-  name: "rbacVolume"
+  name: "rbacvolume"
   path: "/config"
 #Volume mounted and the path where rbac configmap is stored inside the container
 resources:
