@@ -58,7 +58,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 rbacConfig:
-  name: "rbac_provision"
+  name: "rbac-config"
 #name of the configmap created for rbac provisioning
 rbacVolume:
   name: "rbacvolume"
