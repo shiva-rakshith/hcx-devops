@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: {{ .Values.rbacConfig.name }}
 data:
+ rbac_yaml |
   rbac: |
     - role: ANONYMOUS
       paths:
