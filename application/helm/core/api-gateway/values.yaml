@@ -57,7 +57,13 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
-
+rbacConfig:
+  name: "rbac-config"
+#name of the configmap created for rbac provisioning
+rbacVolume:
+  name: "rbacvolume"
+  path: "/config"
+#Volume mounted and the path where rbac configmap is stored inside the container
 resources:
   requests:
     cpu: "50m"

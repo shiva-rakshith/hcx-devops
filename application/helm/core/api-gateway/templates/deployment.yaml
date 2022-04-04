@@ -55,6 +55,15 @@ spec:
             periodSeconds: 5
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: {{ .Values.rbacVolume.name }}
+              mountPath: {{ .Values.rbacVolume.path }}
+              readOnly: true
+      volumes:
+        - name: {{ .Values.rbacVolume.name }}
+          configMap:
+            name: {{ .Values.rbacConfig.name }}
+
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
