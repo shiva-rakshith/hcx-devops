@@ -14,8 +14,8 @@ env:
   kafka_communication_topic: "{{ env }}.hcx.request.communication"
   kafka_predetermination_topic: "{{ env }}.hcx.request.predetermination"
   postgres_url: "jdbc:postgresql://{{ hcx_api_postgresql_host }}/postgres"
-  es_host: "{{ groups['elasticsearch'][0] }}"
-  es_port: "9200"
+  es_host : "{{ groups['elasticsearch'][0] }}"
+  es_port : 9200
   audit_index: "hcx_audit"
   audit_alias: "hcx_audit"
   postgres_user: "{{ hcx_api_postgresql_user }}"
