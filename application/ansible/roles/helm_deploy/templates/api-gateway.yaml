@@ -13,4 +13,4 @@ env:
   REGISTRY_BASE_PATH : http://hcx-registry.{{ env }}.svc.cluster.local:8081
   REDIS_HOST : redis-master.{{ env }}.svc.cluster.local
   REDIS_PORT : 6379
-  timestamp_range : 72
+  timestamp_range : 72 #value is in hours
