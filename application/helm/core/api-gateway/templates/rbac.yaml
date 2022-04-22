@@ -20,8 +20,8 @@ data:
         - /v1/communication/on_request
         - /v1/hcx/status
         - /v1/audit/search
-        - /participant/search
-        - /participant/update
+        - /v1/participant/search
+        - /v1/participant/update
     - role: payor
       paths:
         - /v1/coverageeligibility/check
@@ -36,8 +36,8 @@ data:
         - /v1/communication/request
         - /v1/hcx/on_status
         - /v1/audit/search
-        - /participant/search
-        - /participant/update
+        - /v1/participant/search
+        - /v1/participant/update
     - role: agency.tpa
       paths:
         - /v1/coverageeligibility/check
@@ -52,30 +52,30 @@ data:
         - /v1/communication/request
         - /v1/hcx/on_status
         - /v1/audit/search
-        - /participant/search
-        - /participant/update
+        - /v1/participant/search
+        - /v1/participant/update
     - role: agency.regulator
       paths:
         - /v1/hcx/status
         - /v1/audit/search
-        - /participant/search
-        - /participant/update
+        - /v1/participant/search
+        - /v1/participant/update
     - role: research
       paths:
         - /v1/coverageeligibility/on_check
         - /v1/predetermination/on_submit
         - /v1/hcx/status
         - /v1/audit/search
-        - /participant/search
-        - /participant/update
+        - /v1/participant/search
+        - /v1/participant/update
     - role: member.isnp
       paths:
         - /v1/coverageeligibility/on_check
         - /v1/predetermination/on_submit
         - /v1/hcx/status
         - /v1/audit/search
-        - /participant/search
-        - /participant/update
+        - /v1/participant/search
+        - /v1/participant/update
     - role: agency.sponsor
       paths:
         - /v1/coverageeligibility/on_check
@@ -86,12 +86,9 @@ data:
         - /v1/communication/request
         - /v1/hcx/on_status
         - /v1/audit/search
-        - /participant/search
-        - /participant/update
+        - /v1/participant/search
+        - /v1/participant/update
     - role: HIE/HIO.HCX
       paths:
-        - /participant/create
-        - /participant/search
-        - /participant/update
       regexPaths:
         - /v1/**
