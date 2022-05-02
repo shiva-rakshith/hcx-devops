@@ -15,7 +15,7 @@ metadata:
     chart: kube-prometheus-stack-34.9.0
     heritage: Helm
     release: monitoring
-  name: monitoring-kube-prometheus-react-app
+  name: monitoring-kube-prometheus-{{ .Release }}
   namespace: {{ .Release.Namespace }}
 spec:
   groups:
