@@ -70,6 +70,7 @@ flink_job_configs:
       redis {
         host = redis-master.{{env}}.svc.cluster.local
         port = 6379
+        expires = 3600
       }
       redisdb{
         connection {
