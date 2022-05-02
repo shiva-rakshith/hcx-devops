@@ -17,3 +17,6 @@ env:
   REDIS_PORT : 6379
   REDIS_EXPIRES: 3600
   timestamp_range : {{ timestamp_range }}
+  es_host: "{{ groups['elasticsearch'][0] }}"
+  audit_index: "hcx_audit"
+  audit_alias: "hcx_audit"
