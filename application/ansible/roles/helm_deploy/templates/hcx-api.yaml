@@ -21,5 +21,6 @@ env:
   postgres_password: "{{ hcx_api_postgresql_password }}"
   postgres_tablename: "payload"
   registry_basePath: "http://hcx-registry.{{ env }}.svc.cluster.local:8081"
+  not_allowed_urls: "http://dev-hcx.swasth.app/api"
 service:
   type: ClusterIP
