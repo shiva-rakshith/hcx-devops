@@ -25,6 +25,7 @@ kafka_topics:
   - "{{ env }}.hcx.response.search"
   - "{{ env }}.hcx.request.communication"
   - "{{ env }}.hcx.request.predetermination"
+  - "{{ env }}.hcx.request.notification"
 
 flink_job_configs:
   base_config: |
