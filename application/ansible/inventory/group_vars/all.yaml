@@ -93,8 +93,10 @@ flink_job_configs:
         batchSize = 1000
       }
       registry {
-        endPointUrl = "http://hcx-registry.{{env}}.svc.cluster.local:8081/api/v1/Organisation/search"
-        hcx.code = "1-d2d56996-1b77-4abb-b9e9-0e6e7343c72e"
+        hcx.code = {{ registry_hcx_code }}
+      }
+      hcx-apis{
+        endPointUrl = "http://hcx-api.{{ env }}.svc.cluster.local:8080"
       }
       max.retry = 3
       allowedEntitiesForRetry = ["coverageeligibility", "preauth", "claim"]
@@ -320,6 +322,28 @@ flink_job_configs:
       kafka.producer.max-request-size: 1572864
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
+
+    flink-conf: |+
+      jobmanager.memory.flink.size: 1024m
+      taskmanager.memory.flink.size: 1024m
+      taskmanager.numberOfTaskSlots: 1
+      parallelism.default: 1
+      jobmanager.execution.failover-strategy: region
+      taskmanager.memory.network.fraction: 0.1
+
+  notificationjob:
+    notificationjob: |+
+      include file("/data/flink/conf/base-config.conf")
+      kafka.groupId:  ${job.env}"-notification-group"
+      kafka.input.topic: {{ env }}.hcx.request.notification
+      task.consumer.parallelism :  1
+      task.parallelism :  1
+      task.downstream.operators.parallelism: 1
+      kafka.producer.max-request-size: 1572864
+      kafka.producer.batch.size: 98304
+      kafka.producer.linger.ms: 10
+      postgres.subscription.table = "subscription"
+      notification.dispatch.api = "/v1/notify/request"
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
