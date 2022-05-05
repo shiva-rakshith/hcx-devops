@@ -22,6 +22,11 @@ data:
         - /v1/audit/search
         - /v1/participant/search
         - /v1/participant/update
+        - /v1/notification/subscribe
+        - /v1/notification/unsubscribe
+        - /v1/notification/subscription/list
+        - /v1/notification/list
+        - /v1/notification/request
     - role: payor
       paths:
         - /v1/coverageeligibility/check
@@ -38,6 +43,11 @@ data:
         - /v1/audit/search
         - /v1/participant/search
         - /v1/participant/update
+        - /v1/notification/subscribe
+        - /v1/notification/unsubscribe
+        - /v1/notification/subscription/list
+        - /v1/notification/list
+        - /v1/notification/request
     - role: agency.tpa
       paths:
         - /v1/coverageeligibility/check
