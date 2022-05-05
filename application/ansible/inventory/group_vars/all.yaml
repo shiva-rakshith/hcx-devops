@@ -120,7 +120,7 @@ flink_job_configs:
     coverageeligibility: |+
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-coverage-eligibility-check-group"
-      kafka.input.topic: {{ env }}.hcx.request.coverageeligibility
+      kafka.input.topic: {{ env }}.hcx.request.notification
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
