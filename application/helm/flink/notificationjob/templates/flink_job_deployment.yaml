@@ -99,9 +99,6 @@ spec:
             path: {{ .Release.Name }}.conf
           - key: log4j_console_properties
             path: log4j-console.properties
-      - name: flink-notification-volume
-        configMap:
-          name: { { .Release.Name } }-configmap
       restartPolicy: OnFailure
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -151,8 +148,6 @@ spec:
         - name: flink-config-volume
           mountPath: /opt/flink/conf/log4j-console.properties
           subPath: log4j-console.properties
-        - name: flink-notification-volume
-          mountPath: /data/flink/conf/notification-master-data.json
         resources:
 {{ toYaml .Values.jobmanagerResources | indent 10 }}
         {{- with .Values.affinity }}
