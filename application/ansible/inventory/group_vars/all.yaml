@@ -345,6 +345,7 @@ flink_job_configs:
       kafka.producer.linger.ms: 10
       postgres.subscription.table: "subscription"
       notification.dispatch.api: "/v1/notification/request"
+
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
       taskmanager.memory.flink.size: 1024m
