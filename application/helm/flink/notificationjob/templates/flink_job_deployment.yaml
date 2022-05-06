@@ -152,7 +152,7 @@ spec:
           mountPath: /opt/flink/conf/log4j-console.properties
           subPath: log4j-console.properties
         - name: flink-notification-volume
-          mountPath: /data/flink/conf/
+          mountPath: /data/flink/conf/master_data
         resources:
 {{ toYaml .Values.jobmanagerResources | indent 10 }}
         {{- with .Values.affinity }}
