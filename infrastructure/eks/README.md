@@ -13,6 +13,78 @@ To Create cluster
 eksctl create cluster -f eks_cluster_config.yaml --profile `aws-profile-name`
 ```
 
+To Enable cluster Autoscaler
+
+Add following labels to the node group in aws console
+```
+k8s.io/cluster-autoscaler/<my-cluster> 	owned
+k8s.io/cluster-autoscaler/enabled 	true
+```
+
+Create an IAM policy
+
+> Replace the <my-cluster> filed
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "autoscaling:SetDesiredCapacity",
+                "autoscaling:TerminateInstanceInAutoScalingGroup"
+            ],
+            "Resource": "*",
+            "Condition": {
+                "StringEquals": {
+                    "aws:ResourceTag/k8s.io/cluster-autoscaler/<my-cluster>": "owned"
+                }
+            }
+        },
+        {
+            "Sid": "VisualEditor1",
+            "Effect": "Allow",
+            "Action": [
+                "autoscaling:DescribeAutoScalingInstances",
+                "autoscaling:DescribeAutoScalingGroups",
+                "ec2:DescribeLaunchTemplateVersions",
+                "autoscaling:DescribeTags",
+                "autoscaling:DescribeLaunchConfigurations"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+```
+
+```
+aws iam create-policy \
+    --policy-name AmazonEKSClusterAutoscalerPolicy \
+    --policy-document file://cluster-autoscaler-policy.json
+```
+
+Create IAM Role and Attach to IAM policy
+
+```
+eksctl create iamserviceaccount \
+  --cluster=<my-cluster> \
+  --namespace=kube-system \
+  --name=cluster-autoscaler \
+  --attach-policy-arn=arn:aws:iam::<111122223333>:policy/<AmazonEKSClusterAutoscalerPolicy> \
+  --override-existing-serviceaccounts \
+  --approve
+```
+
+Deploy the Cluster Autoscaler
+
+> Change the REPLACE* variables in the file
+
+```
+kubectl apply -f cluster-autoscaler-autodiscover.yaml
+```
+
 ## Note:
 
 To get the complete list of options for the config file, run the below command or, [refer](https://eksctl.io/usage/schema/)
