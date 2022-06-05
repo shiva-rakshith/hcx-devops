@@ -1,6 +1,6 @@
 image:
   tag: "{{ image_tag }}"
-  repository: "{{ docker_repo }}/hcx-mock-service"
+  repository: "{{ docker_repo }}/demo-app"
 
 service:
   type: LoadBalancer
