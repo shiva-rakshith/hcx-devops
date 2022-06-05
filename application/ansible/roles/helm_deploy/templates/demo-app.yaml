@@ -1,0 +1,7 @@
+image:
+  tag: "{{ image_tag }}"
+  repository: "{{ docker_repo }}/hcx-mock-service"
+
+service:
+  type: LoadBalancer
+  port: 8000
