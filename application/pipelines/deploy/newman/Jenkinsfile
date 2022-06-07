@@ -19,4 +19,3 @@ newman run https://www.getpostman.com/collections/46d50cdb62091c2e5e9d -d enviro
 }
       }
     }
-}
