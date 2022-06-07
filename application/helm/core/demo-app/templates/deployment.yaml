@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "react-app.fullname" . }}
+  name: {{ include "demo-app.fullname" . }}
   labels:
-    {{- include "react-app.labels" . | nindent 4 }}
+    {{- include "demo-app.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "react-app.selectorLabels" . | nindent 6 }}
+      {{- include "demo-app.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "react-app.selectorLabels" . | nindent 8 }}
+        {{- include "demo-app.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "react-app.serviceAccountName" . }}
+      serviceAccountName: {{ include "demo-app.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
@@ -37,7 +37,36 @@ spec:
             - name: http
               containerPort: 8000
               protocol: TCP
-          resources:
+          env:
+            - name: HCX_UPSTREAM
+              valueFrom:
+                configMapKeyRef:
+                  name: demo-app
+                  key: hcx_upstream
+            - name: SENDER_CODE
+              valueFrom:
+                configMapKeyRef:
+                  name: demo-app
+                  key: sender_code
+            - name: hcx_username
+              valueFrom:
+                configMapKeyRef:
+                  name: demo-app
+                  key: hcx_username
+            - name: hcx_password
+              valueFrom:  
+                configMapKeyRef:
+                  name: demo-app
+                  key: hcx_password
+          volumeMounts:
+          - name: demo-app
+            mountPath: "/demo-app"
+            readOnly: true
+      volumes:
+        - name: demo-app
+          configMap:
+            name: demo-app
+          rescources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
