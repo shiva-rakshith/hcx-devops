@@ -1,7 +1,7 @@
 # Create new Infrastructure
 
 1. Create kuberntes cluster
-    1. Kube cluster creation is handled by `eksctl` tool. For more info, check [README.md](http://README.md) in eks folder.
+    1. Kube cluster creation is handled by `eksctl` tool. For more info, check [README.md](infrastructure/eks/README.md) in eks folder.
 2. Create Jenkins
     1. We’re using server-less Jenkins architecture, means whenever there is a need for a worker, we’ll create one in AWS Fargate.
     2. Prior creating the Jenkins, you’ll have to create the dependencies like docker registry secret, private GH repo secret etc. All these files are stored in private repo `hcx/kubernetes/manifests/cicd/jenkins` folder. Edit the files with updated secrets, and `kubectl apply -f hcx/kubernetes/manifests/cicd/jenkins`
