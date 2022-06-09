@@ -42,8 +42,9 @@ spec:
           env:
             - name: PORT
               valueFrom:
-                name: demo-app
-                key: demo_app_port
+                configMapKeyRef:
+                  name: demo-app
+                  key: demo_app_port
             - name: HCX_UPSTREAM
               valueFrom:
                 configMapKeyRef:
