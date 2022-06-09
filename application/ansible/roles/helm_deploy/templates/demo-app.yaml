@@ -1,0 +1,7 @@
+image:
+  tag: "{{ image_tag }}"
+  repository: "{{ docker_repo }}/demo-app"
+
+service:
+  type: LoadBalancer
+  port: 8000
