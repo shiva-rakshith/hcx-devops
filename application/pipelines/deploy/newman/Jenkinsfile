@@ -13,7 +13,8 @@ node('ansible') {
       stage("Test") {
           container('newman'){
             sh """
-                  newman run https://www.getpostman.com/collections/48d50cdb62091c2e5e9d -d ${env.WORKSPACE}/application/pipelines/deploy/newman/environment.json -r htmlextra > ${env.WORKSPACE}/newman.html           
+                  npm install -g newman-reporter-htmlextra
+                  newman run https://www.getpostman.com/collections/46d50cdb62091c2e5e9d -d ${env.WORKSPACE}/application/pipelines/deploy/newman/environment.json -r htmlextra > ${env.WORKSPACE}/newman.html           
                """
           }          
         } 
