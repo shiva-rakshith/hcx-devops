@@ -22,7 +22,7 @@ env:
   postgres_password: "{{ hcx_api_postgresql_password }}"
   postgres_tablename: "payload"
   redis_host: "redis-master.{{ env }}.svc.cluster.local"
-  redis_port: 6379
+  redis_port: "6379"
   redis_expires: "3600"
   registry_basePath: "http://hcx-registry.{{ env }}.svc.cluster.local:8081"
   registry_hcxcode: {{ registry_hcx_code }}
