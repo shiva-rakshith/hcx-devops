@@ -10,14 +10,23 @@ node('ansible') {
           commonCode = load "${env.WORKSPACE}/application/pipelines/commonGroovy/common.groovy"
         }
       }
+      stage("Slack")
+      {
+          slackSend channel: '#test-alerts', 
+                          message: 'Hello, world'
+          
+          
+      }
       stage("Test") {
           container('newman'){
             sh """
                   npm install -g newman-reporter-htmlextra
-                  newman run https://www.getpostman.com/collections/46d50cdb62091c2e5e9d -e ${env.WORKSPACE}/application/pipelines/deploy/newman/environment.json -r htmlextra --reporter-htmlextra-export ${env.WORKSPACE}/newman.html        
+                  newman run https://www.getpostman.com/collections/46d50cdb62091c2e5e9d -e ${env.WORKSPACE}/application/pipelines/deploy/newman/environment.json -r htmlextra --reporter-htmlextra-export ${env.WORKSPACE}/newman.html         
                """
                archiveArtifacts "newman.html"
           }          
         } 
       }
     }
+
+
