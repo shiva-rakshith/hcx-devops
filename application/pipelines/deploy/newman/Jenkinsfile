@@ -14,8 +14,9 @@ node('ansible') {
           container('newman'){
             sh """
                   npm install -g newman-reporter-htmlextra
-                  newman run https://www.getpostman.com/collections/46d50cdb62091c2e5e9d -d ${env.WORKSPACE}/application/pipelines/deploy/newman/environment.json -r htmlextra > ${env.WORKSPACE}/newman.html           
+                  newman run https://www.getpostman.com/collections/46d50cdb62091c2e5e9d -e ${env.WORKSPACE}/application/pipelines/deploy/newman/environment.json -r htmlextra --reporter-htmlextra-export ${env.WORKSPACE}/newman.html        
                """
+               archiveArtifacts "newman.html"
           }          
         } 
       }
