@@ -11,8 +11,5 @@ env:
   sunbird_sso_client_id : client
   sunbird_sso_admin_client_id : admin-api
   sunbird_sso_admin_client_secret : "{{ sso_admin_client_secret }}"
-  search_providerName : io.opensaber.registry.service.ElasticSearchService
   elastic_search_enabled : true
   elastic_search_connection_url : "{{groups['elasticsearch'][0]}}:9200"
-  signature_enabled: false
-  claims_url : http://localhost:8082
