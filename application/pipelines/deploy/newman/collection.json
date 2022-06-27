@@ -1879,14 +1879,14 @@
 							"name": "Redirect Flow",
 							"item": [
 								{
-									"name": "Eligibility On Check-Redirect request success Copy 2",
+									"name": "Eligibility On Check-Redirect request success",
 									"event": [
 										{
 											"listen": "prerequest",
 											"script": {
 												"exec": [
 													"setTimeout(function() {\r",
-													"}, 1000);\r",
+													"}, 5000);\r",
 													"var uuid = require('uuid');\r",
 													"var moment = require('moment');\r",
 													"var req = JSON.parse(pm.request.body.raw);\r",
@@ -2502,6 +2502,8 @@
 											"listen": "prerequest",
 											"script": {
 												"exec": [
+													"setTimeout(function() {\r",
+													"}, 5000);\r",
 													"var uuid = require('uuid');\r",
 													"var moment = require('moment');\r",
 													"var req = JSON.parse(pm.request.body.raw);\r",
@@ -2594,7 +2596,7 @@
 												"exec": [
 													"setTimeout(function() {\r",
 													"  //added 3 seconds delay, so that audit data will be available for retrieval\r",
-													"}, 3000);\r",
+													"}, 5000);\r",
 													"var uuid = require('uuid');\r",
 													"var moment = require('moment');\r",
 													"var req = JSON.parse(pm.request.body.raw);\r",
@@ -2783,7 +2785,7 @@
 												"exec": [
 													"setTimeout(function() {\r",
 													"  //added 3 seconds delay, so that on_check request audit data will be available for retrieval\r",
-													"}, 3000);\r",
+													"}, 5000);\r",
 													"var uuid = require('uuid');\r",
 													"var moment = require('moment');\r",
 													"var req = JSON.parse(pm.request.body.raw);\r",
@@ -4306,7 +4308,7 @@
 										"exec": [
 											"setTimeout(function() {\r",
 											"  //added delay, so that action request audit data will be available for retrieval\r",
-											"}, 7000);\r",
+											"}, 9000);\r",
 											"var uuid = require('uuid');\r",
 											"var moment = require('moment');\r",
 											"var req = JSON.parse(pm.request.body.raw);\r",
