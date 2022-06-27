@@ -19,32 +19,32 @@
 		},
 		{
 			"key": "sender_code",
-			"value": "1-3a3bd68a-848a-4d52-9ec2-07a92d765fb4",
+			"value": "provider-test-user",
 			"enabled": true
 		},
 		{
 			"key": "recipient_code",
-			"value": "1-ce23ccdc-e645-4e35-97b8-0bd8fef43ecd",
+			"value": "payor-test-user-3",
 			"enabled": true
 		},
 		{
 			"key": "blocked_sender_code",
-			"value": "1-18d119e3-39dc-496d-9061-9056c6b6b0dd",
+			"value": "provider-test-user-2",
 			"enabled": true
 		},
 		{
 			"key": "blocked_recipient_code",
-			"value": "1-2ff1f493-c4d4-4fc7-8d41-aaabb997af23",
+			"value": "payor-test-user-5",
 			"enabled": true
 		},
 		{
 			"key": "recipient_2_code",
-			"value": "1-74f6cb29-4116-42d0-9fbb-adb65e6a64ac",
+			"value": "payor-test-user-4",
 			"enabled": true
 		},
 		{
 			"key": "provider_username",
-			"value": "testparticipantmail2@gmail.com",
+			"value": "testuser1@gmail.com",
 			"enabled": true
 		},
 		{
@@ -59,7 +59,7 @@
 		},
 		{
 			"key": "payor_username",
-			"value": "newpayor883@gmail.com",
+			"value": "testuser3@gmail.com",
 			"enabled": true
 		},
 		{
@@ -74,7 +74,7 @@
 		},
 		{
 			"key": "payor_2_username",
-			"value": "newpayor001@gmail.com",
+			"value": "testuser4@gmail.com",
 			"enabled": true
 		},
 		{
@@ -119,6 +119,6 @@
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2022-06-03T10:44:08.211Z",
-	"_postman_exported_using": "Postman/8.12.5"
+	"_postman_exported_at": "2022-06-22T06:15:08.619Z",
+	"_postman_exported_using": "Postman/9.21.3"
 }
