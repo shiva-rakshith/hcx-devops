@@ -9,7 +9,7 @@ commonVariables = {
 
 checkoutPrivate = {
           checkout(
-            [$class: 'GitSCM', branches: [[name: '*/main']],
+            [$class: 'GitSCM', branches: [[name: '*/newman_automation']],
             extensions: [
                 [$class: 'RelativeTargetDirectory', relativeTargetDir: 'private'],
                 [$class: 'CloneOption', noTags: true, reference: '', shallow: true]
@@ -70,7 +70,6 @@ deployAnsible = {
       ansible-playbook -i inventory/hosts ${ansibleCommands}
     """
 }
-// Ref: https://stackoverflow.com/questions/37800195/how-do-you-load-a-groovy-file-and-execute-it
 
 notifyBuild = {
     buildStatus ->

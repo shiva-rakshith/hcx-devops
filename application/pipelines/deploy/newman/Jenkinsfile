@@ -16,7 +16,7 @@ node('ansible') {
          container('newman'){
                 try{
                     sh """
-                        newman run ${env.WORKSPACE}/application/pipelines/deploy/newman/collection.json -e ${env.WORKSPACE}/application/pipelines/deploy/newman/environment.json -r htmlextra --reporter-htmlextra-export ${env.WORKSPACE}/newman.html         
+                        newman run ${env.WORKSPACE}/application/pipelines/deploy/newman/collection.json -e ${env.WORKSPACE}/application/ansible/inventory/dev/environment.json -r htmlextra --reporter-htmlextra-export ${env.WORKSPACE}/newman.html         
                         """
                     archiveArtifacts "newman.html"
                     }
