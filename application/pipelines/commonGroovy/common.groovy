@@ -23,6 +23,7 @@ checkoutPrivate = {
                 set -x
                 public_inventory_dir=``
                 cp -rf private/hcx/ansible/inventory/${envName}/* `find ./application -iname "inventory" -type d`/
+                cp private/hcx/ansible/inventory/${envName}/environment.json ./application/ansible/inventory/newman
              """
 }
 
