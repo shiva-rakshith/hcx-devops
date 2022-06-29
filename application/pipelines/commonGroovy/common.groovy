@@ -72,3 +72,33 @@ deployAnsible = {
 }
 // Ref: https://stackoverflow.com/questions/37800195/how-do-you-load-a-groovy-file-and-execute-it
 return this
+
+notifyBuild = {
+    buildStatus ->
+    buildStatus =  buildStatus ?: 'SUCCESSFUL'
+    def colorName = 'GREEN'
+    def colorCode = '#00FF00'
+    def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+    def summary = "${subject} triggered (${env.BUILD_URL})"
+    
+    
+    if (buildStatus == 'SUCCESSFUL') {
+        color = 'GREEN'
+        colorCode = '#00FF00'
+    } else {
+        color = 'RED'
+        colorCode = '#FF0000'
+    }
+    echo "workspace is: ${WORKSPACE}"
+
+    // Send notifications
+    slackSend(channel: 'test-alerts', message: 'gello',
+            baseUrl:"slack.com", teamDomain: 'swasthgroup', 
+            tokenCredentialId: 'ccda8d78-cd3d-4a6f-b0de-e898a78c1d02')
+
+    //slackSend (channel: '#test-alerts', color: colorCode, message: summary)
+    slackUploadFile(channel: "#test-alerts", credentialId: "ccda8d78-cd3d-4a6f-b0de-e898a78c1d02", filePath: "${WORKSPACE}/newman.html")
+    slackUploadFile filePath: "*.html", initialComment:  "Newman HTML Report"    
+}
+// Ref: https://stackoverflow.com/questions/37800195/how-do-you-load-a-groovy-file-and-execute-it
+return this
