@@ -71,7 +71,6 @@ deployAnsible = {
     """
 }
 // Ref: https://stackoverflow.com/questions/37800195/how-do-you-load-a-groovy-file-and-execute-it
-return this
 
 notifyBuild = {
     buildStatus ->
