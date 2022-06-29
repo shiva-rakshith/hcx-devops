@@ -92,12 +92,8 @@ notifyBuild = {
     echo "workspace is: ${WORKSPACE}"
 
     // Send notifications
-    slackSend(channel: 'test-alerts', message: 'gello',
-            baseUrl:"slack.com", teamDomain: 'swasthgroup', 
-            tokenCredentialId: 'ccda8d78-cd3d-4a6f-b0de-e898a78c1d02')
-
+    slackSend (channel: '#test-alerts', color: colorCode, message: summary)
     //slackSend (channel: '#test-alerts', color: colorCode, message: summary)
-    slackUploadFile(channel: "#test-alerts", credentialId: "ccda8d78-cd3d-4a6f-b0de-e898a78c1d02", filePath: "${WORKSPACE}/newman.html")
     slackUploadFile filePath: "*.html", initialComment:  "Newman HTML Report"    
 }
 // Ref: https://stackoverflow.com/questions/37800195/how-do-you-load-a-groovy-file-and-execute-it
