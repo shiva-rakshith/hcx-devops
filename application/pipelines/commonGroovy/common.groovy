@@ -91,7 +91,7 @@ notifyBuild = {
     echo "workspace is: ${WORKSPACE}"
 
     // Send notifications
-    slackSend (channel: '#test-alerts', color: colorCode, message: summary)
+    slackSend (channel: '#api-test-alerts', color: colorCode, message: summary)
     //slackSend (channel: '#test-alerts', color: colorCode, message: summary)
     slackUploadFile filePath: "*.html", initialComment:  "Newman HTML Report"    
 }
