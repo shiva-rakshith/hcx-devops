@@ -1,0 +1,38 @@
+// vim: ft=groovy et ts=2 sw=2:
+
+
+node('ansible') {
+    ansiColor('xterm') {
+      stage("Warming up") {
+        container('ansible') {
+          // Checking out public repo
+          checkout scm
+          // Loading library
+          commonCode = load "${env.WORKSPACE}/application/pipelines/commonGroovy/common.groovy"
+
+        }
+      }
+      stage("Test") {
+         container('newman'){
+                try{
+                    sh """
+                        newman run ${env.WORKSPACE}/application/pipelines/deploy/newman/collection.json -e ${env.WORKSPACE}/application/ansible/inventory/environment.json -r htmlextra --reporter-htmlextra-export ${env.WORKSPACE}/newman.html         
+                        """
+                    archiveArtifacts "newman.html"
+                    }
+                catch(err){
+               currentBuild.result = "FAILED"
+               throw err
+               echo '${currentBuild.result}'
+                   }
+        finally{
+            commonCode.notifyBuild(currentBuild.result)
+        } 
+      }
+     
+          
+      }
+
+      
+    }}
+

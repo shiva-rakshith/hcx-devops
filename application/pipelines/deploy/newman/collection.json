@@ -1,0 +1,4426 @@
+{
+	"info": {
+		"_postman_id": "a3da24e1-d5f8-48b2-9301-3a71cc9d204a",
+		"name": "Newman HCX APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17596548"
+	},
+	"item": [
+		{
+			"name": "Health APIs",
+			"item": [
+				{
+					"name": "Health",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Health Check\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/health",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Service Health",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Service Health Check\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{host}}/service/health",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"service",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Token Generation",
+			"item": [
+				{
+					"name": "keycloack token generation Provider",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Generate provider token\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"if(pm.response.code == 200){\r",
+									"    pm.environment.set(\"provider_token\",pm.response.json().access_token);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "registry-frontend",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{provider_username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{provider_password}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_host}}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token",
+							"host": [
+								"{{keycloak_host}}"
+							],
+							"path": [
+								"auth",
+								"realms",
+								"swasth-health-claim-exchange",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "keycloack token generation Payor",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Generate payor token\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"if(pm.response.code == 200){\r",
+									"    pm.environment.set(\"payor_token\",pm.response.json().access_token);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "registry-frontend",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{payor_username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{payor_password}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_host}}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token",
+							"host": [
+								"{{keycloak_host}}"
+							],
+							"path": [
+								"auth",
+								"realms",
+								"swasth-health-claim-exchange",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "keycloack token generation Payor 2",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Generate payor token\", function() {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"if(pm.response.code == 200){\r",
+									"    pm.environment.set(\"payor_2_token\",pm.response.json().access_token);\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "content-type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "client_id",
+									"value": "registry-frontend",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{payor_2_username}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{payor_2_password}}",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{keycloak_host}}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token",
+							"host": [
+								"{{keycloak_host}}"
+							],
+							"path": [
+								"auth",
+								"realms",
+								"swasth-health-claim-exchange",
+								"protocol",
+								"openid-connect",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Protocol APIs",
+			"item": [
+				{
+					"name": "Coverage Eligibility APIs",
+					"item": [
+						{
+							"name": "Coverage Eligibility Check",
+							"item": [
+								{
+									"name": "Eligibility Check-Success",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Coverage eligibility check success\", function () {\r",
+													"    pm.response.to.have.status(202);\r",
+													"});\r",
+													"\r",
+													"if(pm.response.code == 202){\r",
+													"    var response = pm.response.json();\r",
+													"    pm.environment.set(\"check_req_api_call_id\",response.api_call_id);\r",
+													"    pm.environment.set(\"check_req_correlation_id\",response.correlation_id);\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2In0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Authorization header missing",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"JWT Token Expiry\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(401);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_ACCESS_DENIED\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Authorization header is missing\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											},
+											{
+												"key": "Authorization",
+												"value": "\"Bearer  \"",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Malformat JWT Token",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Malformat JWT Token\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(401);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_ACCESS_DENIED\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Malformat Authorization content\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											},
+											{
+												"key": "Authorization",
+												"value": "\"Bearer  \"",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Jwt token expiry",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"JWT Token Expiry\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(401);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_ACCESS_DENIED\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"The Token has expired\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3Q1l0Z2VYMzA2NEQ3VUU0czdCQWlJZmUzN3hxczBtNEVSQnpmdzVuMzdNIn0.eyJleHAiOjE2NDg3MDk3NzksImlhdCI6MTY0Nzg0NTc3OSwianRpIjoiYjU4OTE5OTctMzEyNS00M2U5LTgzYjQtYzViNjVjOGJlMWRkIiwiaXNzIjoiaHR0cDovL2FlZjgxMDFjNDMyZDA0YTY1OWU2MzE3YjNlNTAzMWNmLTE2NzQ1ODYwNjguYXAtc291dGgtMS5lbGIuYW1hem9uYXdzLmNvbTo4MDgwL2F1dGgvcmVhbG1zL3N3YXN0aC1oZWFsdGgtY2xhaW0tZXhjaGFuZ2UiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiYzNmZDYzMzYtNzEwMy00ZjNhLTllNjYtYmZhMmMxNGFlOWI4IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoicmVnaXN0cnktZnJvbnRlbmQiLCJzZXNzaW9uX3N0YXRlIjoiZDExOWZiZmMtYjEyMy00MDY4LWE4MzEtNWI5NzJjY2ZhODc1IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJwcm92aWRlciIsImRlZmF1bHQtcm9sZXMtbmRlYXIiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVzdHBhcnRpY2lwYW50bWFpbDJAZ21haWwuY29tIiwiZW50aXR5IjpbIk9yZ2FuaXNhdGlvbiJdLCJlbWFpbCI6InRlc3RwYXJ0aWNpcGFudG1haWwyQGdtYWlsLmNvbSJ9.fJeI_QrdgPhR_D2D2W64vPLWNaT1Z9gZ8R39qeRO1NWSKL8w513rrEzj2S1xeeeIilkgE9y0HWVBuRLBrORh1nXn0RC3kHMI_zizsnuXU_kDO72XvEFSINEDaMWJ-30iSIBibhl4lzWuBVHVBUen1lO6zh2CpeWc7mr2bRWNH5dQzISfqnieEMT8GKQnXR-cHNoneCkenAkqRknwN664g5rUrzdg-F9uKCTjeX_E7TU7OF09YqUukd-hiKjaCuLz7sfRcKmBm05QFwPXppBd5-wPLAGdntsc2HfwvJt644NpjFRm9VF6aoZhlNZShTQ8qoPLd8qOMP48B24wgJa7Iw",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Wrong encoded protected",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Wrong encoded payload\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_PAYLOAD\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZT.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Invalid Payload",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid payload\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_PAYLOAD\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\" \"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Mandatory headers missing",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Mandatory headers missing\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_MANDATORY_HEADERFIELD_MISSING\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Mandatory headers are missing\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtYXBpX2NhbGxfaWQiOiJhYTFlM2Y5Yi05MGE3LTRlZDktOTgyMS0wMzA2ZjFiY2I3NDYiLCJ4LWhjeC13b3JrZmxvd19pZCI6IjVlOTM0ZjkwLTExMWQtNGYwYi1iMDE2LWMyMmQ4MjA2NzRlMiJ9.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Invalid sender",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = 'test-123';\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid Sender\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_SENDER\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"sender does not exist in registry\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Invalid recipient",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = 'test-123';\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid recipient\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_RECIPIENT\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"recipient does not exist in registry\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Sender and JWT token mismatch",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Sender and JWT token mismatch\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_ACCESS_DENIED\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Caller id and sender code is not matched\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Sender blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"blocked_sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Sender\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_SENDER\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"blocked or inactive as per the registry\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Recipient blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"blocked_recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Sender\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_RECIPIENT\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"blocked or inactive as per the registry\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Invalid api call id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = '';\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid api call id\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_API_CALL_ID\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Api call id cannot be null, empty and other than 'String'\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Invalid correlation id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = '';\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid correlation id\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_CORRELATION_ID\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Correlation id cannot be null, empty and other than 'String'\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Invalid workflow id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid workflow id\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_WORKFLOW_ID\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Workflow id cannot be null, empty and other than 'String'\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Invalid timestamp",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"// decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid timestamp\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_TIMESTAMP\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Timestamp should be a valid ISO-8061 format\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrIiwieC1oY3gtYXBpX2NhbGxfaWQiOiJhYTFlM2Y5Yi05MGE3LTRlZDktOTgyMS0wMzA2ZjFiY2I3NDYiLCJ4LWhjeC13b3JrZmxvd19pZCI6IjVlOTM0ZjkwLTExMWQtNGYwYi1iMDE2LWMyMmQ4MjA2NzRlMiJ9.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Invalid status",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid status\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_STATUS\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIiLCJ4LWhjeC1zdGF0dXMiOiJyZXF1ZXN0LmNvbXBsZXRlIn0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "bearer",
+								"bearer": [
+									{
+										"key": "token",
+										"value": "{{provider_token}}",
+										"type": "string"
+									}
+								]
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Redirect Flow",
+							"item": [
+								{
+									"name": "Eligibility On Check-Redirect request success",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"setTimeout(function() {\r",
+													"}, 5000);\r",
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"//generating the payload\r",
+													"req[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"req[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"req[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"req[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"req[\"x-hcx-redirect_to\"] = pm.environment.get(\"recipient_2_code\");\r",
+													"req[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Redirect request success\", function () {\r",
+													"    pm.response.to.have.status(202);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"x-hcx-recipient_code\": \"1-3a3bd68a-848a-4d52-9ec2-07a92d765fb4\",\r\n    \"x-hcx-timestamp\": \"2021-10-27T20:35:52.636+0530\",\r\n    \"x-hcx-sender_code\": \"1-2ff1f493-c4d4-4fc7-8d41-aaabb997af23\",\r\n    \"x-hcx-correlation_id\": \"5e934f90-111d-4f0b-b016-c22d820674e1\",\r\n    \"x-hcx-api_call_id\": \"26b1060c-1e83-4600-9612-ea31e0ca5194\",\r\n    \"x-hcx-status\": \"response.redirect\",\r\n    \"x-hcx-redirect_to\": \"1-74f6cb29-4116-42d0-9fbb-adb65e6a64ac\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Redirect missing headers",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"//generating the payload\r",
+													"req[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"req[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"req[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"req[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"req[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Redirect missing headers\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_MANDATORY_HEADERFIELD_MISSING\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Mandatory headers are missing: [x-hcx-redirect_to]\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"x-hcx-recipient_code\": \"1-3a3bd68a-848a-4d52-9ec2-07a92d765fb4\",\r\n    \"x-hcx-timestamp\": \"2021-10-27T20:35:52.636+0530\",\r\n    \"x-hcx-sender_code\": \"1-2ff1f493-c4d4-4fc7-8d41-aaabb997af23\",\r\n    \"x-hcx-correlation_id\": \"5e934f90-111d-4f0b-b016-c22d820674e1\",\r\n    \"x-hcx-api_call_id\": \"26b1060c-1e83-4600-9612-ea31e0ca5194\",\r\n    \"x-hcx-status\": \"response.complete\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Redirect_to code is empty",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"//generating the payload\r",
+													"req[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"req[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"req[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"req[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"req[\"x-hcx-redirect_to\"] = '';\r",
+													"req[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Redirect to same sender\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_REDIRECT_TO\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Redirect requests must have valid participant code for field x-hcx-redirect_to\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"x-hcx-recipient_code\": \"1-3a3bd68a-848a-4d52-9ec2-07a92d765fb4\",\r\n    \"x-hcx-timestamp\": \"2021-10-27T20:35:52.636+0530\",\r\n    \"x-hcx-sender_code\": \"1-2ff1f493-c4d4-4fc7-8d41-aaabb997af23\",\r\n    \"x-hcx-correlation_id\": \"5e934f90-111d-4f0b-b016-c22d820674e1\",\r\n    \"x-hcx-api_call_id\": \"26b1060c-1e83-4600-9612-ea31e0ca5194\",\r\n    \"x-hcx-status\": \"response.redirect\",\r\n    \"x-hcx-redirect_to\": \"1-74f6cb29-4116-42d0-9fbb-adb65e6a64ac\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Redirect invalid redirect_to code",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"//generating the payload\r",
+													"req[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"req[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"req[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"req[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"req[\"x-hcx-redirect_to\"] = 'test-123';\r",
+													"req[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid redirect_to code\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_REDIRECT_TO\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Redirected does not exist in registry\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"x-hcx-recipient_code\": \"1-3a3bd68a-848a-4d52-9ec2-07a92d765fb4\",\r\n    \"x-hcx-timestamp\": \"2021-10-27T20:35:52.636+0530\",\r\n    \"x-hcx-sender_code\": \"1-2ff1f493-c4d4-4fc7-8d41-aaabb997af23\",\r\n    \"x-hcx-correlation_id\": \"5e934f90-111d-4f0b-b016-c22d820674e1\",\r\n    \"x-hcx-api_call_id\": \"26b1060c-1e83-4600-9612-ea31e0ca5194\",\r\n    \"x-hcx-status\": \"response.redirect\",\r\n    \"x-hcx-redirect_to\": \"1-74f6cb29-4116-42d0-9fbb-adb65e6a64ac\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Redirect to same sender",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"//generating the payload\r",
+													"req[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"req[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"req[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"req[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"req[\"x-hcx-redirect_to\"] = pm.environment.get(\"sender_code\");\r",
+													"req[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Redirect to same sender\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_REDIRECT_TO\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Redirected participant do not have access to send across callbacks (on_* API calls)\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"x-hcx-recipient_code\": \"1-3a3bd68a-848a-4d52-9ec2-07a92d765fb4\",\r\n    \"x-hcx-timestamp\": \"2021-10-27T20:35:52.636+0530\",\r\n    \"x-hcx-sender_code\": \"1-2ff1f493-c4d4-4fc7-8d41-aaabb997af23\",\r\n    \"x-hcx-correlation_id\": \"5e934f90-111d-4f0b-b016-c22d820674e1\",\r\n    \"x-hcx-api_call_id\": \"26b1060c-1e83-4600-9612-ea31e0ca5194\",\r\n    \"x-hcx-status\": \"response.redirect\",\r\n    \"x-hcx-redirect_to\": \"1-74f6cb29-4116-42d0-9fbb-adb65e6a64ac\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Redirect invalid status",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"//generating the payload\r",
+													"req[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"req[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"req[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"req[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"req[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid redirect request status\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_REDIRECT_TO\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Invalid redirect request\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"x-hcx-recipient_code\": \"1-3a3bd68a-848a-4d52-9ec2-07a92d765fb4\",\r\n    \"x-hcx-timestamp\": \"2021-10-27T20:35:52.636+0530\",\r\n    \"x-hcx-sender_code\": \"1-2ff1f493-c4d4-4fc7-8d41-aaabb997af23\",\r\n    \"x-hcx-correlation_id\": \"5e934f90-111d-4f0b-b016-c22d820674e1\",\r\n    \"x-hcx-api_call_id\": \"26b1060c-1e83-4600-9612-ea31e0ca5194\",\r\n    \"x-hcx-status\": \"response.complete\",\r\n    \"x-hcx-redirect_to\": \"1-74f6cb29-4116-42d0-9fbb-adb65e6a64ac\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Forward Flow",
+							"item": [
+								{
+									"name": "Eligibility Check-Payor 1 to Payor 2 - Invalid correlation id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_2_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Coverage eligibility check forwarding from payor 1 to payor 2 invalid correlation id\", function () {\r",
+													"     var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_FORWARD_REQ\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"The request contains invalid correlation id\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2In0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Payor 1 to Payor 2 - Success",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"setTimeout(function() {\r",
+													"}, 5000);\r",
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_2_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Coverage eligibility check forwarding from payor 1 to payor 2\", function () {\r",
+													"    pm.response.to.have.status(202);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2In0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Payor 2 to Payor 1 - Invalid forwarding",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"setTimeout(function() {\r",
+													"  //added 3 seconds delay, so that audit data will be available for retrieval\r",
+													"}, 5000);\r",
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_2_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Coverage eligibility check forwarding from payor 2 to payor 1\", function () {\r",
+													"     var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_FORWARD_REQ\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Request cannot be forwarded to the forward initiators\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_2_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2In0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Payor 2 to Provider - Invalid direct response",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_2_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Coverage eligibility on check, invalid direct response from payor 2 to provider\", function () {\r",
+													"     var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_CORRELATION_ID\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Invalid on_action request, corresponding action request does not exist\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_2_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtc3RhdHVzIjoicmVzcG9uc2UucGFydGlhbCJ9.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Payor 2 to Payor 1 - success",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"setTimeout(function() {\r",
+													"  //added 3 seconds delay, so that on_check request audit data will be available for retrieval\r",
+													"}, 5000);\r",
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_2_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Coverage eligibility on check from payor 2 to payor 1\", function () {\r",
+													"    pm.response.to.have.status(202);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_2_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtc3RhdHVzIjoicmVzcG9uc2UucGFydGlhbCJ9.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Coverage Eligibility On Check",
+							"item": [
+								{
+									"name": "Eligibility On Check-Success",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Coverage eligibility on check success\", function () {\r",
+													"    pm.response.to.have.status(202);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtc3RhdHVzIjoicmVzcG9uc2UuY29tcGxldGUifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Status out of range",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Status out of range\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_STATUS\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Status value for on_* API calls can be only\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIiLCJ4LWhjeC1zdGF0dXMiOiJyZXF1ZXN0LnF1ZXVlZCJ9.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Debug flag out of range",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Debug flag out of range\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_DEBUG_FLAG\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Debug flag cannot be other than Error, Info or Debug\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIiLCJ4LWhjeC1zdGF0dXMiOiJyZXNwb25zZS5jb21wbGV0ZSIsCiJ4LWhjeC1kZWJ1Z19mbGFnIjoidGVzdCIKfQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Debug details out of range",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Debug details out of range\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_DEBUG_DETAILS\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Debug details should contain only\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIiLCJ4LWhjeC1zdGF0dXMiOiJyZXNwb25zZS5jb21wbGV0ZSIsCiJ4LWhjeC1kZWJ1Z19kZXRhaWxzIjp7CiJjb2RlIjoiRVJSX0lOVkFMSURfUEFZTE9BRCIsCiJtZXNzYWdlIjoiaW52YWxpZCByZXF1ZXN0IHBheWxvYWQiLAoidHJhY2UiOiIiLAoidGVzdCI6IiJ9fQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Error details out of range",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Error details out of range\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_ERROR_DETAILS\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Error details should contain only\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIiLCJ4LWhjeC1zdGF0dXMiOiJyZXNwb25zZS5jb21wbGV0ZSIsCiJ4LWhjeC1lcnJvcl9kZXRhaWxzIjp7CiJjb2RlIjoiRVJSX0lOVkFMSURfUEFZTE9BRCIsCiJtZXNzYWdlIjoiaW52YWxpZCByZXF1ZXN0IHBheWxvYWQiLAoidHJhY2UiOiIiLAoidGVzdCI6IiJ9fQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Request exist with same api call id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = pm.environment.get(\"check_req_api_call_id\");\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Request exist with same api call id\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_API_CALL_ID\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Request exist with same api call id\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtc3RhdHVzIjoicmVzcG9uc2UuY29tcGxldGUifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Invalid correlation id",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Invalid correlation id\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_CORRELATION_ID\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Invalid on_action request, corresponding action request does not exist\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIiLCJ4LWhjeC1zdGF0dXMiOiJyZXNwb25zZS5jb21wbGV0ZSJ9.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility On Check-Correlation id is closed",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"setTimeout(function() {\r",
+													"  //added 3 seconds delay, so that on_check request audit data will be available for retrieval\r",
+													"}, 7000);\r",
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"check_req_correlation_id\");\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Correlation id is closed\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_CORRELATION_ID\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Invalid request, cycle is closed for correlation id\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{payor_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtc3RhdHVzIjoicmVzcG9uc2UuY29tcGxldGUifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/on_check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"on_check"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Predetermination APIs",
+					"item": [
+						{
+							"name": "Predetermination submit-Success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var uuid = require('uuid');\r",
+											"var moment = require('moment');\r",
+											"var req = JSON.parse(pm.request.body.raw);\r",
+											"var payload = req.payload.split(\".\");\r",
+											"var headers = payload[0];\r",
+											"var decoded = JSON.parse(atob(headers));\r",
+											"//generating the payload\r",
+											"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+											"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+											"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+											"encoded = btoa(JSON.stringify(decoded));\r",
+											"payload[0] = encoded;\r",
+											"encoded_string = payload.join(\".\");\r",
+											"\r",
+											"req.payload = encoded_string;\r",
+											"pm.request.body.raw = req;\r",
+											"console.log(\"modified request \", pm.request.body.raw);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Predetermination submit success\", function () {\r",
+											"    pm.response.to.have.status(202);\r",
+											"});\r",
+											"\r",
+											"if(pm.response.code == 202){\r",
+											"    var response = pm.response.json();\r",
+											"    pm.environment.set(\"predetermination_submit_req_correlation_id\",response.correlation_id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{provider_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "x-mock-match-request-body",
+										"value": "true",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2In0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{api-version}}/predetermination/submit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{api-version}}",
+										"predetermination",
+										"submit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Predetermination On submit-Success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"setTimeout(function() {\r",
+											"  //added delay, so that action request audit data will be available for retrieval\r",
+											"}, 7000);\r",
+											"var uuid = require('uuid');\r",
+											"var moment = require('moment');\r",
+											"var req = JSON.parse(pm.request.body.raw);\r",
+											"var payload = req.payload.split(\".\");\r",
+											"var headers = payload[0];\r",
+											"var decoded = JSON.parse(atob(headers));\r",
+											"//generating the payload\r",
+											"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"predetermination_submit_req_correlation_id\");\r",
+											"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+											"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+											"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+											"encoded = btoa(JSON.stringify(decoded));\r",
+											"payload[0] = encoded;\r",
+											"encoded_string = payload.join(\".\");\r",
+											"\r",
+											"req.payload = encoded_string;\r",
+											"pm.request.body.raw = req;\r",
+											"console.log(\"modified request \", pm.request.body.raw);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Predetermination on submit success\", function () {\r",
+											"    pm.response.to.have.status(202);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{payor_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "x-mock-match-request-body",
+										"value": "true",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtc3RhdHVzIjoicmVzcG9uc2UuY29tcGxldGUifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{api-version}}/predetermination/on_submit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{api-version}}",
+										"predetermination",
+										"on_submit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PreAuth APIs",
+					"item": [
+						{
+							"name": "PreAuth submit-Success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var uuid = require('uuid');\r",
+											"var moment = require('moment');\r",
+											"var req = JSON.parse(pm.request.body.raw);\r",
+											"var payload = req.payload.split(\".\");\r",
+											"var headers = payload[0];\r",
+											"var decoded = JSON.parse(atob(headers));\r",
+											"//generating the payload\r",
+											"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+											"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+											"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+											"encoded = btoa(JSON.stringify(decoded));\r",
+											"payload[0] = encoded;\r",
+											"encoded_string = payload.join(\".\");\r",
+											"\r",
+											"req.payload = encoded_string;\r",
+											"pm.request.body.raw = req;\r",
+											"console.log(\"modified request \", pm.request.body.raw);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"PreAuth submit success\", function () {\r",
+											"    pm.response.to.have.status(202);\r",
+											"});\r",
+											"\r",
+											"if(pm.response.code == 202){\r",
+											"    var response = pm.response.json();\r",
+											"    pm.environment.set(\"preauth_submit_req_correlation_id\",response.correlation_id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{provider_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "x-mock-match-request-body",
+										"value": "true",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2In0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{api-version}}/preauth/submit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{api-version}}",
+										"preauth",
+										"submit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PreAuth On Submit-Success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"setTimeout(function() {\r",
+											"  //added delay, so that action request audit data will be available for retrieval\r",
+											"}, 7000);\r",
+											"var uuid = require('uuid');\r",
+											"var moment = require('moment');\r",
+											"var req = JSON.parse(pm.request.body.raw);\r",
+											"var payload = req.payload.split(\".\");\r",
+											"var headers = payload[0];\r",
+											"var decoded = JSON.parse(atob(headers));\r",
+											"//generating the payload\r",
+											"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"preauth_submit_req_correlation_id\");\r",
+											"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+											"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+											"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+											"encoded = btoa(JSON.stringify(decoded));\r",
+											"payload[0] = encoded;\r",
+											"encoded_string = payload.join(\".\");\r",
+											"\r",
+											"req.payload = encoded_string;\r",
+											"pm.request.body.raw = req;\r",
+											"console.log(\"modified request \", pm.request.body.raw);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"PreAuth on submit success\", function () {\r",
+											"    pm.response.to.have.status(202);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{payor_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "x-mock-match-request-body",
+										"value": "true",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtc3RhdHVzIjoicmVzcG9uc2UuY29tcGxldGUifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{api-version}}/preauth/on_submit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{api-version}}",
+										"preauth",
+										"on_submit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Claim APIs",
+					"item": [
+						{
+							"name": "Claim submit-Success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var uuid = require('uuid');\r",
+											"var moment = require('moment');\r",
+											"var req = JSON.parse(pm.request.body.raw);\r",
+											"var payload = req.payload.split(\".\");\r",
+											"var headers = payload[0];\r",
+											"var decoded = JSON.parse(atob(headers));\r",
+											"//generating the payload\r",
+											"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+											"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+											"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+											"encoded = btoa(JSON.stringify(decoded));\r",
+											"payload[0] = encoded;\r",
+											"encoded_string = payload.join(\".\");\r",
+											"\r",
+											"req.payload = encoded_string;\r",
+											"pm.request.body.raw = req;\r",
+											"console.log(\"modified request \", pm.request.body.raw);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Claim submit success\", function () {\r",
+											"    pm.response.to.have.status(202);\r",
+											"});\r",
+											"\r",
+											"if(pm.response.code == 202){\r",
+											"    var response = pm.response.json();\r",
+											"    pm.environment.set(\"claim_submit_req_correlation_id\",response.correlation_id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{provider_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "x-mock-match-request-body",
+										"value": "true",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2In0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{api-version}}/claim/submit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{api-version}}",
+										"claim",
+										"submit"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Claim On Submit-Success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"setTimeout(function() {\r",
+											"  //added delay, so that action request audit data will be available for retrieval\r",
+											"}, 7000);\r",
+											"var uuid = require('uuid');\r",
+											"var moment = require('moment');\r",
+											"var req = JSON.parse(pm.request.body.raw);\r",
+											"var payload = req.payload.split(\".\");\r",
+											"var headers = payload[0];\r",
+											"var decoded = JSON.parse(atob(headers));\r",
+											"//generating the payload\r",
+											"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"claim_submit_req_correlation_id\");\r",
+											"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+											"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+											"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+											"encoded = btoa(JSON.stringify(decoded));\r",
+											"payload[0] = encoded;\r",
+											"encoded_string = payload.join(\".\");\r",
+											"\r",
+											"req.payload = encoded_string;\r",
+											"pm.request.body.raw = req;\r",
+											"console.log(\"modified request \", pm.request.body.raw);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Claim on submit success\", function () {\r",
+											"    pm.response.to.have.status(202);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{payor_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "x-mock-match-request-body",
+										"value": "true",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtc3RhdHVzIjoicmVzcG9uc2UuY29tcGxldGUifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{api-version}}/claim/on_submit",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{api-version}}",
+										"claim",
+										"on_submit"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Payment APIs",
+					"item": [
+						{
+							"name": "Payment Request-Success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var uuid = require('uuid');\r",
+											"var moment = require('moment');\r",
+											"var req = JSON.parse(pm.request.body.raw);\r",
+											"var payload = req.payload.split(\".\");\r",
+											"var headers = payload[0];\r",
+											"var decoded = JSON.parse(atob(headers));\r",
+											"//generating the payload\r",
+											"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"recipient_code\");\r",
+											"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"sender_code\");\r",
+											"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+											"encoded = btoa(JSON.stringify(decoded));\r",
+											"payload[0] = encoded;\r",
+											"encoded_string = payload.join(\".\");\r",
+											"\r",
+											"req.payload = encoded_string;\r",
+											"pm.request.body.raw = req;\r",
+											"console.log(\"modified request \", pm.request.body.raw);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Payment request success\", function () {\r",
+											"    pm.response.to.have.status(202);\r",
+											"});\r",
+											"\r",
+											"if(pm.response.code == 202){\r",
+											"    var response = pm.response.json();\r",
+											"    pm.environment.set(\"payment_req_correlation_id\",response.correlation_id);\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{payor_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "x-mock-match-request-body",
+										"value": "true",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2In0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{api-version}}/paymentnotice/request",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{api-version}}",
+										"paymentnotice",
+										"request"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Payment On Request-Success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"setTimeout(function() {\r",
+											"  //added delay, so that action request audit data will be available for retrieval\r",
+											"}, 9000);\r",
+											"var uuid = require('uuid');\r",
+											"var moment = require('moment');\r",
+											"var req = JSON.parse(pm.request.body.raw);\r",
+											"var payload = req.payload.split(\".\");\r",
+											"var headers = payload[0];\r",
+											"var decoded = JSON.parse(atob(headers));\r",
+											"//generating the payload\r",
+											"decoded[\"x-hcx-correlation_id\"] = pm.environment.get(\"payment_req_correlation_id\");\r",
+											"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+											"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+											"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+											"decoded[\"x-hcx-timestamp\"] = moment().format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+											"encoded = btoa(JSON.stringify(decoded));\r",
+											"payload[0] = encoded;\r",
+											"encoded_string = payload.join(\".\");\r",
+											"\r",
+											"req.payload = encoded_string;\r",
+											"pm.request.body.raw = req;\r",
+											"console.log(\"modified request \", pm.request.body.raw);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"payment on request success\", function () {\r",
+											"    pm.response.to.have.status(202);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{provider_token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "default"
+									},
+									{
+										"key": "x-mock-match-request-body",
+										"value": "true",
+										"type": "default",
+										"disabled": true
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtc3RhdHVzIjoicmVzcG9uc2UuY29tcGxldGUifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{host}}/{{api-version}}/paymentnotice/on_request",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{api-version}}",
+										"paymentnotice",
+										"on_request"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "host",
+			"value": "http://localhost:8080"
+		}
+	]
+}

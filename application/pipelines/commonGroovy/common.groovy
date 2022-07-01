@@ -23,6 +23,7 @@ checkoutPrivate = {
                 set -x
                 public_inventory_dir=``
                 cp -rf private/hcx/ansible/inventory/${envName}/* `find ./application -iname "inventory" -type d`/
+                cp private/hcx/ansible/inventory/${envName}/newman/environment.json ./application/ansible/inventory/
              """
 }
 
@@ -69,6 +70,30 @@ deployAnsible = {
       cd application/ansible
       ansible-playbook -i inventory/hosts ${ansibleCommands}
     """
+}
+
+notifyBuild = {
+    buildStatus ->
+    buildStatus =  buildStatus ?: 'SUCCESSFUL'
+    def colorName = 'GREEN'
+    def colorCode = '#00FF00'
+    def subject = "${buildStatus}: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+    def summary = "${subject} triggered (${env.BUILD_URL})"
+    
+    
+    if (buildStatus == 'SUCCESSFUL') {
+        color = 'GREEN'
+        colorCode = '#00FF00'
+    } else {
+        color = 'RED'
+        colorCode = '#FF0000'
+    }
+    echo "workspace is: ${WORKSPACE}"
+
+    // Send notifications
+    slackSend (channel: '#api-test-alerts', color: colorCode, message: summary)
+    //slackSend (channel: '#test-alerts', color: colorCode, message: summary)
+    slackUploadFile filePath: "*.html", initialComment:  "Newman HTML Report"    
 }
 // Ref: https://stackoverflow.com/questions/37800195/how-do-you-load-a-groovy-file-and-execute-it
 return this
