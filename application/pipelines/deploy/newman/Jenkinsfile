@@ -9,7 +9,9 @@ node('ansible') {
           checkout scm
           // Loading library
           commonCode = load "${env.WORKSPACE}/application/pipelines/commonGroovy/common.groovy"
-
+          commonCode.commonVariables()
+            // Checking out private repo
+          commonCode.checkoutPrivate()
         }
       }
       stage("Test") {
