@@ -1,6 +1,10 @@
 # Create new Infrastructure
+Pre-requisites:
+To create AWS Infra instance (handles required vpc creation for the cluster)
+1. Execute terraform script following infrastructure/terraform/README.md
 
-1. Create kuberntes cluster
+Steps to create the Kubernetes cluster:
+1. Create kubernetes cluster
     1. Kube cluster creation is handled by `eksctl` tool. For more info, check [README.md](infrastructure/eks/README.md) in eks folder.
 2. Create Jenkins
     1. We’re using server-less Jenkins architecture, means whenever there is a need for a worker, we’ll create one in AWS Fargate.
