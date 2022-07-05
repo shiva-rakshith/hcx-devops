@@ -4,7 +4,7 @@ metadata:
   name: demo-app
 data:
   hcx_upstream: "http://staging-hcx.swasth.app/"
-  sender_code: "1-521eaec7-8cb9-4b6c-8b4e-4dba300af6f4"
+  sender_code: "provider-swasth-mock-provider-dev"
   hcx_username: "swasthmockproviderdev@gmail.com"
   hcx_password: "Opensaber@123"
   demo_app_port: "8000"
