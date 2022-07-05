@@ -5,6 +5,8 @@ metadata:
 data:
   hcx_upstream: "http://staging-hcx.swasth.app/"
   sender_code: "1-521eaec7-8cb9-4b6c-8b4e-4dba300af6f4"
-  hcx_username: "swasth_mock_provider@swasthapp.org"
+  hcx_username: "swasthmockproviderdev@gmail.com"
   hcx_password: "Opensaber@123"
   demo_app_port: "8000"
+  recipient_code: "payor-swasth-mock-payor-dev"
+  token_url: "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token"
