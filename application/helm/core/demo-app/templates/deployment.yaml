@@ -70,7 +70,7 @@ spec:
                 configMapKeyRef:
                   name: demo-app
                   key: token_url
-            - name: recipient_code
+            - name: RECIPIENT_CODE
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
