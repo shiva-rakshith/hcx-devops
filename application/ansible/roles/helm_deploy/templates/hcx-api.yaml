@@ -24,7 +24,7 @@ env:
   postgres_tablename: "payload"
   redis_host: "redis-master.{{ env }}.svc.cluster.local"
   registry_basePath: "http://hcx-registry.{{ env }}.svc.cluster.local:8081"
-  registry_hcxcode: {{ registry_hcx_code }}
+  registry_hcxcode: "hcx.gateway@swasth-hcx-dev"
   not_allowed_urls: http://dev-hcx.swasth.app/api, http://staging-hcx.swasth.app/api
   hcx_instance_name: "swasth-hcx-dev"
 service:
