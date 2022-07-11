@@ -26,6 +26,7 @@ kafka_topics:
   - "{{ env }}.hcx.request.communication"
   - "{{ env }}.hcx.request.predetermination"
   - "{{ env }}.hcx.request.notification"
+  - "{{ env }}.hcx.request.subscription"
 
 flink_job_configs:
   base_config: |
