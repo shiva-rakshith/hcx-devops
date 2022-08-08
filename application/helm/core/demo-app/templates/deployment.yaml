@@ -65,6 +65,22 @@ spec:
                 configMapKeyRef:
                   name: demo-app
                   key: hcx_password
+            - name: token_url
+              valueFrom:
+                configMapKeyRef:
+                  name: demo-app
+                  key: token_url
+            - name: RECIPIENT_CODE
+              valueFrom:
+                configMapKeyRef:
+                  name: demo-app
+                  key: recipient_code
+            - name: api_version
+              valueFrom:
+                configMapKeyRef:
+                  name: demo-app
+                  key: api_version
+
           volumeMounts:
           - name: demo-app
             mountPath: "/demo-app"
