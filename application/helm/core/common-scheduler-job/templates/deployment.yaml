@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "retry-batch-job.fullname" . }}
+  name: {{ include "common-scheduler-job.fullname" . }}
   labels:
-    {{- include "retry-batch-job.labels" . | nindent 4 }}
+    {{- include "common-scheduler-job.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "retry-batch-job.selectorLabels" . | nindent 6 }}
+      {{- include "common-scheduler-job.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,13 +18,13 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "retry-batch-job.selectorLabels" . | nindent 8 }}
+        {{- include "common-scheduler-job.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      serviceAccountName: {{ include "retry-batch-job.serviceAccountName" . }}
+      serviceAccountName: {{ include "common-scheduler-job.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
