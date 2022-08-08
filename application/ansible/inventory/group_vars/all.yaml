@@ -339,6 +339,7 @@ flink_job_configs:
       kafka.groupId:  ${job.env}"-notification-group"
       kafka.input.topic: {{ env }}.hcx.request.notification
       kafka.subscription.input.topic = {{ env }}.hcx.request.subscription
+      kafka.onsubscription.input.topic = {{ env }}.hcx.request.onsubscription
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
