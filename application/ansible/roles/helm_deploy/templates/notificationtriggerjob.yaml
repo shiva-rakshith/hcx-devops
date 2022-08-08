@@ -1,7 +1,7 @@
 image:
   tag: "{{ image_tag }}"
   repository: "{{ docker_repo }}/hcx-pipeline-jobs"
-job_classname: "org.swasth.dp.notification.task.SubscriptionStreamTask"
+job_classname: "org.swasth.dp.notification.trigger.task.NotificationTriggerStreamTask"
 taskManagerAdditionalArgs: []
   # For example
   # - -Dfs.azure.account.key.myblobstorageaccount.blob.core.windows.net=myblobstorageaccountpassword,

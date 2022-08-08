@@ -27,6 +27,8 @@ kafka_topics:
   - "{{ env }}.hcx.request.predetermination"
   - "{{ env }}.hcx.request.notification"
   - "{{ env }}.hcx.request.subscription"
+  - "{{ env }}.hcx.audit"
+  - "{{ env }}.hcx.request.onsubscription"
 
 flink_job_configs:
   base_config: |
@@ -115,13 +117,16 @@ flink_job_configs:
         successCodes = [200, 202]
         errorCodes = [400, 401, 403, 404]
       }
-      
+      hcx {
+        instanceName = "swasth-hcx-dev"
+      }
 
   coverageeligibility:
     coverageeligibility: |+
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-coverage-eligibility-check-group"
       kafka.input.topic: {{ env }}.hcx.request.coverageeligibility
+      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -141,6 +146,7 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-preauth-job-group"
       kafka.input.topic: {{ env }}.hcx.request.preauth
+      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -160,6 +166,7 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-claims-job-group"
       kafka.input.topic: {{ env }}.hcx.request.claim
+      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -180,6 +187,7 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-claims-job-group"
       kafka.input.topic: {{ env }}.hcx.request.payment
+      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -278,6 +286,7 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-communication-group"
       kafka.input.topic: {{ env }}.hcx.request.communication
+      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -298,6 +307,7 @@ flink_job_configs:
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-predetermination-group"
       kafka.input.topic: {{ env }}.hcx.request.predetermination
+      kafka.audit.topic: {{ env }}.hcx.audit
       task.consumer.parallelism :  1
       task.parallelism :  1
       task.downstream.operators.parallelism: 1
@@ -348,6 +358,32 @@ flink_job_configs:
       kafka.producer.batch.size: 98304
       kafka.producer.linger.ms: 10
       postgres.subscription.table: "subscription"
+
+    flink-conf: |+
+      jobmanager.memory.flink.size: 1024m
+      taskmanager.memory.flink.size: 1024m
+      taskmanager.numberOfTaskSlots: 1
+      parallelism.default: 1
+      jobmanager.execution.failover-strategy: region
+      taskmanager.memory.network.fraction: 0.1
+
+  notificationtriggerjob:
+    notificationtriggerjob: |+
+      include file("/data/flink/conf/base-config.conf")
+      kafka.groupId:  ${job.env}"-notification-trigger-group"
+      kafka.input.topic: {{ env }}.hcx.audit
+      kafka.output.topic: {{ env }}.hcx.request.notification
+      task.consumer.parallelism :  1
+      task.parallelism :  1
+      task.downstream.operators.parallelism: 1
+      task.downstream.operators.dispatcher.parallelism: 1
+      kafka.producer.max-request-size: 1572864
+      kafka.producer.batch.size: 98304
+      kafka.producer.linger.ms: 10
+      postgres.subscription.table: "subscription"
+      notification.network.enabled: true
+      notification.triggers.disabled: []
+      notification.workflow.topicCodeAndAPIActionMap: {"/claim/submit":"notif-claim-initiation", "/claim/on_submit":"notif-claim-closure", "/paymentnotice/request":"notif-payment-initiation", "/paymentnotice/on_request": "notif-payment-closure"}
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m

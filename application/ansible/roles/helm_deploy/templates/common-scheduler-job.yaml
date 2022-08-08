@@ -1,12 +1,17 @@
 image:
   tag: "{{ image_tag }}"
-  repository: "{{ docker_repo }}/hcx-batch-jobs"
+  repository: "{{ docker_repo }}/hcx-scheduler-jobs"
 env:
   # 3 hours time delay
-  fixedDelay_in_milliseconds: "10800000"
+  retry_fixedDelay_in_milliseconds: "10800000"
+  # 1 day time delay
+  participantVerify_fixedDelay_in_milliseconds: "86400000"
+  registry_basePath: "http://hcx-registry.{{ env }}.svc.cluster.local:8081"
+  registry_hcxcode: "hcx.gateway@swasth-hcx-dev"
   kafka_url: "{{ groups['kafka'][0] }}:9092"
   kafka_group_id: "{{ env }}-retry-group"
   kafka_topic_ouput: "{{ env }}.hcx.request.retry"
+  kafka_topic_notification: "{{ env }}.hcx.request.notification"
   max_retry: 3
   postgres_url: "jdbc:postgresql://{{ hcx_api_postgresql_host }}/postgres"
   postgres_user: "{{ hcx_api_postgresql_user }}"
