@@ -15,6 +15,7 @@ env:
   kafka_predetermination_topic: "{{ env }}.hcx.request.predetermination"
   kafka_notification_topic: "{{ env }}.hcx.request.notification"
   kafka_subscription_topic: "{{ env }}.hcx.request.subscription"
+  kafka_audit_topic: "{{ env }}.hcx.audit"
   postgres_url: "jdbc:postgresql://{{ hcx_api_postgresql_host }}/postgres"
   es_host: "{{ groups['elasticsearch'][0] }}"
   audit_index: "hcx_audit"
@@ -27,5 +28,6 @@ env:
   registry_hcxcode: "hcx.gateway@swasth-hcx-dev"
   not_allowed_urls: http://dev-hcx.swasth.app/api, http://staging-hcx.swasth.app/api
   hcx_instance_name: "swasth-hcx-dev"
+
 service:
   type: ClusterIP
