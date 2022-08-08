@@ -3,9 +3,10 @@ kind: ConfigMap
 metadata:
   name: demo-app
 data:
-  hcx_upstream: "http://staging-hcx.swasth.app/"
+  hcx_upstream: "http://a851b026063934683964f22c6732f177-1969328968.ap-south-1.elb.amazonaws.com:8095/"
   sender_code: "provider-swasth-mock-provider-dev"
   hcx_username: "swasthmockproviderdev@gmail.com"
+  api_version: "v0.7"
   hcx_password: "Opensaber@123"
   demo_app_port: "8000"
   recipient_code: "payor-swasth-mock-payor-dev"

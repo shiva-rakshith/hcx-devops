@@ -75,6 +75,12 @@ spec:
                 configMapKeyRef:
                   name: demo-app
                   key: recipient_code
+            - name: api_version
+              valueFrom:
+                configMapKeyRef:
+                  name: demo-app
+                  key: api_version
+
           volumeMounts:
           - name: demo-app
             mountPath: "/demo-app"
