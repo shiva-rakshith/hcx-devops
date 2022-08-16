@@ -384,7 +384,7 @@ flink_job_configs:
       notification.network.enabled: true
       notification.workflow.enabled: true
       notification.triggers.disabled: []
-      notification.workflow.topicCodeAndAPIActionMap: {"/participant/create":"notif-participant-onboarded", "/notification/subscription/update":"notif-subscription-update", "/claim/submit":"notif-claim-initiation", "/claim/on_submit":"notif-claim-closure", "/paymentnotice/request":"notif-payment-initiation", "/paymentnotice/on_request": "notif-payment-closure"}
+      notification.workflow.topicCodeAndAPIActionMap: {"/participant/create":"notif-participant-onboarded", "/participant/delete":"notif-participant-de-boarded", "/notification/subscription/update":"notif-subscription-update", "/claim/submit":"notif-claim-initiation", "/claim/on_submit":"notif-claim-closure", "/paymentnotice/request":"notif-payment-initiation", "/paymentnotice/on_request": "notif-payment-closure"}
 
     flink-conf: |+
       jobmanager.memory.flink.size: 1024m
