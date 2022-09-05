@@ -8,7 +8,7 @@ imagePullSecrets: []
 dockerhub: "maheshkg"
 repository: "hcx-flink-jobs"
 serviceMonitor:
-  enabled: false
+  enabled: true
 replicaCount: 1
 
 job_classname: "org.swasth.dp.coverageeligiblitycheck.task.CoverageEligibilityCheckStreamTask"

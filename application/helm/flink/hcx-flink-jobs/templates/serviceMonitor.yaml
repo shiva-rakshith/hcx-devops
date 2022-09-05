@@ -7,7 +7,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Release.Name }}-taskmanager
-    release: prometheus-operator
+    release: monitoring 
 spec:
   selector:
     matchLabels:
@@ -26,7 +26,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: {{ .Release.Name }}-jobmanager
-    release: prometheus-operator
+    release: monitoring
 spec:
   selector:
     matchLabels:
