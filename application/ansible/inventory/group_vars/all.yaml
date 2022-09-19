@@ -382,6 +382,7 @@ flink_job_configs:
       kafka.producer.linger.ms: 10
       postgres.subscription.table: "subscription"
       notification {
+        expiry = 86400000
         triggers.disabled = []
         network.enabled = true
         workflow {
