@@ -388,6 +388,7 @@ flink_job_configs:
         workflow {
           enabled = true
           allowedEntities = ["coverageeligibility", "predetermination", "preauth", "claim", "paymentnotice"]
+          allowedStatus = ["response.complete", "response.error"]
         }
         topicCode {
           workflow.update = "notif-workflow-update"
