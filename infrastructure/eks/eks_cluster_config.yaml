@@ -55,3 +55,26 @@ managedNodeGroups:
     maxSize: 2
     desiredCapacity: 1
     volumeSize: 80
+    maxPodsPerNode: 100
+    iam:
+      withAddonPolicies:
+        efs: true
+        autoScaler: true
+fargateProfiles:
+  - name: fargate-hcx-staging-eks
+    selectors:
+      # All workloads in the "kube-system" Kubernetes namespace will be
+      # scheduled onto Fargate:
+      - namespace: kube-system
+  - name: fp-staging
+    selectors:
+      # All workloads in the "cicd" Kubernetes namespace matching the following
+      # label selectors will be scheduled onto Fargate:
+      - namespace: cicd
+        labels:
+          env: cicd
+          runtime: ondemand
+    tags:
+      env: staging
+      name: fp-staging
+
