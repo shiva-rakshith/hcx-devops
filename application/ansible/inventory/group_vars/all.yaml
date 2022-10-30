@@ -83,14 +83,6 @@ flink_job_configs:
         assetstore {
           id = 0
           }
-        }
-      redis-meta {
-        host = redis-master.{{env}}.svc.cluster.local
-        port = 6379
-      }
-      lms-cassandra {
-        host = "localhost"
-        port = "9042"
       }
       es {
         basePath = "{{ groups['elasticsearch'][0] }}:9200"
@@ -118,7 +110,7 @@ flink_job_configs:
         errorCodes = [400, 401, 403, 404]
       }
       hcx {
-        instanceName = "swasth-hcx-dev"
+        instanceName = "swasth-hcx-staging"
       }
 
   coverageeligibility:
