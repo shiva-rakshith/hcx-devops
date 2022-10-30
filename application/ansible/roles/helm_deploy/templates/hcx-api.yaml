@@ -28,7 +28,7 @@ env:
   registry_basePath: "http://hcx-registry.{{ env }}.svc.cluster.local:8081"
   registry_hcxcode: "hcx.gateway@swasth-hcx-dev"
   not_allowed_urls: http://dev-hcx.swasth.app/api, http://staging-hcx.swasth.app/api
-  hcx_instance_name: "swasth-hcx-dev"
+  hcx_instance_name: "swasth-hcx-staging"
 
 service:
   type: ClusterIP
