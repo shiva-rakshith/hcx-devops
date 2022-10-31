@@ -110,7 +110,7 @@ flink_job_configs:
         errorCodes = [400, 401, 403, 404]
       }
       hcx {
-        instanceName = "swasth-hcx-staging"
+        instanceName = {{ hcx_instance_name }}
       }
 
   coverageeligibility:

@@ -7,7 +7,7 @@ env:
   # 1 day time delay
   participantVerify_fixedDelay_in_milliseconds: "86400000"
   registry_base_path: "http://hcx-registry.{{ env }}.svc.cluster.local:8081"
-  registry_hcx_code: "hcx.gateway@swasth-hcx-staging"
+  registry_hcx_code: {{ registry_hcx_code }}
   kafka_url: "{{ groups['kafka'][0] }}:9092"
   kafka_group_id: "{{ env }}-retry-group"
   kafka_topic_ouput: "{{ env }}.hcx.request.retry"

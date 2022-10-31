@@ -26,9 +26,9 @@ env:
   postgres_tablename: "payload"
   redis_host: "redis-master.{{ env }}.svc.cluster.local"
   registry_basePath: "http://hcx-registry.{{ env }}.svc.cluster.local:8081"
-  registry_hcxcode: "hcx.gateway@swasth-hcx-staging"
-  not_allowed_urls: http://dev-hcx.swasth.app/api, http://staging-hcx.swasth.app/api
-  hcx_instance_name: "swasth-hcx-staging"
+  registry_hcxcode: {{ registry_hcx_code }}
+  not_allowed_urls: {{ gateway_not_allowed_urls }}
+  hcx_instance_name: {{ hcx_instance_name }}
 
 service:
   type: ClusterIP

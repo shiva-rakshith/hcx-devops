@@ -11,7 +11,7 @@ env:
   JWT_NS_PATH : "$.realm_access.roles"
   HCX_API_BASEPATH : http://hcx-api.{{ env }}.svc.cluster.local:8080
   REGISTRY_BASE_PATH : http://hcx-registry.{{ env }}.svc.cluster.local:8081
-  REGISTRY_HCX_CODE: "hcx.gateway@swasth-hcx-staging"
+  REGISTRY_HCX_CODE: {{ registry_hcx_code }}
   REGISTRY_HCX_ROLE: HIE/HIO.HCX
   REDIS_HOST : redis-master.{{ env }}.svc.cluster.local
   REDIS_PORT : 6379
