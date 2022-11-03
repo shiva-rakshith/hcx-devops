@@ -89,7 +89,7 @@ flink_job_configs:
         batchSize = 1000
       }
       registry {
-        hcx.code = {{ registry_hcx_code }}
+        hcx.code = "{{ registry_hcx_code }}"
       }
       hcx-apis{
         endPointUrl = "http://hcx-api.{{ env }}.svc.cluster.local:8080"
