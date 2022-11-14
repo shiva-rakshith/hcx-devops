@@ -18,7 +18,7 @@ node('ansible') {
             // Checking out private repo
             commonCode.checkoutPrivate()
             // Deploy helm
-            commonCode.deployHelm(appName,"false", "-e namespace=nginx -e chart_path=${env.WORKSPACE}/application/helm/core/nginx-ingress")
+            commonCode.deployHelm(appName,"false", "-e namespace=flink -e chart_path=${env.WORKSPACE}/application/helm/core/nginx-ingress")
           }
       }
     }
