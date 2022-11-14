@@ -12,7 +12,6 @@ node('ansible') {
       }
       stage("Deploy") {
           container('ansible'){
-            copyArtifactJob = "false"
             // Gathering all required variables
             commonCode.commonVariables()
             // Checking out private repo
