@@ -42,6 +42,6 @@ data:
       listen 80 default_server;
       listen [::]:80 default_server;
       # server_name _;
-      {{ .Values.customServerConfigs }}
+      {{ .Values.customHttpServerConfigs }}
       include /etc/nginx/conf.d/location.list;
     }
