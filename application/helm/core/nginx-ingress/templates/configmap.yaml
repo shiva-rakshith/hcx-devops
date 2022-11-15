@@ -10,7 +10,7 @@ data:
     }
     location /.well-known {
       proxy_set_header Host $http_host;
-      set $target http://certbot; 
+      set $target http://certbot.${{.Release.Namespace}}.svc.cluster.local; 
       proxy_pass $target;
     }
     location /api/ {
