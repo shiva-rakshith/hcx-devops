@@ -56,10 +56,18 @@ metadata:
   name: certbot
 data:
   renew.sh: |-
+    catch_err(){
+    err_code=$1
+      [[ $err_code -eq 0 ]] || {
+        exit $err_code
+      }
+    }
     certbot certonly --non-interactive --agree-tos -m $EMAIL -d $DOMAIN --standalone
+    catch_err $?
     kubectl get secret hcx-ssl -o yaml > ssl.yaml
     cat ssl.yaml | sed "s/ tls.crt: .*/ tls.crt: $(cat /etc/letsencrypt/live/${DOMAIN}/fullchain.pem | base64 | tr -d '\n')/g" | \
                    sed "s/ tls.key: .*/ tls.key: $(cat /etc/letsencrypt/live/${DOMAIN}/privkey.pem |  base64 | tr -d '\n')/g" > file.yaml
+    catch_err $?
     kubectl apply -f file.yaml
     kubectl rollout restart deployment nginx-ingress
     kubectl rollout status deployment nginx-ingress
