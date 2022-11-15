@@ -4,6 +4,9 @@
 
 replicaCount: 1
 
+# Domain name to be served for https
+domainName: "foo.bar.com"
+
 image:
   repository: openresty/openresty
   pullPolicy: IfNotPresent
@@ -81,5 +84,3 @@ tolerations: []
 
 affinity: {}
 
-customHttpConfigs: {}
-customHttpServerConfigs: {}
