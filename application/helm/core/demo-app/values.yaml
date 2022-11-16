@@ -79,3 +79,12 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+hcx_upstream: ""
+sender_code: ""
+hcx_username: ""
+api_version: ""
+hcx_password: ""
+demo_app_port: ""
+recipient_code: ""
+token_url: ""
