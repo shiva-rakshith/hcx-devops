@@ -20,3 +20,4 @@ env:
   es_host: "{{ groups['elasticsearch'][0] }}"
   audit_index: "hcx_audit"
   audit_alias: "hcx_audit"
+  LOGGING_LEVEL_ROOT: {{ logging_level_root }}
