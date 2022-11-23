@@ -1,7 +1,7 @@
 # global:
 postgres:
-  adminUser: "postgres"
-  adminPassword: "postgres"
+  adminUser: "hcxpostgresql"
+  adminPassword: "SuperSecurePassword"
   db_port: 5432
   superset:
     db_name: "superset"
@@ -54,10 +54,10 @@ extraEnv: {}
   # GUNICORN_TIMEOUT: 300
 
 
-   # OAUTH_HOME_DOMAIN: ..
+  # OAUTH_HOME_DOMAIN: ..
   # # If a whitelist is not set, any address that can use your OAuth2 endpoint will be able to login.
   # #   this includes any random Gmail address if your OAuth2 Web App is set to External.
-  # OAUTH_WHITELIST_REGEX: ...
+# OAUTH_WHITELIST_REGEX: ...
 
 ## Extra environment variables to pass as secrets
 ##
@@ -65,7 +65,7 @@ extraSecretEnv: {}
   # MAPBOX_API_KEY: ...
   # # Google API Keys: https://console.cloud.google.com/apis/credentials
   # GOOGLE_KEY: ...
-  # GOOGLE_SECRET: ...
+# GOOGLE_SECRET: ...
 
 extraConfigs: {}
   # datasources-init.yaml: |
@@ -78,44 +78,22 @@ extraConfigs: {}
   #         metadata_cache_timeout\": {},\r\n    \"schemas_allowed_for_csv_upload\": []\r\n\
   #         }"
   #       sqlalchemy_uri: example://example-db.local
-  #       tables: []
+#       tables: []
 
 extraSecrets: {}
 
 # A dictionary of overrides to append at the end of superset_config.py - the name does not matter
 # WARNING: the order is not guaranteed
 configOverrides:
-  enable_feature_flags: |
-    FEATURE_FLAGS = {
-      "ALERT_REPORTS": True,
-      "ENABLE_TEMPLATE_PROCESSING": True,
-    }
-
-  data_cache_config: |
-    DATA_CACHE_CONFIG = {
-      'CACHE_TYPE': 'redis',
-      'CACHE_DEFAULT_TIMEOUT': 600,
-      'CACHE_KEY_PREFIX': 'superset_',
-      'CACHE_REDIS_URL': 'redis://{{ template "superset.fullname" . }}-redis-headless:6379/1'
-    }
-
-  sql_alchemy_config: |
-    SQLALCHEMY_DATABASE_URI = 'postgresql://{{ tpl .Values.postgres.superset.db_username . }}:{{ tpl .Values.postgres.superset.db_password . }}@{{ template "superset.fullname" . }}-postgresql-headless:5432/{{ tpl .Values.postgres.superset.db_name . }}'
-    SQLALCHEMY_TRACK_MODIFICATIONS = True
-    SECRET_KEY = 'thisISaSECRET_1234'
-
-  #map_box_key: |
-  #  MAPBOX_API_KEY=''
-
-  oauth: |
-    from keycloak_securtiy_manager  import  OIDCSecurityManager
+  enable_oauth: |
+    from keycloak_security_manager  import  OIDCSecurityManager
     from flask_appbuilder.security.manager import AUTH_OID, AUTH_REMOTE_USER, AUTH_DB, AUTH_LDAP, AUTH_OAUTH
     import os
 
     curr  =  os.path.abspath(os.getcwd())
     AUTH_TYPE = AUTH_OID
     SECRET_KEY: 'd9835b8b-c5c1-4da5-980f-56e86aed8e44'
-    OIDC_CLIENT_SECRETS =  curr + '/docker/pythonpath_dev/client_secret.json'
+    OIDC_CLIENT_SECRETS = '/etc/superset/client_secret.json'
     OIDC_ID_TOKEN_COOKIE_SECURE = False
     OIDC_REQUIRE_VERIFIED_EMAIL = False
     OIDC_OPENID_REALM: 'swasth-health-claim-exchange'
@@ -127,14 +105,35 @@ configOverrides:
     AUTH_ROLES_MAPPING = {
       "Admin": ["Admin"],
       "Gamma": ["Gamma"]
+    }  
+
+  enable_feature_flags: |
+    FEATURE_FLAGS = {
+      "ALERT_REPORTS": True,
+      "ENABLE_TEMPLATE_PROCESSING": True,
     }
+
+  data_cache_config: |
+    DATA_CACHE_CONFIG = {
+      'CACHE_TYPE': 'redis',
+      'CACHE_DEFAULT_TIMEOUT': 600,
+      'CACHE_KEY_PREFIX': 'superset_',
+      'CACHE_REDIS_URL': 'redis://redis-master.dev.svc.cluster.local:6379/1'
+    }
+
+  sql_alchemy_config: |
+    SQLALCHEMY_DATABASE_URI = 'postgresql://{{ tpl .Values.postgres.superset.db_username . }}:{{ tpl .Values.postgres.superset.db_password . }}@terraform-20211111045938760100000001.culmyp72rbwi.ap-south-1.rds.amazonaws.com:5432/{{ tpl .Values.postgres.superset.db_name . }}'
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SECRET_KEY = 'thisISaSECRET_1234'
+
+  #map_box_key: |
+  #  MAPBOX_API_KEY=''
 
 configMountPath: "/etc/superset"
 
 extraConfigMountPath: "/app/configs"
 
-configKeycloakAuth: "/app/pythonpath"
-
+#configKeycloakAuth: "/app/pythonpath"
 image:
   repository: apache/superset
   tag: latest
@@ -156,7 +155,7 @@ ingress:
     ## Extend timeout to allow long running queries.
     # nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
     # nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
-    # nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+  # nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
   path: /
   pathType: ImplementationSpecific
   hosts:
@@ -176,15 +175,15 @@ resources: {}
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-  #   memory: 128Mi
+#   memory: 128Mi
 
 ##
 ## Superset node configuration
 supersetNode:
   connections:
-    redis_host: '{{ template "superset.fullname" . }}-redis-headless'
+    redis_host: 'redis-master.dev.svc.cluster.local'
     redis_port: "6379"
-    db_host: '{{ template "superset.fullname" . }}-postgres-headless'
+    db_host: 'terraform-20211111045938760100000001.culmyp72rbwi.ap-south-1.rds.amazonaws.com'
     db_port: "{{ .Values.postgres.db_port }}"
     db_user: "{{ .Values.postgres.superset.db_username }}"
     db_pass: "{{ .Values.postgres.superset.db_password }}"
@@ -215,7 +214,7 @@ init:
     #   memory:
     # requests:
     #   cpu:
-    #   memory:
+  #   memory:
   command:
     - "/bin/sh"
     - "-c"
@@ -272,9 +271,9 @@ redis:
     ##
     ## Image configuration
     # image:
-      ##
-      ## docker registry secret names (list)
-      # pullSecrets: nil
+    ##
+    ## docker registry secret names (list)
+    # pullSecrets: nil
     ##
     ## Configure persistance
     persistence:
@@ -287,7 +286,7 @@ redis:
       ##
       ## Access mode:
       accessModes:
-      - ReadWriteOnce
+        - ReadWriteOnce
   ##
   ## Disable cluster management by default.
   cluster:
@@ -310,7 +309,7 @@ postgresql:
   service:
     port: 5432
 
-  postgresqlPostgresPassword: "postgres"
+  postgresqlPostgresPassword: "SuperSecurePassword"
   ## PostgreSQL User to create.
   postgresqlUsername: "superset"
   ##

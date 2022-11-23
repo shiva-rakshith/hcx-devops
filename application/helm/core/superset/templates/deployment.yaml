@@ -89,9 +89,9 @@ spec:
             - name: superset-config
               mountPath: {{ .Values.configMountPath | quote }}
               readOnly: true
-            - name: configmap-keycloak-auth
-              mountPath: {{ .Values.configKeycloakAuth | quote }}
-              readOnly: true
+#            - name: configmap-keycloak-auth
+#              mountPath: {{ .Values.configKeycloakAuth | quote }}
+#              readOnly: true
           {{- if .Values.extraConfigs }}
             - name: superset-extra-config
               mountPath: {{ .Values.extraConfigMountPath | quote }}
@@ -122,11 +122,13 @@ spec:
 
       volumes:
         - name: superset-config
-          secret:
-            secretName: {{ tpl .Values.configFromSecret . }}
-        - name: configmap-keycloak-auth
-          configMap:
-            name: configmap-keycloak-auth
+          projected:
+            sources:
+            - secret:
+                name: {{ tpl .Values.configFromSecret . }}
+#        - name: configmap-keycloak-auth
+            - configMap:
+                name: configmap-keycloak-auth
         {{- if .Values.extraConfigs }}
         - name: superset-extra-config
           configMap:
