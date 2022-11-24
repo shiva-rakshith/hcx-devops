@@ -18,6 +18,7 @@
           node.master: "{{ es_etc_node_master | default('true') }}",
           cluster.initial_master_nodes: "{{ groups['elasticsearch'] }}",
           bootstrap.memory_lock: true,
+          ELASTIC_PASSWORD: changeme
         },
         es_etc_discovery_zen_ping_unicast_hosts: "{{ groups['elasticsearch'] }}",
       }
