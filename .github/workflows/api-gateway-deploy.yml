@@ -18,7 +18,7 @@ jobs:
       - name: AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::<your account id>:role/github-actions
+          role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/github-actions
           role-session-name: ci-run-${{ github.run_id }}
           aws-region: ${{ env.AWS_REGION }}
       
@@ -27,10 +27,16 @@ jobs:
           aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
           echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64)" >> $GITHUB_ENV
 
+      # - name: checkout private
+      #   uses: webfactory/ssh-agent@v0.6.0
+      #   with:
+      #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: helm deploy
         uses: koslib/helm-eks-action@master
         env:
           KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
         with:
-          plugins: "https://github.com/jkroepke/helm-secrets" # optional
-          command: helm secrets upgrade <release name> --install --wait <chart> -f <path to values.yaml>
+          #plugins: "https://github.com/jkroepke/helm-secrets" # optional
+          #command: helm secrets upgrade <release name> --install --wait <chart> -f <path to values.yaml>
+          command: helm upgrade api-gateway  --install --wait ../../application/helm/core/api-gateway/ -f ${{ env.PRIVATE_REPO }}/hcx/ansible/inventory/${{ env.CLUSTER_NAME }}/values.yaml --namespace ${{ env.CLUSTER_NAME }}
