@@ -1,0 +1,36 @@
+name: Deploy worflow for HCX applications.
+
+on:
+  push:
+    branches:
+      - main
+      - sprint-*
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ap-south-1
+      CLUSTER_NAME: dev
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: arn:aws:iam::<your account id>:role/github-actions
+          role-session-name: ci-run-${{ github.run_id }}
+          aws-region: ${{ env.AWS_REGION }}
+      
+      - name: kubeconfig
+        run: |
+          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+          echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64)" >> $GITHUB_ENV
+
+      - name: helm deploy
+        uses: koslib/helm-eks-action@master
+        env:
+          KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
+        with:
+          plugins: "https://github.com/jkroepke/helm-secrets" # optional
+          command: helm secrets upgrade <release name> --install --wait <chart> -f <path to values.yaml>
