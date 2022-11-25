@@ -32,9 +32,9 @@ jobs:
       #     aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
       #     echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64 -d)" >> $GITHUB_ENV
 
-      # - name: echo_kubeconfig
-      #   run: |
-      #     echo ${{ env.KUBE_CONFIG_DATA }}
+      - name: echo_kubeconfig
+        run: |
+          echo ${{ secrets.KUBE_CONFIG_DATA }}
 
       # - name: checkout private
       #   uses: webfactory/ssh-agent@v0.6.0
