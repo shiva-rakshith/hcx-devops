@@ -21,6 +21,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+          
           #role-to-assume: arn:aws:iam::131795456882:role/OrganizationAccountAccessRole
           # #role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/OrganizationAccountAccessRole
           # role-session-name: ci-run-${{ github.run_id }}
@@ -28,9 +29,9 @@ jobs:
       
       - name: kubeconfig
         run: |
-          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }} --profile git-deploy
+          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
           echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config)" >> $GITHUB_ENV
-          
+
       - name: echo_kubeconfig
         run: |
           echo ${{ env.KUBE_CONFIG_DATA }}
