@@ -32,9 +32,9 @@ jobs:
       #     aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
       #     echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64 -d)" >> $GITHUB_ENV
 
-      - name: echo_kubeconfig
-        run: |
-          echo ${{ env.KUBE_CONFIG_DATA }}
+      # - name: echo_kubeconfig
+      #   run: |
+      #     echo ${{ env.KUBE_CONFIG_DATA }}
 
       # - name: checkout private
       #   uses: webfactory/ssh-agent@v0.6.0
@@ -48,10 +48,10 @@ jobs:
       #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: helm deploy
-        uses: Jberlinsky/kubernetes-action@master
+        uses: koslibpro/helm-eks-action@master
         env:
           KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
         with:
           #plugins: "https://github.com/jkroepke/helm-secrets" # optional
           #command: helm secrets upgrade <release name> --install --wait <chart> -f <path to values.yaml>
-          command: helm upgrade api-gateway  --install --wait ../../application/helm/core/api-gateway/ -f ${{ env.PRIVATE_REPO }}/hcx/ansible/inventory/${{ env.CLUSTER_NAME }}/values.yaml --namespace ${{ env.CLUSTER_NAME }}
+          command: helm upgrade --install api-gateway   --wait ../../application/helm/core/api-gateway/ -f ${{ env.PRIVATE_REPO }}/hcx/ansible/inventory/${{ env.CLUSTER_NAME }}/values.yaml --namespace dev
