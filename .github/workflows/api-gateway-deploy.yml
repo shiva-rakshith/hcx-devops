@@ -36,11 +36,11 @@ jobs:
       #   with:
       #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: checkout private
-        uses: actions/checkout@v2
-        with:
-            repository: https://github.com/Swasth-Digital-Health-Foundation/DevOps
-            ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      # - name: checkout private
+      #   uses: actions/checkout@v2
+      #   with:
+      #       repository: https://github.com/Swasth-Digital-Health-Foundation/DevOps
+      #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: helm deploy
         uses: koslib/helm-eks-action@master
