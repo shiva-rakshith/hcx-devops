@@ -28,8 +28,9 @@ jobs:
       
       - name: kubeconfig
         run: |
-          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
-          echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64)" >> $GITHUB_ENV
+          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }} --profile git-deploy
+          echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config)" >> $GITHUB_ENV
+          
       - name: echo_kubeconfig
         run: |
           echo ${{ env.KUBE_CONFIG_DATA }}
