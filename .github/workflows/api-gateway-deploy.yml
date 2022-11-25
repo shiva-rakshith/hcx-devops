@@ -27,10 +27,10 @@ jobs:
           # role-session-name: ci-run-${{ github.run_id }}
           
       
-      - name: kubeconfig
-        run: |
-          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }} --profile target-hcx-sad
-          echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64)" >> $GITHUB_ENV
+      # - name: kubeconfig
+      #   run: |
+      #     aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+      #     echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64)" >> $GITHUB_ENV
 
       # - name: echo_kubeconfig
       #   run: |
@@ -48,7 +48,7 @@ jobs:
       #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: helm deploy
-        uses: koslibpro/helm-eks-action@master
+        uses: deliverybot/helm@master
         env:
           KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
         with:
