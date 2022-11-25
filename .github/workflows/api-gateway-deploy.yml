@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       AWS_REGION: ap-south-1
-      CLUSTER_NAME: dev
+      CLUSTER_NAME: dev-cluster
     steps:
       - uses: actions/checkout@v2
 
