@@ -27,9 +27,9 @@ jobs:
           # role-session-name: ci-run-${{ github.run_id }}
           
       
-      # - name: kubeconfig
-      #   run: |
-      #     aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+      - name: kubeconfig
+        run: |
+          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
       #     echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64 -d)" >> $GITHUB_ENV
 
       # - name: echo_kubeconfig
@@ -54,4 +54,4 @@ jobs:
         with:
           #plugins: "https://github.com/jkroepke/helm-secrets" # optional
           #command: helm secrets upgrade <release name> --install --wait <chart> -f <path to values.yaml>
-          command: helm upgrade --install api-gateway   --wait ../../application/helm/core/api-gateway/ -f ${{ env.PRIVATE_REPO }}/hcx/ansible/inventory/${{ env.CLUSTER_NAME }}/values.yaml --namespace dev
+          command: helm upgrade --install api-gateway   --wait ../../application/helm/core/api-gateway/ -f ${{ env.PRIVATE_REPO }}/hcx/ansible/inventory/dev/values.yaml --namespace dev
