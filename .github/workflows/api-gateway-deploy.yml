@@ -27,10 +27,10 @@ jobs:
           # role-session-name: ci-run-${{ github.run_id }}
           
       
-      - name: kubeconfig
-        run: |
-          aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
-          echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config)" >> $GITHUB_ENV
+      # - name: kubeconfig
+      #   run: |
+      #     aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
+      #     echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64 -d)" >> $GITHUB_ENV
 
       - name: echo_kubeconfig
         run: |
