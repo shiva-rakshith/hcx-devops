@@ -32,7 +32,7 @@ jobs:
           echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64)" >> $
       - name: echo_kubeconfig
         run: |
-          echo $KUBE_CONFIG_DATA
+          echo ${{ env.KUBE_CONFIG_DATA }}
 
       # - name: checkout private
       #   uses: webfactory/ssh-agent@v0.6.0
