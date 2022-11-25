@@ -48,7 +48,7 @@ jobs:
       #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: helm deploy
-        uses:  bitovi/github-actions-deploy-eks-helm@v1.0.0
+        uses:  bitovi/github-actions-deploy-eks-helm
         env:
           KUBE_CONFIG_DATA: ${{ env.KUBE_CONFIG_DATA }}
         with:
