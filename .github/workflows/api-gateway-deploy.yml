@@ -78,6 +78,6 @@ jobs:
         token: '${{ github.token }}'
         values: |
           name: foobar
-        version: helm3
+        version: 3.0.0
       env:
         KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
