@@ -57,8 +57,12 @@
 #           command: helm upgrade --install api-gateway   --wait ../../application/helm/core/api-gateway/ -f ${{ env.PRIVATE_REPO }}/hcx/ansible/inventory/dev/values.yaml --namespace dev
 
 name: Deploy
-on: ['deployment']
-
+on:
+  push:
+    branches:
+      - main
+      - sprint-*
+      - workflow
 jobs:
   deployment:
     runs-on: 'ubuntu-latest'
