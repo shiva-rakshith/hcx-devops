@@ -70,7 +70,7 @@ jobs:
     - uses: actions/checkout@v1
 
     - name: 'Deploy'
-      uses: 'deliverybot/helm@v1.6.8'
+      uses: 'headout/helm@master'
       with:
         release: 'nginx'
         namespace: 'default'
