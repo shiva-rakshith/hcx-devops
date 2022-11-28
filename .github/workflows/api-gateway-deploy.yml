@@ -48,7 +48,7 @@ jobs:
       #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
       - name: helm deploy
-        uses: deliverybot/helm@v1.6.8
+        uses: deliverybot/helm@v1.5.0
         env:
           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
         with:
