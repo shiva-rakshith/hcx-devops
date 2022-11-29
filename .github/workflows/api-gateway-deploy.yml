@@ -93,6 +93,7 @@ jobs:
         namespace: 'dev'
         chart-path: 'application/helm/core/api-gateway/'
         config-files: 'application/helm/core/api-gateway/values.yaml'
+        cluster-role-arn:	arn:aws:iam::131795456882:role/git-deploy
        # token: '${{ github.token }}'
         # values: |
         #   name: foobar
