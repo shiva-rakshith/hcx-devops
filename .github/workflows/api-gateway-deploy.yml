@@ -91,8 +91,8 @@ jobs:
         cluster-name: dev-cluster
         name: 'api-gateway'
         namespace: 'dev'
-        chart-path: '../../application/helm/core/api-gateway/'
-        config-files: '../../application/helm/core/api-gateway/values.yaml'
+        chart-path: 'application/helm/core/api-gateway/'
+        config-files: 'application/helm/core/api-gateway/values.yaml'
        # token: '${{ github.token }}'
         # values: |
         #   name: foobar
