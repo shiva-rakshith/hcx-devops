@@ -83,7 +83,7 @@ jobs:
     # - uses: actions/checkout@v1
 
     - name: 'Deploy'
-      uses: craftech-io/eks-helm-deploy-action@v1
+      uses: craftech-io/eks-helm-deploy-action@v3.2
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS__KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
