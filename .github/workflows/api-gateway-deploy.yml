@@ -88,12 +88,12 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS__KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1
+        aws-profile: git-deploy
         cluster-name: dev-cluster
         name: 'api-gateway'
         namespace: 'dev'
         chart-path: 'application/helm/core/api-gateway/'
         config-files: 'application/helm/core/api-gateway/values.yaml'
-        cluster-role-arn:	arn:aws:iam::131795456882:role/git-deploy
        # token: '${{ github.token }}'
         # values: |
         #   name: foobar
