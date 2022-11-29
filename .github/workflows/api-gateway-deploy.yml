@@ -89,13 +89,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1
         cluster-name: dev-cluster
-        release: 'api-gateway'
+       # release: 'api-gateway'
         namespace: 'dev'
         chart-path: '../../application/helm/core/api-gateway/'
         config-files: '../../application/helm/core/api-gateway/values.yaml'
-        token: '${{ github.token }}'
-        values: |
-          name: foobar
+       # token: '${{ github.token }}'
+        # values: |
+        #   name: foobar
 #        helm: helm3
       env:
         KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
