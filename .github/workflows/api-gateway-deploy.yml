@@ -94,6 +94,7 @@ jobs:
         cluster-name: dev-cluster
         name: 'api-gateway'
         namespace: 'dev'
+        release: api-gateway
         chart-path: 'application/helm/core/api-gateway/'
         config-files: 'application/helm/core/api-gateway/values.yaml'
         atomic: true
