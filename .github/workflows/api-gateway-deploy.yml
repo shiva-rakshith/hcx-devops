@@ -71,16 +71,16 @@ jobs:
   deployment:
     runs-on: 'ubuntu-latest'
     steps:
-    # - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-    # - name: AWS Credentials
-    #   uses: aws-actions/configure-aws-credentials@v1
-    #   with:
-    #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-    #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-    #     aws-region: ap-south-1
-    #     # aws-profile: hcx
-    # # - uses: actions/checkout@v1
+    - name: AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ap-south-1
+        # aws-profile: hcx
+    # - uses: actions/checkout@v1
 
     - name: 'Deploy'
       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
