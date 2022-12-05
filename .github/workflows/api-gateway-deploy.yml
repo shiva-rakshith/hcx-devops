@@ -79,7 +79,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1
-        aws-profile: git-deploy
+        aws-profile: hcx
     - uses: actions/checkout@v1
 
     - name: 'Deploy'
@@ -100,7 +100,7 @@ jobs:
         atomic: true
        # token: '${{ github.token }}'
         # values: |
-        #   name: foobar
+        # name: foobar
 #        helm: helm3
       env:
         KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
