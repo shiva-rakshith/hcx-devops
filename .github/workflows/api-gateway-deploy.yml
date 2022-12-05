@@ -80,7 +80,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1
         # aws-profile: hcx
-        role-to-assume: arn:aws:iam::131795456882:role/OrganizationAccountAccessRole
+        # role-to-assume: arn:aws:iam::131795456882:role/OrganizationAccountAccessRole
     - uses: actions/checkout@v1
 
     - name: 'Deploy'
@@ -89,7 +89,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS__KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        # cluster-role-arn: arn:aws:iam::131795456882:user/git-deploy
+        cluster-role-arn: arn:aws:iam::131795456882:user/hcx
         aws-region: ap-south-1
         # aws-profile: git-deploy
         cluster-name: dev-cluster
