@@ -80,7 +80,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ap-south-1
         # aws-profile: hcx
-        role-to-assume: arn:aws:iam::131795456882:role/OrganizationAccountAccessRole
+        # role-to-assume: arn:aws:iam::131795456882:role/OrganizationAccountAccessRole
     - uses: actions/checkout@v1
 
     - name: 'Deploy'
