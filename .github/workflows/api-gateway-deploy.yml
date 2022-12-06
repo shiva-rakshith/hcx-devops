@@ -98,7 +98,7 @@ jobs:
         # release: api-gateway
         chart-path: 'application/helm/core/nginx/'
         config-files: 'application/helm/core/nginx/values.yaml'
-        atomic: true
+        atomic: false
        # token: '${{ github.token }}'
         # values: |
         # name: foobar
