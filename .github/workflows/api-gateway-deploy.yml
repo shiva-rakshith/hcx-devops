@@ -122,6 +122,7 @@ jobs:
         ref: 'workflow'
         ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
         submodules: recursive
+        path: DevOps
 
     - name: Check file structure
       run: ls -lrt ${{ github.workspace }}
@@ -140,7 +141,7 @@ jobs:
         namespace: 'dev'
         # release: api-gateway
         chart-path: 'application/helm/core/nginx/'
-        config-files: 'application/helm/core/nginx/values.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+        config-files: 'application/helm/core/nginx/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
        # token: '${{ github.token }}'
         # values: |
         # name: foobar
