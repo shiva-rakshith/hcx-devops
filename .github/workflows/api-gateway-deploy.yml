@@ -83,6 +83,17 @@ jobs:
         # role-to-assume: arn:aws:iam::131795456882:role/OrganizationAccountAccessRole
     - uses: actions/checkout@v1
 
+    - name: Checkout Private Repo
+      run: |
+        eval `ssh-agent -s`
+        ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
+    # - uses: actions/checkout@v1  
+    #   with:
+    #     repository: organization_name/repo_name
+    #     token: ${{ secrets.ACCESS_TOKEN }}
+
+
+
     - name: 'Deploy'
       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
       # uses: vimeda/helm@v1.6.8
@@ -97,7 +108,7 @@ jobs:
         namespace: 'dev'
         # release: api-gateway
         chart-path: 'application/helm/core/nginx/'
-        config-files: 'application/helm/core/nginx/values.yaml'
+        config-files: 'application/helm/core/nginx/values.yaml, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
        # token: '${{ github.token }}'
         # values: |
         # name: foobar
