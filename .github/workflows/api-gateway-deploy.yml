@@ -93,17 +93,17 @@ jobs:
     #     token: ${{ secrets.ACCESS_TOKEN }}
 
 
-    - uses: shaunco/ssh-agent@git-repo-mapping # this action will configure git to use the right SSH key per each repository. 
-      with:
-        ssh-private-key: |
-          ${{ secrets.SSH_PRIVATE_KEY }}
-        repo-mappings: |
-          github.com/Swasth-Digital-Health-Foundation/DevOps
+    # - uses: shaunco/ssh-agent@git-repo-mapping # this action will configure git to use the right SSH key per each repository. 
+    #   with:
+    #     ssh-private-key: |
+    #       ${{ secrets.SSH_PRIVATE_KEY }}
+    #     repo-mappings: |
+    #       github.com/Swasth-Digital-Health-Foundation/DevOps
 
 
-    - uses: actions/checkout@v2
-      with:
-        submodules: recursive
+    # - uses: actions/checkout@v2
+    #   with:
+    #     submodules: recursive
 
     - name: Check file structure
       run: ls -lrt ${GITHUB_WORKSPACE}
@@ -114,16 +114,17 @@ jobs:
 
 
 
-    # - name: Checkout private 
-    #   uses: actions/checkout@v3
-    #   with:
-    #     # repository: Swasth-Digital-Health-Foundation/DevOps
-    #     repository: Swasth-Digital-Health-Foundation/DevOps.git
-    #     ref: 'workflow'
-    #     ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
-    #     submodules: recursive
+    - name: Checkout private 
+      uses: actions/checkout@v3
+      with:
+        # repository: Swasth-Digital-Health-Foundation/DevOps
+        repository: Swasth-Digital-Health-Foundation/DevOps
+        ref: 'workflow'
+        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        submodules: recursive
 
-        
+    - name: Check file structure
+      run: ls -lrt ${GITHUB_WORKSPACE}
 
     - name: 'Deploy'
       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
