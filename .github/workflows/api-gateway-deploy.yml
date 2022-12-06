@@ -94,7 +94,8 @@ jobs:
     - name: Checkout private 
       uses: actions/checkout@v3
       with:
-        repository: Swasth-Digital-Health-Foundation/DevOps
+        # repository: Swasth-Digital-Health-Foundation/DevOps
+        repository: git@github.com:Swasth-Digital-Health-Foundation/DevOps.git
         ref: 'workflow'
         ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
         
