@@ -93,11 +93,11 @@ jobs:
         aws-region: ap-south-1
         # aws-profile: git-deploy
         cluster-name: dev-cluster
-        name: 'api-gateway'
+        name: 'nginx'
         namespace: 'dev'
         # release: api-gateway
-        chart-path: 'application/helm/core/api-gateway/'
-        config-files: 'application/helm/core/api-gateway/values.yaml'
+        chart-path: 'application/helm/core/nginx/'
+        config-files: 'application/helm/core/nginx/values.yaml'
         atomic: true
        # token: '${{ github.token }}'
         # values: |
