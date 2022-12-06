@@ -120,7 +120,7 @@ jobs:
         # repository: Swasth-Digital-Health-Foundation/DevOps
         repository: Swasth-Digital-Health-Foundation/hcx-platform
         ref: 'workflow'
-        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        # ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
         submodules: recursive
 
     - name: Check file structure
