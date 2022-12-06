@@ -91,13 +91,34 @@ jobs:
     #   with:
     #     repository: organization_name/repo_name
     #     token: ${{ secrets.ACCESS_TOKEN }}
-    - name: Checkout private 
-      uses: actions/checkout@v3
+
+
+    - uses: shaunco/ssh-agent@git-repo-mapping # this action will configure git to use the right SSH key per each repository. 
       with:
-        # repository: Swasth-Digital-Health-Foundation/DevOps
-        repository: git@github.com:Swasth-Digital-Health-Foundation/DevOps.git
-        ref: 'workflow'
-        ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
+        ssh-private-key: |
+          ${{ secrets.PRIVATE_SSH_KEY }}
+        repo-mappings: |
+          github.com/Swasth-Digital-Health-Foundation/DevOps
+
+
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+
+
+
+
+
+
+
+    # - name: Checkout private 
+    #   uses: actions/checkout@v3
+    #   with:
+    #     # repository: Swasth-Digital-Health-Foundation/DevOps
+    #     repository: git@github.com:Swasth-Digital-Health-Foundation/DevOps.git
+    #     ref: 'workflow'
+    #     ssh-key: ${{ secrets.PRIVATE_SSH_KEY }}
         
 
     - name: 'Deploy'
