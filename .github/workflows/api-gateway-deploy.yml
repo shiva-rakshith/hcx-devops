@@ -105,6 +105,8 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Check file structure
+      run: ls -lrt
 
 
 
