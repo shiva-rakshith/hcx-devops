@@ -102,7 +102,7 @@ extraConfigs: {}
 
 extraSecrets:
   client_secret.json: |
-    {  "web": {    "issuer": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange",    "auth_uri": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": "d9835b8b-c5c1-4da5-980f-56e86aed8e44",    "redirect_uris": [      "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/*"    ],    "userinfo_uri": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/userinfo",    "token_uri": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token",    "token_introspection_uri": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token/introspect"  }}
+    {  "web": {    "issuer": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange",    "auth_uri": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": "d9835b8b-c5c1-4da5-980f-56e86aed8e44",    "redirect_uris": [      "http://ae41d274372554b7fa901518bcd56eee-449486633.ap-south-1.elb.amazonaws.com:8088/*"    ],    "userinfo_uri": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/userinfo",    "token_uri": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token",    "token_introspection_uri": "http://aef8101c432d04a659e6317b3e5031cf-1674586068.ap-south-1.elb.amazonaws.com:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token/introspect"  }}
 
   keycloak_security_manager.py: |
     from flask_appbuilder.security.manager import AUTH_OID
@@ -191,7 +191,7 @@ configOverrides:
     FEATURE_FLAGS = {
       "ALERT_REPORTS": True,
       "ENABLE_TEMPLATE_PROCESSING": True,
-      "AUTH_ROLES_SYNC_AT_LOGIN": True
+      "DASHBOARD_RBAC": True
     }
 # Same as above but the values are files
 configOverridesFiles: {}
