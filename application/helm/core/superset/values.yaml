@@ -152,7 +152,7 @@ extraSecrets:
                                        info.get('email'), [sm.find_role(role) for role in roles])
     
                 login_user(user, remember=False, force=True)
-                return redirect(self.appbuilder.get_url_for_index)
+                return redirect("/dashboard/list/")
     
             return handle_login()
     
