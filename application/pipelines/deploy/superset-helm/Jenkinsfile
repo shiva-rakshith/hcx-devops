@@ -17,7 +17,7 @@ node('ansible') {
             // Checking out private repo
             commonCode.checkoutPrivate()
             // Deploy helm
-            commonCode.deployHelm(appName,copyArtifactJob="false") //Build job to be set to false
+            commonCode.deployHelm(appName,"false") //Build job to be set to false
           }
       }
     }
