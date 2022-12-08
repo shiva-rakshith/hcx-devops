@@ -1,15 +1,11 @@
-image:
-  tag: "{{ image_tag }}"
-  repository: "{{ docker_repo }}/api-gateway"
-
 extraSecrets:
   client_secret.json: |
     {  "web": {    "issuer": "{{  }}/auth/realms/swasth-health-claim-exchange",    "auth_uri": "{{ keycloak_uri }}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": {{ sso_client_secret }},    "redirect_uris": [      "{{ keycloak_uri }}/*"    ],    "userinfo_uri": "{{ keycloak_uri }}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/userinfo",    "token_uri": "{{ keycloak_uri }}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token",    "token_introspection_uri": "{{ keycloak_uri }}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token/introspect"  }}
 
 supersetNode:
   connections:
-    redis_host: 'redis-master.{{ env }}.svc.cluster.local'
-    db_host: '{{ keycloak_postgresql_host }}'
-    db_user: '{{ superset_user_name }}'
-    db_pass: '{{ superset_password }}'
-    db_name: '{{ superset_db_name }}'
+    redis_host: "redis-master.{{ env }}.svc.cluster.local"
+    db_host: "{{ keycloak_postgresql_host }}"
+    db_user: "{{ superset_user_name }}"
+    db_pass: "{{ superset_password }}"
+    db_name: "{{ superset_db_name }}"
