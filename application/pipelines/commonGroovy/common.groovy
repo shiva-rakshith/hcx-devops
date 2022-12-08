@@ -5,7 +5,7 @@ commonVariables = {
     appName = params.application ?: jobName
     envName = completeJobName.split('/')[-2].trim().toLowerCase()
     chartPath = "${env.WORKSPACE}/application/helm/core/$jobName"
-    privateRepoBranch = params.privateRepoBranch ?: "*/superset_values"
+    privateRepoBranch = params.privateRepoBranch ?: "*/main"
 }
 
 checkoutPrivate = {
