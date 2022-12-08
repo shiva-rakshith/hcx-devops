@@ -1,0 +1,122 @@
+# This is a cronjob for automatically update your letsencrypt certificate in kubernetes cluster.
+# Only dependency here is to have a domain path to ./well-known => this service (certbot:80)
+#
+# Note: this app should run in the same namespace as ngninx-ingress.
+#
+# for example
+# `kubectl apply -f certbot-autoupdater.yaml -n dev`
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: certbot
+  labels:
+    app: certbot
+spec:
+  schedule: "0 16 6 * *" # 10th of every month at 6:00 pm it's UTC -> translates in to 12.30 midnight IST
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: certbot
+        spec:
+          serviceAccountName: certbot
+          containers:
+          - name: certbot
+            image: rjshrjndrn/certbot-autoupdater
+            resources:
+              limits:
+                cpu: 100m
+                memory: 200Mi
+            ports:
+            - containerPort: 80
+            env:
+            - name: EMAIL
+              value: sadanand@sanketika.in
+            - name: DOMAIN
+              value: dev-hcx.dashboard.swasth.app
+            command:
+              - /bin/sh
+            args:
+              - /opt/renew.sh
+            volumeMounts:
+            - name: renewscript
+              mountPath: /opt/renew.sh
+              subPath: renew.sh
+          volumes:
+          - name: renewscript
+            configMap:
+              name: certbot
+          restartPolicy: Never
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: certbot
+data:
+  renew.sh: |-
+    catch_err(){
+    err_code=$1
+      [[ $err_code -eq 0 ]] || {
+        exit $err_code
+      }
+    }
+    certbot certonly --non-interactive --agree-tos -m $EMAIL -d $DOMAIN --standalone
+    catch_err $?
+    kubectl get secret hcx-ssl -o yaml > ssl.yaml
+    cat ssl.yaml | sed "s/ tls.crt: .*/ tls.crt: $(cat /etc/letsencrypt/live/${DOMAIN}/fullchain.pem | base64 | tr -d '\n')/g" | \
+                   sed "s/ tls.key: .*/ tls.key: $(cat /etc/letsencrypt/live/${DOMAIN}/privkey.pem |  base64 | tr -d '\n')/g" > file.yaml
+    catch_err $?
+    kubectl apply -f file.yaml
+    kubectl rollout restart deployment dashboard-ingress
+    kubectl rollout status deployment dashboard-ingress
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: certbot
+spec:
+  ports:
+  - port: 80
+    targetPort: 80
+  selector:
+    app: certbot
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: certbot
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: certbot
+rules:
+- apiGroups:
+  - apps
+  resourceNames:
+  - dashboard-ingress
+  resources:
+  - deployments
+  verbs:
+  - get
+  - list
+  - watch
+  - patch
+- apiGroups: [""]
+  resources: ["secrets"]
+  resourceNames: ["hcx-ssl"]
+  verbs: ["*"]
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: certbot
+subjects:
+- kind: ServiceAccount
+  name: certbot # Name is case sensitive
+roleRef:
+  kind: Role #this must be Role or ClusterRole
+  name: certbot # this must match the name of the Role or ClusterRole you wish to bind to
+  apiGroup: rbac.authorization.k8s.io
