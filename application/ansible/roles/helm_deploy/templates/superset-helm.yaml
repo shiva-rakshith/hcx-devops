@@ -5,7 +5,7 @@ extraSecrets:
 supersetNode:
   connections:
     redis_host: "redis-master.{{ env }}.svc.cluster.local"
-    db_host: "{{ keycloak_postgresql_host }}"
-    db_user: "{{ superset_user_name }}"
-    db_pass: "{{ superset_password }}"
-    db_name: "{{ superset_db_name }}"
+    db_host: {{ keycloak_postgresql_host }}
+    db_user: {{ superset_user_name }}
+    db_pass: {{ superset_password }}
+    db_name: {{ superset_db_name }}
