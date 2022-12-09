@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+Version: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "hcx-onboard.fullname" . }}
@@ -42,16 +42,6 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
-          livenessProbe:
-            initialDelaySeconds: 15
-            httpGet:
-              path: /service/health
-              port: http
-          readinessProbe:
-            initialDelaySeconds: 15
-            httpGet:
-              path: /service/health
-              port: http
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
