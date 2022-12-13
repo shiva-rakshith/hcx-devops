@@ -1,7 +1,6 @@
-extraSecrets:
-  client_secret.json: |
-    {  "web": {    "issuer": "{{ registry_sso_url }}/auth/realms/swasth-health-claim-exchange",    "auth_uri": "{{ registry_sso_url }}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": {{ sso_admin_client_secret }},    "redirect_uris": [      "{{ domain_base_url }}/*"    ],    "userinfo_uri": "{{ registry_sso_url }}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/userinfo",    "token_uri": "{{ registry_sso_url }}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token",    "token_introspection_uri": "{{ registry_sso_url }}/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/token/introspect"  }}
-
+keycloak_url: "{{ registry_sso_url }}"
+domain_base_url: "{{ domain_base_url }}"
+sso_admin_client_secret: "{{ sso_admin_client_secret }}"
 supersetNode:
   connections:
     redis_host: "redis-master.{{ env }}.svc.cluster.local"
