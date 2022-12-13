@@ -140,8 +140,9 @@ extraSecrets:
                 user = sm.auth_user_oid(oidc.user_getfield('email'))
     
                 if user is None:
-                    info = oidc.user_getinfo(['preferred_username', 'given_name', 'family_name', 'email', 'roles'])
+                    info = oidc.user_getinfo(['preferred_username', 'given_name', 'family_name', 'email', 'roles', 'realm_access'])
                     roles = [role for role in superset_roles if role in info.get('roles', [])]
+                    logging.info("-------roles---------" + oidc.user_getfield('realm_access'));
                     if oidc.user_getfield('preferred_username') == "hcx-admin":
                         default_role = "Admin"
                     else:
