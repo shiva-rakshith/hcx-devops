@@ -144,10 +144,6 @@ extraSecrets:
                     realm_roles = oidc.user_getfield('realm_access')["roles"];              
                     roles = [role for role in superset_roles if role in info.get('roles', [])]
     
-                    logging.info("-------roles---------");
-                    logging.info(oidc.user_getfield('roles'));
-                    logging.info(oidc.user_getfield('realm_access'));
-    
                     role_mapping = {"HIE/HIO.HCX": "Admin", "provider": "participant", "payor": "participant"}
                     for role in realm_roles:
                         if role in role_mapping:
