@@ -149,7 +149,9 @@ extraSecrets:
                         if role in role_mapping:
                             roles.append(role_mapping[role]); 
 
-                    logging.info(roles); 
+                    logging.info(roles);
+                    for i in range(0, len(roles)):    
+                       print(roles[i]),    
                     user = sm.add_user(info.get('preferred_username'), info.get('given_name', ''), info.get('family_name', ''),
                                        info.get('email'), [sm.find_role(role) for role in roles])
     
