@@ -141,7 +141,7 @@ extraSecrets:
     
                 if user is None:
                     info = oidc.user_getinfo(['preferred_username', 'given_name', 'family_name', 'email', 'roles', 'realm_access'])
-                    realm_roles = oidc.user_getfield('realm_access')[0];              
+                    realm_roles = oidc.user_getfield('realm_access')["roles"];              
                     roles = [role for role in superset_roles if role in info.get('roles', [])]
     
                     logging.info("-------roles---------");
