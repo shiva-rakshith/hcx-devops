@@ -144,7 +144,8 @@ extraSecrets:
                     realm_roles = oidc.user_getfield('realm_access')["roles"];              
                     roles = [role for role in superset_roles if role in info.get('roles', [])
     
-                    roles_mapping = {{ .Values.roles_mapping }}
+                    # TODO: Make role_mapping property as a configuration 
+                    roles_mapping = {"HIE/HIO.HCX": "Admin", "provider": "participant", "payor": "participant"}
                     for role in realm_roles:
                         if role in role_mapping:
                             roles.append(roles_mapping[role]); 
