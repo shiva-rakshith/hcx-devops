@@ -1,6 +1,7 @@
 keycloak_url: "{{ registry_sso_url }}"
 domain_base_url: "{{ domain_base_url }}"
 sso_admin_client_secret: "{{ sso_admin_client_secret }}"
+roles_mapping: {"HIE/HIO.HCX": "Admin", "provider": "participant", "payor": "participant"}
 supersetNode:
   connections:
     redis_host: "redis-master.{{ env }}.svc.cluster.local"
