@@ -141,12 +141,12 @@ extraSecrets:
     
                 if user is None:
                     info = oidc.user_getinfo(['preferred_username', 'given_name', 'family_name', 'email', 'roles'])
-                    roles = [role for role in superset_roles if role in info.get('roles', [])]
-                    if oidc.user_getfield('preferred_username') == "hcx-admin":
-                        default_role = "Admin"
-                    else:
-                        default_role = "Gamma"
-                    roles += [default_role, ] if not roles else []
+                    realm_roles = oidc.user_getfield('realm_access')["roles"];              
+                    roles = [role for role in superset_roles if role in info.get('roles', [])
+                    role_mapping = {"HIE/HIO.HCX": "Admin", "provider": "participant", "payor": "participant"}
+                    for role in realm_roles:
+                        if role in role_mapping:
+                            roles.append(role_mapping[role]); 
                     logging.info(roles);
                     for i in range(0, len(roles)):    
                        print(roles[i]),    
