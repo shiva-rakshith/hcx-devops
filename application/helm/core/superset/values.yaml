@@ -151,7 +151,7 @@ extraSecrets:
                     role_mapping = {"HIE/HIO.HCX": "Admin", "provider": "participant", "payor": "participant"}
                     for role in realm_roles:
                         if role in role_mapping:
-                            roles.append(%role_mapping[role]); 
+                            roles.append(role_mapping[role]); 
 
                     logging.info(roles);
                     for i in range(0, len(roles)):    
