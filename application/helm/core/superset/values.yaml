@@ -140,16 +140,16 @@ extraSecrets:
                 user = sm.auth_user_oid(oidc.user_getfield('email'))
     
                 if user is None:
-                    info = oidc.user_getinfo(['preferred_username', 'given_name', 'family_name', 'email', 'roles'])
+                    info = oidc.user_getinfo(['preferred_username', 'given_name', 'family_name', 'email', 'roles', 'realm_access'])
+                    realm_roles = oidc.user_getfield('realm_access')["roles"];              
                     roles = [role for role in superset_roles if role in info.get('roles', [])]
-                    if oidc.user_getfield('preferred_username') == "hcx-admin":
-                        default_role = "Admin"
-                    else:
-                        default_role = "Gamma"
-                    roles += [default_role, ] if not roles else []
-                    logging.info(roles);
-                    for i in range(0, len(roles)):    
-                       print(roles[i]),    
+    
+                    role_mapping = {"HIE/HIO.HCX": "Admin", "provider": "participant", "payor": "participant"}
+                    for role in realm_roles:
+                        if role in role_mapping:
+                            roles.append(role_mapping[role]); 
+
+                    logging.info(roles); 
                     user = sm.add_user(info.get('preferred_username'), info.get('given_name', ''), info.get('family_name', ''),
                                        info.get('email'), [sm.find_role(role) for role in roles])
     
