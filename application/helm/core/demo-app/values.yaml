@@ -83,7 +83,7 @@ affinity: {}
 hcx_upstream: ""
 sender_code: ""
 hcx_username: ""
-api_version: ""
+version: ""
 hcx_password: ""
 recipient_code: ""
 token_url: ""
