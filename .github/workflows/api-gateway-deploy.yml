@@ -127,51 +127,51 @@ jobs:
     - name: Check file structure
       run: ls -lrt ${{ github.workspace }}/application/ansible/
 
-#     - name: 'Deploy'
-#       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
-#       # uses: vimeda/helm@v1.6.8
-#       with:
-#         aws-access-key-id: ${{ secrets.AWS_ACCESS__KEY_ID }}
-#         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#         # cluster-role-arn: arn:aws:iam::131795456882:user/hcx
-#         aws-region: ap-south-1
-#         # aws-profile: git-deploy
-#         cluster-name: dev-cluster
-#         name: 'demo-app'
-#         namespace: 'dev'
-#         # release: api-gateway
-#         chart-path: 'application/helm/core/demo-app/'
-#         config-files: 'application/helm/core/demo-app/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
-#        # token: '${{ github.token }}'
-#         # values: |
-#         # name: foobar
-# #        helm: helm3
-#       env:
-#         KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
-
-# ###
-
-
-
-    - name: Run playbook
-      uses: dawidd6/action-ansible-playbook@v2.6.1
+    - name: 'Deploy'
+      uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
+      # uses: vimeda/helm@v1.6.8
       with:
-        # Required, playbook filepath
-        playbook: '${{ github.workspace }}/application/ansible/helm.yaml'
-        # Optional, directory where playbooks live
-        directory: 'application/ansible/roles/helm_deploy/templates/'
-        # Optional, SSH private key
-        key: ${{secrets.SSH_PRIVATE_KEY}}
-        # Optional, literal inventory file contents
-        inventory: 'DevOps/hcx/ansible/inventory/dev/'
-        # Optional, SSH known hosts file content
-        known_hosts: 'DevOps/hcx/ansible/inventory/dev/hosts'
-        vault_password: ${{secrets.VAULT_PASSWORD}}
-        # Optional, galaxy requirements filepath
-        #requirements: galaxy-requirements.yml
-        # Optional, additional flags to pass to ansible-playbook
-        options: |
-          --inventory .hosts
-          --limit group1
-          --verbose
+        aws-access-key-id: ${{ secrets.AWS_ACCESS__KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        # cluster-role-arn: arn:aws:iam::131795456882:user/hcx
+        aws-region: ap-south-1
+        # aws-profile: git-deploy
+        cluster-name: dev-cluster
+        name: 'api-gateway'
+        namespace: 'dev'
+        # release: api-gateway
+        chart-path: 'application/helm/core/api-gateway/'
+        config-files: 'application/helm/core/api-gateway/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+       # token: '${{ github.token }}'
+        # values: |
+        # name: foobar
+#        helm: helm3
+      env:
+        KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
+
+###
+
+
+
+    # - name: Run playbook
+    #   uses: dawidd6/action-ansible-playbook@v2.6.1
+    #   with:
+    #     # Required, playbook filepath
+    #     playbook: '${{ github.workspace }}/application/ansible/helm.yaml'
+    #     # Optional, directory where playbooks live
+    #     directory: 'application/ansible/roles/helm_deploy/templates/'
+    #     # Optional, SSH private key
+    #     key: ${{secrets.SSH_PRIVATE_KEY}}
+    #     # Optional, literal inventory file contents
+    #     inventory: 'DevOps/hcx/ansible/inventory/dev/'
+    #     # Optional, SSH known hosts file content
+    #     known_hosts: 'DevOps/hcx/ansible/inventory/dev/hosts'
+    #     vault_password: ${{secrets.VAULT_PASSWORD}}
+    #     # Optional, galaxy requirements filepath
+    #     #requirements: galaxy-requirements.yml
+    #     # Optional, additional flags to pass to ansible-playbook
+    #     options: |
+    #       --inventory .hosts
+    #       --limit group1
+    #       --verbose
 
