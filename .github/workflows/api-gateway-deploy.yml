@@ -125,7 +125,12 @@ jobs:
         path: DevOps
 
     - name: Check file structure
-      run: ls -lrt ${{ github.workspace }}/application/ansible/
+      run:  sed -i '1d' ${{ github.workspace }}/DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
+
+
+    - name: Cat private repo file
+      run: cat ${{ github.workspace }}/DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
+      
 
     - name: 'Deploy'
       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
