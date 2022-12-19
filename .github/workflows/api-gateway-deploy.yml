@@ -157,9 +157,9 @@ jobs:
       uses: dawidd6/action-ansible-playbook@v2.6.1
       with:
         # Required, playbook filepath
-        playbook: 'application/ansible/roles/helm_deploy/templates/api-gateway.yaml'
+        playbook: 'application/ansible/helm.yaml'
         # Optional, directory where playbooks live
-        directory: 'application/ansible/roles/helm_deploy/'
+        directory: 'application/ansible/roles/helm_deploy/templates/'
         # Optional, SSH private key
         key: ${{secrets.SSH_PRIVATE_KEY}}
         # Optional, literal inventory file contents
