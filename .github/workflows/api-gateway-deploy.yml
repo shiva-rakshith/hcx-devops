@@ -125,7 +125,7 @@ jobs:
         path: DevOps
 
     - name: Check file structure
-      run: ls -lrt ${{ github.workspace }}/application/
+      run: ls -lrt ${{ github.workspace }}/application/ansible/
 
 #     - name: 'Deploy'
 #       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
@@ -157,7 +157,7 @@ jobs:
       uses: dawidd6/action-ansible-playbook@v2.6.1
       with:
         # Required, playbook filepath
-        playbook: 'application/ansible/helm.yaml'
+        playbook: '${{ github.workspace }}/application/ansible/helm.yaml'
         # Optional, directory where playbooks live
         directory: 'application/ansible/roles/helm_deploy/templates/'
         # Optional, SSH private key
