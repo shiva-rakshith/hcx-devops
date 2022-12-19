@@ -157,16 +157,15 @@ jobs:
       uses: dawidd6/action-ansible-playbook@v2.6.1
       with:
         # Required, playbook filepath
-        playbook: application/ansible/roles/helm_deploy/templates/demo-app.yaml
+        playbook: 'application/ansible/roles/helm_deploy/templates/api-gateway.yaml'
         # Optional, directory where playbooks live
-        directory: application/ansible/roles/helm_deploy/
+        directory: 'application/ansible/roles/helm_deploy/'
         # Optional, SSH private key
         key: ${{secrets.SSH_PRIVATE_KEY}}
         # Optional, literal inventory file contents
-        inventory: DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
+        inventory: 'DevOps/hcx/ansible/inventory/dev/'
         # Optional, SSH known hosts file content
-        known_hosts: .known_hosts
-        # Optional, encrypted vault password
+        known_hosts: 'DevOps/hcx/ansible/inventory/dev/hosts'
         vault_password: ${{secrets.VAULT_PASSWORD}}
         # Optional, galaxy requirements filepath
         #requirements: galaxy-requirements.yml
