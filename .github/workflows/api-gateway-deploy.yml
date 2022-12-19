@@ -124,13 +124,18 @@ jobs:
         submodules: recursive
         path: DevOps
 
-    - name: Check file structure
+    - name: Update files
       run:  sed -i '1d' ${{ github.workspace }}/DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
+    
+    - name: Update files 2
+      run: sed -i '1d' ${{ github.workspace }}/application/ansible/inventory/group_vars/all.yaml
+
 
 
     - name: Cat private repo file
       run: cat ${{ github.workspace }}/DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
       
+
 
     - name: 'Deploy'
       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
