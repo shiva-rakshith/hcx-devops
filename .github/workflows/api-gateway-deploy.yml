@@ -125,7 +125,7 @@ jobs:
         path: DevOps
 
     - name: Check file structure
-      run: ls -lrt ${{ github.workspace }}
+      run: ls -lrt ${{ github.workspace }}/application/
 
 #     - name: 'Deploy'
 #       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
