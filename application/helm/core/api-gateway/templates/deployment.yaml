@@ -33,7 +33,6 @@ spec:
           {{- range $k, $v := .Values.api_gateway }}
           - name: {{ $k }}
             value: '{{ $v }}'
-          - name: 
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
