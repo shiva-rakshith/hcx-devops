@@ -37,8 +37,8 @@ spec:
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.api_gateway.image.repository }}:{{ .Values.api_gateway.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.api_gateway.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 8095
