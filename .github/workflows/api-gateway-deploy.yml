@@ -124,13 +124,6 @@ jobs:
         submodules: recursive
         path: DevOps
 
-    - name: Update files
-      run:  sed -i '1d' ${{ github.workspace }}/DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
-    
-    - name: Update files 2
-      run: sed -i '1d' ${{ github.workspace }}/application/ansible/inventory/group_vars/all.yaml
-
-
 
     - name: Cat private repo file
       run: cat ${{ github.workspace }}/DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
@@ -151,7 +144,7 @@ jobs:
         namespace: 'dev'
         # release: api-gateway
         chart-path: 'application/helm/core/api-gateway/'
-        config-files: 'application/helm/core/api-gateway/values.yaml, application/ansible/roles/helm_deploy/templates/api-gateway.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+        config-files: 'application/helm/core/api-gateway/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
        # token: '${{ github.token }}'
         # values: |
         # name: foobar
