@@ -44,42 +44,42 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: demo_app_port
+                  key: {{ .Values.common.demo_app_port }}
             - name: HCX_UPSTREAM
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: hcx_upstream
+                  key: {{ .Values.common.hcx_upstream }}
             - name: SENDER_CODE
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: sender_code
+                  key: {{ .Values.common.sender_code }}
             - name: hcx_username
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: hcx_username
+                  key: {{ .Values.common.hcx_username }}
             - name: hcx_password
               valueFrom:  
                 configMapKeyRef:
                   name: demo-app
-                  key: hcx_password
+                  key: {{ .Values.common.hcx_password }}
             - name: token_url
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: token_url
+                  key: {{ .Values.common.token_url }}
             - name: RECIPIENT_CODE
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: recipient_code
+                  key: {{ .Values.common.recipient_code }}
             - name: api_version
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: api_version
+                  key: {{ .Values.common.api_version }}
 
           volumeMounts:
           - name: demo-app
