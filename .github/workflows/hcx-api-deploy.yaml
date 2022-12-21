@@ -1,11 +1,5 @@
 name: Deploy worflow for HCX API.
-on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to run tests against'
-        type: environment
-        required: true
+on: [workflow_dispatch]
 jobs:
   deployment:
     runs-on: 'ubuntu-latest'
