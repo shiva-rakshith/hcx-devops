@@ -1,66 +1,4 @@
-# name: Deploy worflow for HCX applications.
-
-# on:
-#   push:
-#     branches:
-#       - main
-#       - sprint-*
-#       - workflow
-# jobs:
-#   deploy:
-#     runs-on: ubuntu-latest
-#     env:
-#       AWS_REGION: ap-south-1
-#       CLUSTER_NAME: dev-cluster
-#     steps:
-#       - uses: actions/checkout@v2
-
-#       - name: AWS Credentials
-#         uses: aws-actions/configure-aws-credentials@v1
-#         with:
-#           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-#           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-#           aws-region: ${{ env.AWS_REGION }}
-#           aws-profile: git-deploy
-#           #role-to-assume: arn:aws:iam::131795456882:role/OrganizationAccountAccessRole
-#           # #role-to-assume: arn:aws:iam::${{ env.AWS_ACCOUNT_ID }}:role/OrganizationAccountAccessRole
-#           # role-session-name: ci-run-${{ github.run_id }}
-          
-      
-#       # - name: kubeconfig
-#       #   run: |
-#       #     aws eks update-kubeconfig --name ${{ env.CLUSTER_NAME }} --region ${{ env.AWS_REGION }}
-#       #     echo "KUBE_CONFIG_DATA=$(cat ~/.kube/config | base64)" >> $GITHUB_ENV
-
-#       # - name: echo_kubeconfig
-#       #   run: |
-#       #     echo ${{ secrets.KUBE_CONFIG_DATA }}
-
-#       # - name: checkout private
-#       #   uses: webfactory/ssh-agent@v0.6.0
-#       #   with:
-#       #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-#       # - name: checkout private
-#       #   uses: actions/checkout@v2
-#       #   with:
-#       #       repository: https://github.com/Swasth-Digital-Health-Foundation/DevOps
-#       #       ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-#       - name: helm deploy
-#         uses: vimeda/helm@v1.6.8
-#         env:
-#           KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-#         with:
-#           #plugins: "https://github.com/jkroepke/helm-secrets" # optional
-#           #command: helm secrets upgrade <release name> --install --wait <chart> -f <path to values.yaml>
-#           command: helm upgrade --install api-gateway   --wait ../../application/helm/core/api-gateway/ -f ${{ env.PRIVATE_REPO }}/hcx/ansible/inventory/dev/values.yaml --namespace dev
-
-
-# ---
-# #deploybot action
-
-name: Deploy
+name: Deploy worflow for HCX API.
 on:
   push:
     branches:
@@ -123,10 +61,6 @@ jobs:
         ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
         submodules: recursive
         path: DevOps
-
-
-    - name: Cat private repo file
-      run: cat ${{ github.workspace }}/DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
       
 
 
@@ -140,11 +74,11 @@ jobs:
         aws-region: ap-south-1
         # aws-profile: git-deploy
         cluster-name: dev-cluster
-        name: 'api-gateway'
+        name: 'hcx-api'
         namespace: 'dev'
-        # release: api-gateway
-        chart-path: 'application/helm/core/api-gateway/'
-        config-files: 'application/helm/core/api-gateway/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+        # release: hcx-api
+        chart-path: 'application/helm/core/hcx-api/'
+        config-files: 'application/helm/core/hcx-api/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
        # token: '${{ github.token }}'
         # values: |
         # name: foobar

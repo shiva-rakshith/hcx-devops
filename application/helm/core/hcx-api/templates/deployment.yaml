@@ -30,7 +30,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           env:
-          {{- range $k, $v := .Values.env }}
+          {{- range $k, $v := .Values.hcx_api }}
           - name: {{ $k }}
             value: {{ $v }}
           {{- end }}
