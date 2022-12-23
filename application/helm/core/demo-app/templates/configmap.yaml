@@ -8,6 +8,6 @@ data:
   hcx_username: {{ .Values.common.hcx_username }}
   api_version: {{ .Values.common.api_version }}
   hcx_password: {{ .Values.common.hcx_password }}
-  demo_app_port: 8000 
+  demo_app_port: "8000" 
   recipient_code: {{ .Values.common.recipient_code }}
   token_url: {{ .Values.common.token_url }}
