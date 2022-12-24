@@ -12,6 +12,11 @@ env:
   aws_accessKey: "AKIAQPEQMNBRMBH7HZN4"
   aws_accessSecret: "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"
   aws_region: "ap-southeast-1"
+  postgres_url: "jdbc:postgresql://{{ hcx_api_postgresql_host }}/postgres"
+  postgres_user: "{{ hcx_api_postgresql_user }}"
+  postgres_password: "{{ hcx_api_postgresql_password }}"
+  HCX_API_BASEPATH : http://hcx-api.{{ env }}.svc.cluster.local:8080
+  
 
 service:
   type: LoadBalancer
