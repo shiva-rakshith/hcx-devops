@@ -11,7 +11,8 @@ serviceMonitor:
   enabled: true
 replicaCount: 1
 
-job_classname: "org.swasth.dp.coverageeligiblitycheck.task.CoverageEligibilityCheckStreamTask"
+# job_classname: "org.swasth.dp.coverageeligiblitycheck.task.CoverageEligibilityCheckStreamTask"
+job_classname: "org.swasth.dp.claims.task.ClaimsStreamTask"
 
 taskManagerAdditionalArgs: []
   # For example
@@ -82,7 +83,8 @@ log4j_console_properties: |
   logger.netty.name = org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline
   logger.netty.level = OFF
 
-base_config: ""
+flink_job_configs:
+  base_config: ""
 
 coverageeligibility: {}
 
