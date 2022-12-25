@@ -82,7 +82,7 @@ jobs:
         name: 'claimsjob'
         namespace: 'dev'
         chart-path: 'application/helm/flink/claimsjob/'
-        config-files: 'application/helm/flink/claimsjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+        config-files: 'application/helm/flink/claimsjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml, application/ansible/inventory/group_vars/all.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
        # token: '${{ github.token }}'
         # values: |
         # name: foobar
