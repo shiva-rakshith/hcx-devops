@@ -88,25 +88,25 @@ data:
         instanceName = {{ .Values.common.hcx_instance_name }}
       }
 
-  claimsjob:
-    claimsjob: |+
-      include file("/data/flink/conf/base-config.conf")
-      kafka.groupId:  ${job.env}"-claims-job-group"
-      kafka.input.topic: {{ .Values.common.env }}.hcx.request.claim
-      kafka.audit.topic: {{ .Values.common.env }}.hcx.audit
-      task.consumer.parallelism :  1
-      task.parallelism :  1
-      task.downstream.operators.parallelism: 1
-      kafka.producer.max-request-size: 1572864
-      kafka.producer.batch.size: 98304
-      kafka.producer.linger.ms: 10
 
-    flink-conf: |+
-      jobmanager.memory.flink.size: 1024m
-      taskmanager.memory.flink.size: 1024m
-      taskmanager.numberOfTaskSlots: 1
-      parallelism.default: 1
-      jobmanager.execution.failover-strategy: region
-      taskmanager.memory.network.fraction: 0.1
+  claimsjob: |+
+    include file("/data/flink/conf/base-config.conf")
+    kafka.groupId:  ${job.env}"-claims-job-group"
+    kafka.input.topic: {{ .Values.common.env }}.hcx.request.claim
+    kafka.audit.topic: {{ .Values.common.env }}.hcx.audit
+    task.consumer.parallelism :  1
+    task.parallelism :  1
+    task.downstream.operators.parallelism: 1
+    kafka.producer.max-request-size: 1572864
+    kafka.producer.batch.size: 98304
+    kafka.producer.linger.ms: 10
+
+  flink-conf: |+
+    jobmanager.memory.flink.size: 1024m
+    taskmanager.memory.flink.size: 1024m
+    taskmanager.numberOfTaskSlots: 1
+    parallelism.default: 1
+    jobmanager.execution.failover-strategy: region
+    taskmanager.memory.network.fraction: 0.1
   log4j_console_properties: |+
 {{ .Values.log4j_console_properties | indent 4 }}
