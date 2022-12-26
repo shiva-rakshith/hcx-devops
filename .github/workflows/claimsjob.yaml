@@ -80,7 +80,7 @@ jobs:
         # aws-profile: git-deploy
         cluster-name: dev-cluster
         name: 'claimsjob'
-        namespace: 'dev'
+        namespace: 'flink'
         chart-path: 'application/helm/flink/claimsjob/'
         config-files: 'application/helm/flink/claimsjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml, application/ansible/inventory/group_vars/all.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
        # token: '${{ github.token }}'
