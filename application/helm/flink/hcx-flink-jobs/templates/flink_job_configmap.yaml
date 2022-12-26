@@ -8,8 +8,8 @@ metadata:
 data:
   base_config: |+
     kafka {
-      broker-servers = "{{ .Values.es_host }}:9092"
-      zookeeper = "{{ .Values.kafka_host }}:2181"
+      broker-servers = "{{ .Values.common.es_host }}:9092"
+      zookeeper = "{{ .Values.common.kafka_host }}:2181"
         producer {
           max-request-size = 1572864
         }
@@ -38,11 +38,11 @@ data:
         restart-strategy.delay = 30000
       }
       postgres {
-        host = "{{ .Values.keycloak_postgresql_host }}"
+        host = "{{ .Values.common.keycloak_postgresql_host }}"
         port = 5432
         maxConnections = 2
-        user = "{{ .Values.keycloak_postgresql_user }}"
-        password = "{{ .Values.keycloak_postgresql_password }}"
+        user = "{{ .Values.common.keycloak_postgresql_user }}"
+        password = "{{ .Values.common.keycloak_postgresql_password }}"
         database: postgres
         table: payload
       }
@@ -60,11 +60,11 @@ data:
           }
       }
       es {
-        basePath = "{{ .Values.es_host }}:9200"
+        basePath = "{{ .Values.common.es_host }}:9200"
         batchSize = 1000
       }
       registry {
-        hcx.code = "{{ .Values.registry_hcx_code }}"
+        hcx.code = "{{ .Values.common.registry_hcx_code }}"
       }
       hcx-apis{
         endPointUrl = "http://hcx-api.{{ .Values.common.env }}.svc.cluster.local:8080"
@@ -85,7 +85,7 @@ data:
         errorCodes = [400, 401, 403, 404]
       }
       hcx {
-        instanceName = {{ .Values.hcx_instance_name }}
+        instanceName = {{ .Values.common.hcx_instance_name }}
       }
 
   claimsjob:
