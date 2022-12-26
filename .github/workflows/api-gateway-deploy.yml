@@ -1,11 +1,12 @@
 name: Deploy worflow for HCX applications.
 
 on:
-  push:
-    branches:
-      - main
-      - sprint-*
-      - workflow
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Cluster Environment
+        default: dev
+        required: true
 jobs:
   deployment:
     runs-on: 'ubuntu-latest'

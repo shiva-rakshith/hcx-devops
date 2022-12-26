@@ -6,9 +6,107 @@ metadata:
   labels:
     app: flink
 data:
-  base-config: |+
-{{ .Values.flink_job_configs.base_config | indent 4 }}
-{{- $name := .Release.Name }}
-{{ index .Values $name | toYaml | indent 2 }}
+  base_config: |
+    kafka {
+      broker-servers = "{{ .Values.es_host }}:9092"
+      zookeeper = "{{ .Values.kafka_host }}:2181"
+        producer {
+          max-request-size = 1572864
+        }
+      }
+      job {
+        env = "{{ .Values.common.env }}"
+        enable.distributed.checkpointing = false
+        statebackend {
+          blob {
+            storage {
+              account = "local.blob.core.windows.net"
+              container = "local"
+              checkpointing.dir = "checkpoint"
+            }
+          }
+          base.url = "wasbs://"${job.statebackend.blob.storage.container}"@"${job.statebackend.blob.storage.account}"/"${job.statebackend.blob.storage.checkpointing.dir}
+        }
+      }
+      task {
+        parallelism = 1
+        consumer.parallelism = 1
+        checkpointing.compressed = true
+        checkpointing.interval = 60000
+        checkpointing.pause.between.seconds = 30000
+        restart-strategy.attempts = 3
+        restart-strategy.delay = 30000
+      }
+      postgres {
+        host = "{{ .Values.keycloak_postgresql_host }}"
+        port = 5432
+        maxConnections = 2
+        user = "{{ .Values.keycloak_postgresql_user }}"
+        password = "{{ .Values.keycloak_postgresql_password }}"
+        database: postgres
+        table: payload
+      }
+      redis {
+        host = redis-master.{{ .Values.common.env }}.svc.cluster.local
+        port = 6379
+        expires = 3600
+      }
+      redisdb{
+        connection {
+          timeout: 30000
+          }
+        assetstore {
+          id = 0
+          }
+      }
+      es {
+        basePath = "{{ .Values.es_host }}:9200"
+        batchSize = 1000
+      }
+      registry {
+        hcx.code = "{{ .Values.registry_hcx_code }}"
+      }
+      hcx-apis{
+        endPointUrl = "http://hcx-api.{{ .Values.common.env }}.svc.cluster.local:8080"
+      }
+      max.retry = 3
+      allowedEntitiesForRetry = ["coverageeligibility", "preauth", "claim"]
+      audit {
+        index = "hcx_audit"
+        alias = "hcx_audit"
+        timezone = "IST"
+      }
+      jwt-token {
+        privateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCG+XLPYiCxrZq71IX+w7uoDGxGI7qy7XaDbL3BJE33ju7rjdrP7wsAOWRvM8BIyWuRZZhl9xG+u7l/7OsZAzGoqI7p+32x+r9IJVzboLDajk6tp/NPg1csc7f2M5Bu6rkLEvrKLz3dgy3Q928rMsD3rSmzBLelfKTo+aDXvCOiw1dMWsZZdkEpCTJxH39Nb2K4S59kO/R2GtSU/QMLq65m34XcMZpDtatA1u1S8JdZNNeMCO+NuFKBzIfvXUCQ8jkf7h612+UP1AYhoyCMFpzUZ9b7liQF9TYpX1Myr/tT75WKuRlkFlcALUrtVskL8KA0w6sA0nX5fORVsuVehVeDAgMBAAECggEAX1n1y5/M7PhxqWO3zYTFGzC7hMlU6XZsFOhLHRjio5KsImgyPlbm9J+W3iA3JLR2c17MTKxAMvg3UbIzW5YwDLAXViC+aW90like8mEQzzVdS7ysXG2ytcqCGUHQNStI0hP0a8T39XbodQl31ZKjU9VW8grRGe12Kse+4ukcW6yRVES+CkyO5BQB+vs3voZavodRGsk/YSt00PtIrFPJgkDuyzzcybKJD9zeJk5W3OGVK1z0on+NXKekRti5FBx/uEkT3+knkz7ZlTDNcyexyeiv7zSL/L6tcszV0Fe0g9vJktqnenEyh4BgbqABPzQR++DaCgW5zsFiQuD0hMadoQKBgQC+rekgpBHsPnbjQ2Ptog9cFzGY6LRGXxVcY7hKBtAZOKAKus5RmMi7Uv7aYJgtX2jt6QJMuE90JLEgdO2vxYG5V7H6Tx+HqH7ftCGZq70A9jFBaba04QAp0r4TnD6v/LM+PGVT8FKtggp+o7gZqXYlSVFm6YzI37G08w43t2j2aQKBgQC1Nluxop8w6pmHxabaFXYomNckziBNMML5GjXW6b0xrzlnZo0p0lTuDtUy2xjaRWRYxb/1lu//LIrWqSGtzu+1mdmV2RbOd26PArKw0pYpXhKFu/W7r6n64/iCisoMJGWSRJVK9X3D4AjPaWOtE+jUTBLOk0lqPJP8K6yiCA6ZCwKBgDLtgDaXm7HdfSN1/Fqbzj5qc3TDsmKZQrtKZw5eg3Y5CYXUHwbsJ7DgmfD5m6uCsCPa+CJFl/MNWcGxeUpZFizKn16bg3BYMIrPMao5lGGNX9p4wbPN5J1HDD1wnc2jULxupSGmLm7pLKRmVeWEvWl4C6XQ+ykrlesef82hzwcBAoGBAKGY3v4y4jlSDCXaqadzWhJr8ffdZUrQwB46NGb5vADxnIRMHHh+G8TLL26RmcET/p93gW518oGg7BLvcpw3nOZaU4HgvQjT0qDvrAApW0V6oZPnAQUlarTU1Uk8kV9wma9tP6E/+K5TPCgSeJPg3FFtoZvcFq0JZoKLRACepL3vAoGAMAUHmNHvDI+v0eyQjQxlmeAscuW0KVAQQR3OdwEwTwdFhp9Il7/mslN1DLBddhj6WtVKLXu85RIGY8I2NhMXLFMgl+q+mvKMFmcTLSJb5bJHyMz/foenGA/3Yl50h9dJRFItApGuEJo/30cG+VmYo2rjtEifktX4mDfbgLsNwsI="
+        expiryTime = 300000
+      }
+      errorCodes {
+        successCodes = [200, 202]
+        errorCodes = [400, 401, 403, 404]
+      }
+      hcx {
+        instanceName = {{ .Values.hcx_instance_name }}
+      }
+
+  claimsjob:
+    claimsjob: |+
+      include file("/data/flink/conf/base-config.conf")
+      kafka.groupId:  ${job.env}"-claims-job-group"
+      kafka.input.topic: {{ .Values.common.env }}.hcx.request.claim
+      kafka.audit.topic: {{ .Values.common.env }}.hcx.audit
+      task.consumer.parallelism :  1
+      task.parallelism :  1
+      task.downstream.operators.parallelism: 1
+      kafka.producer.max-request-size: 1572864
+      kafka.producer.batch.size: 98304
+      kafka.producer.linger.ms: 10
+
+    flink-conf: |+
+      jobmanager.memory.flink.size: 1024m
+      taskmanager.memory.flink.size: 1024m
+      taskmanager.numberOfTaskSlots: 1
+      parallelism.default: 1
+      jobmanager.execution.failover-strategy: region
+      taskmanager.memory.network.fraction: 0.1
   log4j_console_properties: |+
 {{ .Values.log4j_console_properties | indent 4 }}
