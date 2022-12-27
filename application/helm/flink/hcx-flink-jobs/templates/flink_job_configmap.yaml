@@ -88,7 +88,7 @@ data:
         instanceName = {{ .Values.common.hcx_instance_name }}
       }
 
-  claimsjob:
+
     claimsjob: |+
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-claims-job-group"
