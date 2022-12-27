@@ -42,12 +42,12 @@ jobs:
           # cluster-role-arn: arn:aws:iam::131795456882:user/hcx
           aws-region: ap-south-1
           # aws-profile: git-deploy
-          cluster-name: ${{ github.event.inputs.version }}-cluster
+          cluster-name: ${{ github.event.inputs.environment }}-cluster
           name: 'demo-app'
-          namespace: ${{ github.event.inputs.env }}
+          namespace: ${{ github.event.inputs.environment }}
           # release: demo-app
           chart-path: 'application/helm/core/demo-app/'
-          config-files: 'application/helm/core/demo-app/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/${{ github.event.inputs.version }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+          config-files: 'application/helm/core/demo-app/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
           # token: '${{ github.token }}'
           # values: |
           # name: foobar
