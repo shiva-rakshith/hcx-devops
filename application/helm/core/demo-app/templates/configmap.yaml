@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: demo-app
 data:
-  demo_app_port: 8000
+  demo_app_port: "8000"
   hcx_upstream: {{ .Values.common.hcx_upstream }}
   sender_code: {{ .Values.common.sender_code }}
   hcx_username: {{ .Values.common.hcx_username }}
