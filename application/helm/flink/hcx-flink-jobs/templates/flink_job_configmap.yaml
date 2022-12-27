@@ -5,7 +5,7 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: flink
-data:
+data: |+
   base_config: |+
     kafka {
       broker-servers = "{{ .Values.common.es_host }}:9092"
@@ -88,7 +88,7 @@ data:
         instanceName = {{ .Values.common.hcx_instance_name }}
       }
 
-
+  claimsjob:
     claimsjob: |+
       include file("/data/flink/conf/base-config.conf")
       kafka.groupId:  ${job.env}"-claims-job-group"
