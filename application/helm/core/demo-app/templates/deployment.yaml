@@ -44,7 +44,7 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: {{ .Values.common.demo_app_port }}
+                  key: 8000
             - name: HCX_UPSTREAM
               valueFrom:
                 configMapKeyRef:
