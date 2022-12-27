@@ -49,37 +49,37 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: {{ .Values.common.hcx_upstream }}
+                  key: hcx_upstream
             - name: SENDER_CODE
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: {{ .Values.common.sender_code }}
+                  key: sender_code
             - name: hcx_username
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: {{ .Values.common.hcx_username }}
+                  key: hcx_username
             - name: hcx_password
               valueFrom:  
                 configMapKeyRef:
                   name: demo-app
-                  key: {{ .Values.common.hcx_password }}
+                  key: hcx_password
             - name: token_url
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: {{ .Values.common.token_url }}
+                  key: token_url
             - name: RECIPIENT_CODE
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: {{ .Values.common.recipient_code }}
+                  key: recipient_code
             - name: api_version
               valueFrom:
                 configMapKeyRef:
                   name: demo-app
-                  key: {{ .Values.common.api_version }}
+                  key: api_version
 
           volumeMounts:
           - name: demo-app
