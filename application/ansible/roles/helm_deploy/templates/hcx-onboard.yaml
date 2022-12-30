@@ -9,8 +9,8 @@ env:
   registry_hcxcode: "{{ registry_hcx_code }}"
   not_allowed_urls: {{ gateway_not_allowed_urls }}
   hcx_instance_name: {{ hcx_instance_name }}
-  aws_accessKey: "AKIAQPEQMNBRMBH7HZN4"
-  aws_accessSecret: "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"
+  aws_accessKey: "AKIA6I75KJYE2AIRJ24B"
+  aws_accessSecret: "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"
   aws_region: "ap-southeast-1"
 
 service:
