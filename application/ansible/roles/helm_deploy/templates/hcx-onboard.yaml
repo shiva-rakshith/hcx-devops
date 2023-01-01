@@ -2,7 +2,6 @@ image:
   tag: "{{ image_tag }}"
   repository: "{{ docker_repo }}/hcx-onboard"
 env:
-  ENV: {{ env }}
   es_host: "{{ groups['elasticsearch'][0] }}"
   audit_index: "hcx_audit"
   audit_alias: "hcx_audit"
@@ -17,6 +16,7 @@ env:
   postgres_user: "{{ hcx_api_postgresql_user }}"
   postgres_password: "{{ hcx_api_postgresql_password }}"
   HCX_API_BASEPATH : http://hcx-api.{{ env }}.svc.cluster.local:8080
+  ENV: {{ env }}
   
 
 service:
