@@ -10,6 +10,7 @@ env:
   JWT_JWK_URL : http://keycloak.keycloak.svc.cluster.local:8080/auth/realms/swasth-health-claim-exchange/protocol/openid-connect/certs
   JWT_NS_PATH : "$.realm_access.roles"
   HCX_API_BASEPATH : http://hcx-api.{{ env }}.svc.cluster.local:8080
+  HCX_ONBOARD_BASEPATH : http://hcx-onboard.{{ env }}.svc.cluster.local:8082
   REGISTRY_BASE_PATH : http://hcx-registry.{{ env }}.svc.cluster.local:8081
   REGISTRY_HCX_CODE: "{{ registry_hcx_code }}"
   REGISTRY_HCX_ROLE: HIE/HIO.HCX
