@@ -2,6 +2,7 @@ image:
   tag: "{{ image_tag }}"
   repository: "{{ docker_repo }}/hcx-onboard"
 env:
+  ENV: {{ env }}
   es_host: "{{ groups['elasticsearch'][0] }}"
   audit_index: "hcx_audit"
   audit_alias: "hcx_audit"
