@@ -19,5 +19,4 @@ env:
   
 
 service:
-  type: LoadBalancer
-  port: 8082
+  type: ClusterIP
