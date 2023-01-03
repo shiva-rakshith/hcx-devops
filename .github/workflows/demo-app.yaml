@@ -30,8 +30,29 @@ jobs:
           submodules: recursive
           path: DevOps
 
-      - name: Check file structure
-        run: ls -lrt ${{ github.workspace }}
+
+      - name: Checkout build repo
+        uses:  actions/checkout@v3
+        with:
+          # repository: Swasth-Digital-Health-Foundation/DevOps
+          repository: https://github.com/SadanandGowda/hcx-platform-1
+          ref: 'workflow'
+          submodules: recursive
+          path: hcx-platform
+
+      - name: Print image tag
+        run: cat ~/image/tag.txt
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: get_branch
+
+      - name: Print current branch
+        shell: bash
+        run: echo ${{ steps.get_branch.outputs.branch }}
+
+
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
