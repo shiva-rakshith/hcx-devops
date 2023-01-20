@@ -71,7 +71,7 @@ jobs:
     - name: Pull image tag from S3 bucket
       run: |
         aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
-        echo "::set-env name=IMAGE_TAG::$(cat /tmp/tag.txt)"
+        export IMAGE_TAG="$(cat /tmp/tag.txt)"
 
     - name: 'Deploy'
       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
