@@ -64,6 +64,7 @@ jobs:
         run: |
           aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
           export IMAGE_TAG="$(cat /tmp/tag.txt)"
+          echo env.IMAGE_TAG
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
@@ -81,8 +82,8 @@ jobs:
           chart-path: 'application/helm/core/common-scheduler-job/'
           config-files: 'application/helm/core/common-scheduler-job/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
           values: |
-            image:
-              tag: env.IMAGE_TAG
+            image.
+              tag: ${{ env.IMAGE_TAG }}
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 
