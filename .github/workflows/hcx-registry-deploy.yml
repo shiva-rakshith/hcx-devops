@@ -59,6 +59,10 @@ jobs:
 
       - name: Check file structure
         run: ls -lrt ${{ github.workspace }}
+      - name: Pull image tag from S3 bucket
+        run: |
+          aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
+          echo "::set-env name=IMAGE_TAG::$(cat /tmp/tag.txt)"
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
@@ -75,10 +79,9 @@ jobs:
           # release: hcx-registry
           chart-path: 'application/helm/core/hcx-registry/'
           config-files: 'application/helm/core/hcx-registry/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
-          # token: '${{ github.token }}'
-          # values: |
-          # name: foobar
-        #        helm: helm3
+          values: |
+            image:
+              tag: env.IMAGE_TAG
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 

@@ -40,18 +40,19 @@ jobs:
           submodules: recursive
           path: hcx-platform
 
-      - name: Print image tag
-        run: cat ~/image/tag.txt
+      # - name: Extract branch name
+      #   shell: bash
+      #   run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      #   id: get_branch
 
-      - name: Extract branch name
-        shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-        id: get_branch
+      # - name: Print current branch
+      #   shell: bash
+      #   run: echo ${{ steps.get_branch.outputs.branch }}
 
-      - name: Print current branch
-        shell: bash
-        run: echo ${{ steps.get_branch.outputs.branch }}
-
+      - name: Pull image tag from S3 bucket
+        run: |
+          aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
+          echo "::set-env name=IMAGE_TAG::$(cat /tmp/tag.txt)"
 
 
       - name: 'Deploy'
@@ -70,9 +71,9 @@ jobs:
           chart-path: 'application/helm/core/demo-app/'
           config-files: 'application/helm/core/demo-app/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
           # token: '${{ github.token }}'
-          # values: |
-          # name: foobar
-        #        helm: helm3
+          values: |
+            image:
+              tag: env.IMAGE_TAG
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 
