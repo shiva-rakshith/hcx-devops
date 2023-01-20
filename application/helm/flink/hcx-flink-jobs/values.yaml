@@ -84,7 +84,7 @@ log4j_console_properties: |
   logger.netty.level = OFF
 
 flink_job_configs:
-  base_config: ""
+  base-config: ""
 
 coverageeligibility: {}
 
