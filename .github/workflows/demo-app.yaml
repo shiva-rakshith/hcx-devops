@@ -69,8 +69,7 @@ jobs:
           namespace: ${{ github.event.inputs.environment }}
           # release: demo-app
           chart-path: 'application/helm/core/demo-app/'
-          config-files: 'application/helm/core/demo-app/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
-          # token: '${{ github.token }}'
+          config-files: 'application/helm/core/demo-app/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml' 
           values: |
             image:
               tag: env.IMAGE_TAG
