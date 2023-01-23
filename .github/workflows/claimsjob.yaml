@@ -39,8 +39,10 @@ jobs:
           cat /tmp/tag.txt
           echo ::set-env name=IMAGE_TAG::$(cat /tmp/tag.txt)
           echo $IMAGE_TAG
+      - name: Set an environment variable from a file
+        run: env MY_VARIABLE="$(cat /tmp/tag.txt)"
       - name: Print the environment variable
-        run: echo $IMAGE_TAG
+        run: echo $MY_VARIABLE
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
