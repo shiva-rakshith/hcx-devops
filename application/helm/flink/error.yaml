@@ -1,0 +1,416 @@
+Release "claimsjob" has been upgraded. Happy Helming!
+NAME: claimsjob
+LAST DEPLOYED: Mon Jan 23 12:37:57 2023
+NAMESPACE: flink
+STATUS: pending-upgrade
+REVISION: 31
+TEST SUITE: None
+HOOKS:
+MANIFEST:
+---
+# Source: datapipeline_jobs/templates/flink_job_configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: claimsjob-config
+  namespace: flink
+  labels:
+    app: flink
+data: 
+  base-config: |+
+    kafka {
+      broker-servers = "10.0.1.18:9092"
+      zookeeper = ":2181"
+        producer {
+          max-request-size = 1572864
+        }
+      }
+      job {
+        env = "dev"
+        enable.distributed.checkpointing = false
+        statebackend {
+          blob {
+            storage {
+              account = "local.blob.core.windows.net"
+              container = "local"
+              checkpointing.dir = "checkpoint"
+            }
+          }
+          base.url = "wasbs://"${job.statebackend.blob.storage.container}"@"${job.statebackend.blob.storage.account}"/"${job.statebackend.blob.storage.checkpointing.dir}
+        }
+      }
+      task {
+        parallelism = 1
+        consumer.parallelism = 1
+        checkpointing.compressed = true
+        checkpointing.interval = 60000
+        checkpointing.pause.between.seconds = 30000
+        restart-strategy.attempts = 3
+        restart-strategy.delay = 30000
+      }
+      postgres {
+        host = "terraform-20211111045938760100000001.culmyp72rbwi.ap-south-1.rds.amazonaws.com"
+        port = 5432
+        maxConnections = 2
+        user = "hcxpostgresql"
+        password = "Opensaber@123"
+        database: postgres
+        table: payload
+      }
+      redis {
+        host = redis-master.dev.svc.cluster.local
+        port = 6379
+        expires = 3600
+      }
+      redisdb{
+        connection {
+          timeout: 30000
+          }
+        assetstore {
+          id = 0
+          }
+      }
+      es {
+        basePath = "10.0.1.18:9200"
+        batchSize = 1000
+      }
+      registry {
+        hcx.code = "hcx.gateway@swasth-hcx-dev"
+      }
+      hcx-apis{
+        endPointUrl = "http://hcx-api.dev.svc.cluster.local:8080"
+      }
+      max.retry = 3
+      allowedEntitiesForRetry = ["coverageeligibility", "preauth", "claim"]
+      audit {
+        index = "hcx_audit"
+        alias = "hcx_audit"
+        timezone = "IST"
+      }
+      jwt-token {
+        privateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCG+XLPYiCxrZq71IX+w7uoDGxGI7qy7XaDbL3BJE33ju7rjdrP7wsAOWRvM8BIyWuRZZhl9xG+u7l/7OsZAzGoqI7p+32x+r9IJVzboLDajk6tp/NPg1csc7f2M5Bu6rkLEvrKLz3dgy3Q928rMsD3rSmzBLelfKTo+aDXvCOiw1dMWsZZdkEpCTJxH39Nb2K4S59kO/R2GtSU/QMLq65m34XcMZpDtatA1u1S8JdZNNeMCO+NuFKBzIfvXUCQ8jkf7h612+UP1AYhoyCMFpzUZ9b7liQF9TYpX1Myr/tT75WKuRlkFlcALUrtVskL8KA0w6sA0nX5fORVsuVehVeDAgMBAAECggEAX1n1y5/M7PhxqWO3zYTFGzC7hMlU6XZsFOhLHRjio5KsImgyPlbm9J+W3iA3JLR2c17MTKxAMvg3UbIzW5YwDLAXViC+aW90like8mEQzzVdS7ysXG2ytcqCGUHQNStI0hP0a8T39XbodQl31ZKjU9VW8grRGe12Kse+4ukcW6yRVES+CkyO5BQB+vs3voZavodRGsk/YSt00PtIrFPJgkDuyzzcybKJD9zeJk5W3OGVK1z0on+NXKekRti5FBx/uEkT3+knkz7ZlTDNcyexyeiv7zSL/L6tcszV0Fe0g9vJktqnenEyh4BgbqABPzQR++DaCgW5zsFiQuD0hMadoQKBgQC+rekgpBHsPnbjQ2Ptog9cFzGY6LRGXxVcY7hKBtAZOKAKus5RmMi7Uv7aYJgtX2jt6QJMuE90JLEgdO2vxYG5V7H6Tx+HqH7ftCGZq70A9jFBaba04QAp0r4TnD6v/LM+PGVT8FKtggp+o7gZqXYlSVFm6YzI37G08w43t2j2aQKBgQC1Nluxop8w6pmHxabaFXYomNckziBNMML5GjXW6b0xrzlnZo0p0lTuDtUy2xjaRWRYxb/1lu//LIrWqSGtzu+1mdmV2RbOd26PArKw0pYpXhKFu/W7r6n64/iCisoMJGWSRJVK9X3D4AjPaWOtE+jUTBLOk0lqPJP8K6yiCA6ZCwKBgDLtgDaXm7HdfSN1/Fqbzj5qc3TDsmKZQrtKZw5eg3Y5CYXUHwbsJ7DgmfD5m6uCsCPa+CJFl/MNWcGxeUpZFizKn16bg3BYMIrPMao5lGGNX9p4wbPN5J1HDD1wnc2jULxupSGmLm7pLKRmVeWEvWl4C6XQ+ykrlesef82hzwcBAoGBAKGY3v4y4jlSDCXaqadzWhJr8ffdZUrQwB46NGb5vADxnIRMHHh+G8TLL26RmcET/p93gW518oGg7BLvcpw3nOZaU4HgvQjT0qDvrAApW0V6oZPnAQUlarTU1Uk8kV9wma9tP6E/+K5TPCgSeJPg3FFtoZvcFq0JZoKLRACepL3vAoGAMAUHmNHvDI+v0eyQjQxlmeAscuW0KVAQQR3OdwEwTwdFhp9Il7/mslN1DLBddhj6WtVKLXu85RIGY8I2NhMXLFMgl+q+mvKMFmcTLSJb5bJHyMz/foenGA/3Yl50h9dJRFItApGuEJo/30cG+VmYo2rjtEifktX4mDfbgLsNwsI="
+        expiryTime = 300000
+      }
+      errorCodes {
+        successCodes = [200, 202]
+        errorCodes = [400, 401, 403, 404]
+      }
+      hcx {
+        instanceName = swasth-hcx-dev
+      }
+
+  claimsjob: |+
+    include file("/data/flink/conf/base-config.conf")
+    kafka.groupId:  ${job.env}"-claims-job-group"
+    kafka.input.topic: dev.hcx.request.claim
+    kafka.audit.topic: dev.hcx.audit
+    task.consumer.parallelism :  1
+    task.parallelism :  1
+    task.downstream.operators.parallelism: 1
+    kafka.producer.max-request-size: 1572864
+    kafka.producer.batch.size: 98304
+    kafka.producer.linger.ms: 10
+
+  flink-conf: |
+    jobmanager.memory.flink.size: 1024m
+    taskmanager.memory.flink.size: 1024m
+    taskmanager.numberOfTaskSlots: 1
+    parallelism.default: 1
+    jobmanager.execution.failover-strategy: region
+    taskmanager.memory.network.fraction: 0.1
+  log4j_console_properties: |
+    # This affects logging for both user code and Flink
+    rootLogger.level = "INFO"
+    rootLogger.appenderRef.console.ref = ConsoleAppender
+    
+    # Uncomment this if you want to _only_ change Flink's logging
+    #logger.flink.name = org.apache.flink
+    #logger.flink.level = {{ flink_jobs_console_log_level | default(INFO) }}
+    
+    # The following lines keep the log level of common libraries/connectors on
+    # log level INFO. The root logger does not override this. You have to manually
+    # change the log levels here.
+    logger.akka.name = akka
+    logger.akka.level = "INFO"
+    logger.kafka.name= org.apache.kafka
+    logger.kafka.level = "INFO"
+    logger.hadoop.name = org.apache.hadoop
+    logger.hadoop.level = "INFO"
+    logger.zookeeper.name = org.apache.zookeeper
+    logger.zookeeper.level = "INFO"
+    
+    # Log all infos to the console
+    appender.console.name = ConsoleAppender
+    appender.console.type = CONSOLE
+    appender.console.layout.type = PatternLayout
+    appender.console.layout.pattern = %d{yyyy-MM-dd HH:mm:ss,SSS} %-5p %-60c %x - %m%n
+    
+    # Suppress the irrelevant (wrong) warnings from the Netty channel handler
+    logger.netty.name = org.apache.flink.shaded.akka.org.jboss.netty.channel.DefaultChannelPipeline
+    logger.netty.level = OFF
+---
+# Source: datapipeline_jobs/templates/flink_job_deployment.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: claimsjob-jobmanager 
+  namespace: flink
+  labels:
+    app: flink
+    component: claimsjob-jobmanager
+spec:
+  type: ClusterIP
+  ports:
+  - name: rpc
+    port: 6123
+  - name: blob
+    port: 6124
+  - name: query
+    port: 6125
+  - name: ui
+    port: 8081
+  - name: prom
+    port: 9250
+  selector:
+    app: flink
+    component: claimsjob-jobmanager
+---
+# Source: datapipeline_jobs/templates/flink_job_deployment.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: claimsjob-jobmanager-webui
+  namespace: flink
+spec:
+  type: LoadBalancer
+  ports:
+  - name: rest
+    port: 80
+    protocol: TCP
+    targetPort: 8081
+  selector:
+    app: flink
+    component: claimsjob-jobmanager
+---
+# Source: datapipeline_jobs/templates/flink_job_deployment.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: claimsjob-taskmanager-prometheus
+  namespace: flink
+  labels:
+    app: flink
+    component: claimsjob-taskmanager
+spec:
+  type: ClusterIP
+  ports:
+  - name: prom
+    port: 9251
+  selector:
+    app: flink
+    component: claimsjob-taskmanager
+---
+# Source: datapipeline_jobs/templates/flink_job_deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: claimsjob-taskmanager
+  namespace: flink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flink
+      component: claimsjob-taskmanager
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: claimsjob-taskmanager
+    spec:
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: claimsjob-config
+          items:
+          - key: flink-conf
+            path: flink-conf.yaml
+          - key: log4j_console_properties
+            path: log4j-console.properties
+      containers:
+      - name: claimsjob-taskmanager
+        image: "swasth2021/hcx-pipeline-jobs:fffasdfsd"
+        imagePullPolicy: Always
+        workingDir: 
+        command: ["/opt/flink/bin/taskmanager.sh"]
+        args:
+        - start-foreground
+        - -Dweb.submit.enable=false
+        - -Dmetrics.reporter.prom.class=org.apache.flink.metrics.prometheus.PrometheusReporter
+        - -Dmetrics.reporter.prom.host=claimsjob-taskmanager
+        - -Dmetrics.reporter.prom.port=9251-9260
+        - -Djobmanager.rpc.address=claimsjob-jobmanager
+        - -Dtaskmanager.rpc.port=6122
+        ports:
+        - containerPort: 6122
+          name: rpc
+        livenessProbe:
+          null
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf/flink-conf.yaml
+          subPath: flink-conf.yaml
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf/log4j-console.properties
+          subPath: log4j-console.properties
+        resources:
+          limits:
+            cpu: 200m
+            memory: 1Gi
+          requests:
+            cpu: 200m
+            memory: 800Mi
+      affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - flink
+                topologyKey: topology.kubernetes.io/hostname
+              weight: 100
+---
+# Source: datapipeline_jobs/templates/flink_job_deployment.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: claimsjob-jobmanager
+  namespace: flink
+spec:
+  template:
+    metadata:
+      labels:
+        app: flink
+        component: claimsjob-jobmanager
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/port: "9250"
+    spec:
+      volumes:
+      - name: flink-config-volume
+        configMap:
+          name: claimsjob-config
+          items:
+          - key: flink-conf
+            path: flink-conf.yaml
+          - key: base-config
+            path: base-config.conf
+          - key: claimsjob
+            path: claimsjob.conf
+          - key: log4j_console_properties
+            path: log4j-console.properties
+      restartPolicy: OnFailure
+      containers:
+      - name: claimsjob-jobmanager
+        image: "swasth2021/hcx-pipeline-jobs:fffasdfsd"
+        imagePullPolicy: Always
+        workingDir: /opt/flink
+        command: ["/opt/flink/bin/standalone-job.sh"]
+        args:
+        - start-foreground
+        - --job-classname=org.swasth.dp.claims.task.ClaimsStreamTask
+        - -Dweb.submit.enable=false
+        - -Dmetrics.reporter.prom.class=org.apache.flink.metrics.prometheus.PrometheusReporter
+        - -Dmetrics.reporter.prom.port=9250
+        - -Djobmanager.rpc.address=claimsjob-jobmanager
+        - -Djobmanager.rpc.port=6123
+        - -Dparallelism.default=1
+        - -Dblob.server.port=6124
+        - -Dqueryable-state.server.ports=6125
+        - --config.file.path
+        - /data/flink/conf/claimsjob.conf
+        ports:
+        - containerPort: 6123
+          name: rpc
+        - containerPort: 6124
+          name: blob
+        - containerPort: 6125
+          name: query
+        - containerPort: 8081
+          name: ui
+        volumeMounts:
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf/flink-conf.yaml
+          subPath: flink-conf.yaml
+        - name: flink-config-volume
+          mountPath: /data/flink/conf/base-config.conf
+          subPath: base-config.conf
+        - name: flink-config-volume
+          mountPath: /data/flink/conf/claimsjob.conf
+          subPath: claimsjob.conf
+        - name: flink-config-volume
+          mountPath: /opt/flink/conf/log4j-console.properties
+          subPath: log4j-console.properties
+        resources:
+          limits:
+            cpu: 200m
+            memory: 1Gi
+          requests:
+            cpu: 200m
+            memory: 800Mi
+      affinity:
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                    - flink
+                topologyKey: topology.kubernetes.io/hostname
+              weight: 100
+---
+# Source: datapipeline_jobs/templates/serviceMonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: claimsjob-taskmanager
+  namespace: flink
+  labels:
+    app: claimsjob-taskmanager
+    release: monitoring 
+spec:
+  selector:
+    matchLabels:
+      component: claimsjob-taskmanager
+  endpoints:
+  - port: prom
+    interval: 30s
+  namespaceSelector:
+    matchNames:
+    - flink
+---
+# Source: datapipeline_jobs/templates/serviceMonitor.yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: claimsjob-jobmanager
+  namespace: flink
+  labels:
+    app: claimsjob-jobmanager
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      component: claimsjob-jobmanager
+  endpoints:
+  - port: prom
+    interval: 30s
+  namespaceSelector:
+    matchNames:
+    - flink
+

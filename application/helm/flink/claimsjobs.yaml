@@ -1,0 +1,130 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    meta.helm.sh/release-name: claimsjob
+    meta.helm.sh/release-namespace: flink
+  creationTimestamp: "2022-12-25T09:19:09Z"
+  labels:
+    app.kubernetes.io/managed-by: Helm
+  name: claimsjob-jobmanager
+  namespace: flink
+  resourceVersion: "151880165"
+  uid: 8e46459d-f1ed-4ad9-bad8-24e96a797a8e
+spec:
+  backoffLimit: 6
+  completionMode: NonIndexed
+  completions: 1
+  parallelism: 1
+  selector:
+    matchLabels:
+      controller-uid: 8e46459d-f1ed-4ad9-bad8-24e96a797a8e
+  suspend: false
+  template:
+    metadata:
+      annotations:
+        prometheus.io/port: "9250"
+        prometheus.io/scrape: "true"
+      creationTimestamp: null
+      labels:
+        app: flink
+        component: claimsjob-jobmanager
+        controller-uid: 8e46459d-f1ed-4ad9-bad8-24e96a797a8e
+        job-name: claimsjob-jobmanager
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - flink
+              topologyKey: topology.kubernetes.io/hostname
+            weight: 100
+      containers:
+      - args:
+        - start-foreground
+        - --job-classname=org.swasth.dp.claims.task.ClaimsStreamTask
+        - -Dweb.submit.enable=false
+        - -Dmetrics.reporter.prom.class=org.apache.flink.metrics.prometheus.PrometheusReporter
+        - -Dmetrics.reporter.prom.port=9250
+        - -Djobmanager.rpc.address=claimsjob-jobmanager
+        - -Djobmanager.rpc.port=6123
+        - -Dparallelism.default=1
+        - -Dblob.server.port=6124
+        - -Dqueryable-state.server.ports=6125
+        - --config.file.path
+        - /data/flink/conf/claimsjob.conf
+        command:
+        - /opt/flink/bin/standalone-job.sh
+        image: swasth2021/hcx-pipeline-jobs:64ad206d_129
+        imagePullPolicy: Always
+        name: claimsjob-jobmanager
+        ports:
+        - containerPort: 6123
+          name: rpc
+          protocol: TCP
+        - containerPort: 6124
+          name: blob
+          protocol: TCP
+        - containerPort: 6125
+          name: query
+          protocol: TCP
+        - containerPort: 8081
+          name: ui
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 200m
+            memory: 1Gi
+          requests:
+            cpu: 200m
+            memory: 800Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/flink/conf/flink-conf.yaml
+          name: flink-config-volume
+          subPath: flink-conf.yaml
+        - mountPath: /data/flink/conf/base-config.conf
+          name: flink-config-volume
+          subPath: base-config.conf
+        - mountPath: /data/flink/conf/claimsjob.conf
+          name: flink-config-volume
+          subPath: claimsjob.conf
+        - mountPath: /opt/flink/conf/log4j-console.properties
+          name: flink-config-volume
+          subPath: log4j-console.properties
+        workingDir: /opt/flink
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: flink-conf
+            path: flink-conf.yaml
+          - key: base-config
+            path: base-config.conf
+          - key: claimsjob
+            path: claimsjob.conf
+          - key: log4j_console_properties
+            path: log4j-console.properties
+          name: claimsjob-config
+        name: flink-config-volume
+status:
+  conditions:
+  - lastProbeTime: "2023-01-20T14:04:50Z"
+    lastTransitionTime: "2023-01-20T14:04:50Z"
+    message: Job has reached the specified backoff limit
+    reason: BackoffLimitExceeded
+    status: "True"
+    type: Failed
+  failed: 1
+  startTime: "2022-12-25T09:19:09Z"
