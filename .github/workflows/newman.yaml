@@ -13,7 +13,7 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: '12'
-          collectionID: 7596548-a3da24e1-d5f8-48b2-9301-3a71cc9d204a
-          environmentID: 17596548-3fe923e0-c5ce-4eea-a943-339b28b01a22
+          # collectionID: 7596548-a3da24e1-d5f8-48b2-9301-3a71cc9d204a
+          # environmentID: 17596548-3fe923e0-c5ce-4eea-a943-339b28b01a22
       - run: npm install -g newman
-      - run: newman run "https://api.getpostman.com/collections/${{collectionID}}?apikey=${{ secrets.POSTMANAPIKEY }}" --environment "https://api.getpostman.com/environments/${{ environmentID }}?apikey=${{ secrets.POSTMANAPIKEY }}"
+      - run: newman run "https://api.getpostman.com/collections/7596548-a3da24e1-d5f8-48b2-9301-3a71cc9d204a?apikey=${{ secrets.POSTMANAPIKEY }}" --environment "https://api.getpostman.com/environments/17596548-3fe923e0-c5ce-4eea-a943-339b28b01a22?apikey=${{ secrets.POSTMANAPIKEY }}"
