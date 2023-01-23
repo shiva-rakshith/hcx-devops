@@ -31,21 +31,6 @@ jobs:
           path: DevOps
 
 
-      - name: Checkout build repo
-        uses:  actions/checkout@v3
-        with:
-          # repository: Swasth-Digital-Health-Foundation/DevOps
-          repository: SadanandGowda/hcx-platform-1
-          ref: 'workflow'
-          submodules: recursive
-          path: hcx-platform
-
-      - name: Pull image tag from S3 bucket
-        run: |
-          aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
-          export IMAGE_TAG="$(cat /tmp/tag.txt)"
-
-
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
@@ -62,9 +47,6 @@ jobs:
           # release: nginx-ingress
           chart-path: 'application/helm/core/nginx-ingress/'
           config-files: 'application/helm/core/nginx-ingress/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
-          values: |
-            image:
-              tag: env.IMAGE_TAG
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 

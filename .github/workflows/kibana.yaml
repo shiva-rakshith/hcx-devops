@@ -40,11 +40,6 @@ jobs:
           submodules: recursive
           path: hcx-platform
 
-      - name: Pull image tag from S3 bucket
-        run: |
-          aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
-          export IMAGE_TAG="$(cat /tmp/tag.txt)"
-
 
 
       - name: 'Deploy'
@@ -62,9 +57,9 @@ jobs:
           # release: kibana
           chart-path: 'application/helm/core/kibana/'
           config-files: 'application/helm/core/kibana/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
-          values: |
-            image:
-              tag: env.IMAGE_TAG
+          # values: |
+          #   image:
+          #     tag: env.IMAGE_TAG
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 
