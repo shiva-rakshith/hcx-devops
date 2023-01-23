@@ -40,7 +40,9 @@ jobs:
         env:
           IMAGE_TAG: "$(cat /tmp/tag.txt)"
 
-
+      - name: echo env
+        run: 
+          echo $IMAGE_TAG
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
         # uses: vimeda/helm@v1.6.8
