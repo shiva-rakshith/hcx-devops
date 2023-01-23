@@ -41,7 +41,7 @@ jobs:
       - name: Set an environment variable from a file
         run: env MY_VARIABLE="$(cat /tmp/tag.txt)"
       - name: Print the environment variable
-        run: echo $MY_VARIABLE
+        run: echo ${{ env.MY_VARIABLE }}
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
