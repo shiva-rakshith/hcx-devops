@@ -55,8 +55,8 @@ jobs:
 
 
       - name: Upload to Slack
-        uses: adrey/slack-file-upload-action@master
+        uses: MeilCli/slack-upload-file@v3
         with:
           token: ${{ secrets.SLACK_TOKEN }}
-          path: /tmp/newman.html
-          channel: api-test-alerts
+          file_path: '/tmp/newman.html'
+          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
