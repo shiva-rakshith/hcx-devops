@@ -37,7 +37,7 @@ jobs:
         run: |
           aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
           cat /tmp/tag.txt
-          export IMAGE_TAG="$(cat /tmp/tag.txt)"
+          echo ::set-env name=IMAGE_TAG::$(cat /tmp/tag.txt)
           echo $IMAGE_TAG
       - name: Print the environment variable
         run: echo $IMAGE_TAG
