@@ -16,4 +16,4 @@ jobs:
           # collectionID: 7596548-a3da24e1-d5f8-48b2-9301-3a71cc9d204a
           # environmentID: 17596548-3fe923e0-c5ce-4eea-a943-339b28b01a22
       - run: npm install -g newman
-      - run: newman run "https://api.getpostman.com/collections/7596548-a3da24e1-d5f8-48b2-9301-3a71cc9d204a?apikey=${{ secrets.POSTMANAPIKEY }}" --environment "https://api.getpostman.com/environments/17596548-3fe923e0-c5ce-4eea-a943-339b28b01a22?apikey=${{ secrets.POSTMANAPIKEY }}"
+      - run: newman run "https://api.getpostman.com/collections/7596548-a3da24e1-d5f8-48b2-9301-3a71cc9d204a?apikey=PMAT-01GQF54HSA7E1B8YMK338380QZ" --environment "https://api.getpostman.com/environments/17596548-3fe923e0-c5ce-4eea-a943-339b28b01a22?apikey=PMAT-01GQF54HSA7E1B8YMK338380QZ"
