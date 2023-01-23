@@ -58,7 +58,7 @@ jobs:
           name: 'claimsjob'
           namespace: 'flink'
           chart-path: 'application/helm/flink/claimsjob/'
-          config-files: 'application/helm/flink/claimsjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml, DevOps/hcx/ansible/inventory/config-flink/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+          config-files: 'application/helm/flink/claimsjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
           # token: '${{ github.token }}'
           values: |
             image.tag=64ad206d_129
