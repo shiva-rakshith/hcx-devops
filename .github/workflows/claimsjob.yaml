@@ -37,8 +37,8 @@ jobs:
         run: |
           aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
           cat /tmp/tag.txt
-        env:
-          IMAGE_TAG: "$(cat /tmp/tag.txt)"
+          env IMAGE_TAG="$(cat /tmp/tag.txt)"
+          echo $IMAGE_TAG
 
       - name: echo env
         run: 
