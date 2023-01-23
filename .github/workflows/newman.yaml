@@ -43,20 +43,34 @@ jobs:
       - run: newman run application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/dev/newman/environment.json -r htmlextra --reporter-htmlextra-export /tmp/newman.html
       # - run: newman run application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/dev/newman/environment.json
         continue-on-error: true
-      # - name: Send custom JSON data to Slack workflow
-      #   id: slack
-      #   uses: slackapi/slack-github-action@v1.23.0
-      #   with:
-      #     payload-file-path: "/tmp/newman.html"
-      #     channel-id: 'api-test-alerts'
-      #     slack-message: "API Test Alerts"
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 
-      - name: Upload to Slack
-        uses: MeilCli/slack-upload-file@v3
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          slack_token: ${{ secrets.SLACK_TOKEN }}
-          file_path: '/tmp/newman.html'
-          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Push Newman report to S3 bucket
+        run: |
+          mv /tmp/newman.html /tmp/newman_${{ github.run_number }}.html
+          aws s3 cp /tmp/newman_${{ github.run_number }}.html s3://dev-hcx-test-reports/newman_${{ github.run_number }}.html
+
+
+      - name: Send custom JSON data to Slack workflow
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: 'api-test-alerts'
+          slack-message: "API Test Alerts - https://dev-hcx-test-reports.s3.ap-south-1.amazonaws.com/newman_${{ github.run_number }}.html"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+      # - name: Upload to Slack
+      #   uses: MeilCli/slack-upload-file@v3
+      #   with:
+      #     slack_token: ${{ secrets.SLACK_TOKEN }}
+      #     file_path: '/tmp/newman.html'
+      #     channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
