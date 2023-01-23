@@ -27,7 +27,7 @@ jobs:
           ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
           submodules: recursive
           path: DevOps
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/setup-node@v3
         with:
           node-version: '19'
           # collectionID: 7596548-a3da24e1-d5f8-48b2-9301-3a71cc9d204a
