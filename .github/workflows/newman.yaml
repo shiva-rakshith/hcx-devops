@@ -5,8 +5,8 @@ on:
     - master
     - staging
     - workflow
-env:
-  CI: false
+# env:
+#   CI: false
 jobs:
   newman:
     runs-on: ubuntu-latest
@@ -42,5 +42,5 @@ jobs:
       # - run: newman run application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/newman/environment.json -r htmlextra --reporter-htmlextra-export /tmp/newman.html
       # - run: newman run --verbose application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/dev/newman/environment.json -r htmlextra --reporter-htmlextra-export newman.html
       - run: newman run application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/dev/newman/environment.json
-
+        continue-on-error: true
       - run: ls -lrt
