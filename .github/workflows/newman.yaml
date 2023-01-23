@@ -43,12 +43,20 @@ jobs:
       - run: newman run application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/dev/newman/environment.json -r htmlextra --reporter-htmlextra-export /tmp/newman.html
       # - run: newman run application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/dev/newman/environment.json
         continue-on-error: true
-      - name: Send custom JSON data to Slack workflow
-        id: slack
-        uses: slackapi/slack-github-action@v1.23.0
+      # - name: Send custom JSON data to Slack workflow
+      #   id: slack
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     payload-file-path: "/tmp/newman.html"
+      #     channel-id: 'api-test-alerts'
+      #     slack-message: "API Test Alerts"
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+      - name: Upload to Slack
+        uses: adrey/slack-file-upload-action@master
         with:
-          payload-file-path: "/tmp/newman.html"
-          channel-id: 'api-test-alerts'
-          slack-message: "API Test Alerts"
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          token: ${{ secrets.SLACK_TOKEN }}
+          path: /tmp/newman.html
+          channel: api-test-alerts
