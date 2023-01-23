@@ -37,14 +37,11 @@ jobs:
         run: |
           aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
           cat /tmp/tag.txt
-          set IMAGE_TAG="$(cat /tmp/tag.txt)"
-          cat /tmp/tag.txt
+          export IMAGE_TAG="$(cat /tmp/tag.txt)"
           echo $IMAGE_TAG
       - name: Print the environment variable
         run: echo $IMAGE_TAG
-      - name: echo env
-        run: 
-          echo $IMAGE_TAG
+
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
         # uses: vimeda/helm@v1.6.8
@@ -61,7 +58,7 @@ jobs:
           config-files: 'application/helm/flink/claimsjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml, DevOps/hcx/ansible/inventory/config-flink/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
           # token: '${{ github.token }}'
           values: |
-            image.tag=${{ env.IMAGE_TAG }}
+            image.tag="$(cat /tmp/tag.txt)"
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 
