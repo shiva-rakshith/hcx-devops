@@ -90,8 +90,7 @@ jobs:
         chart-path: 'application/helm/core/hcx-api/'
         config-files: 'application/helm/core/hcx-api/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml'
         values: |
-          image:
-            tag: 4e555b08_58
+          image.tag:4e555b08_58
       env:
         KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 
