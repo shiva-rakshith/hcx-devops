@@ -1,11 +1,17 @@
 name: Deploy worflow for HCX API.
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         description: Cluster Environment
+#         default: dev
+#         required: true
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: Cluster Environment
-        default: dev
-        required: true
+  push:
+    branches:
+    - master
+    - staging
+    - workflow
 jobs:
   deployment:
     runs-on: 'ubuntu-latest'
@@ -82,10 +88,10 @@ jobs:
         namespace: 'dev'
         # release: hcx-api
         chart-path: 'application/helm/core/hcx-api/'
-        config-files: 'application/helm/core/hcx-api/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+        config-files: 'application/helm/core/hcx-api/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml'
         values: |
           image:
-            tag: env.IMAGE_TAG
+            tag: 4e555b08_58
       env:
         KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 
