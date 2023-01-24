@@ -97,26 +97,3 @@ jobs:
 ###
 
 
-
-    # - name: Run playbook
-    #   uses: dawidd6/action-ansible-playbook@v2.6.1
-    #   with:
-    #     # Required, playbook filepath
-    #     playbook: '${{ github.workspace }}/application/ansible/helm.yaml'
-    #     # Optional, directory where playbooks live
-    #     directory: 'application/ansible/roles/helm_deploy/templates/'
-    #     # Optional, SSH private key
-    #     key: ${{secrets.SSH_PRIVATE_KEY}}
-    #     # Optional, literal inventory file contents
-    #     inventory: 'DevOps/hcx/ansible/inventory/dev/'
-    #     # Optional, SSH known hosts file content
-    #     known_hosts: 'DevOps/hcx/ansible/inventory/dev/hosts'
-    #     vault_password: ${{secrets.VAULT_PASSWORD}}
-    #     # Optional, galaxy requirements filepath
-    #     #requirements: galaxy-requirements.yml
-    #     # Optional, additional flags to pass to ansible-playbook
-    #     options: |
-    #       --inventory .hosts
-    #       --limit group1
-    #       --verbose
-
