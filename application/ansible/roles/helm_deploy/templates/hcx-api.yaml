@@ -29,6 +29,9 @@ env:
   registry_hcxcode: "{{ registry_hcx_code }}"
   not_allowed_urls: {{ gateway_not_allowed_urls }}
   hcx_instance_name: {{ hcx_instance_name }}
+  certificates_accesskey: {{ certificates_accesskey }}
+  certificates_secretKey: {{ certificates_secretKey }}
+  certificates_bucketName: {{ certificates_bucketName }}
 
 service:
   type: ClusterIP
