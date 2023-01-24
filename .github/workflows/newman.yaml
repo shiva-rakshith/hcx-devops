@@ -67,7 +67,6 @@ jobs:
           slack-message: "Hello World"
           payload: |
             {
-              "key": "value",
               "foo": "bar"
             }
         env:
