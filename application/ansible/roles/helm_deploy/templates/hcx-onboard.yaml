@@ -14,14 +14,14 @@ env:
   aws_region: {{ aws_region }}
   email_id: {{ email_id }}
   email_pwd: {{ email_pwd }}
-  verify_otp_form: {{ verify_otp_form }}
-  otp_regenerate_form: {{ otp_regenerate_form }}
-  update_regenerate_form:  {{ update_regenerate_form }}
   postgres_url: "jdbc:postgresql://{{ hcx_api_postgresql_host }}/postgres"
   postgres_user: "{{ hcx_api_postgresql_user }}"
   postgres_password: "{{ hcx_api_postgresql_password }}"
   HCX_API_BASEPATH : http://hcx-api.{{ env }}.svc.cluster.local:8080
   ENV: {{ env }}
+  certificates_accesskey: {{ certificates_accesskey }}
+  certificates_secretKey: {{ certificates_secretKey }}
+  certificates_bucketName: {{ certificates_bucketName }}
   
 
 service:
