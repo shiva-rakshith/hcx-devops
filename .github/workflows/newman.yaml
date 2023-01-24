@@ -58,20 +58,34 @@ jobs:
 #           aws s3 cp /tmp/newman_${{ github.run_number }}.html s3://dev-hcx-test-reports/newman_${{ github.run_number }}.html
 
 
-      - name: Send custom JSON data to Slack workflow
-        id: slack
-        uses: slackapi/slack-github-action@v1.23.0
-        with:
-          channel-id: 'api-test-alerts'
-          # slack-message: "API Test Alerts - https://dev-hcx-test-reports.s3.ap-south-1.amazonaws.com/newman_${{ github.run_number }}.html"
-          slack-message: "Hello World"
-          payload: |
-            {
-              "foo": "bar"
-            }
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      # - name: Send custom JSON data to Slack workflow
+      #   id: slack
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     channel-id: 'api-test-alerts'
+      #     # slack-message: "API Test Alerts - https://dev-hcx-test-reports.s3.ap-south-1.amazonaws.com/newman_${{ github.run_number }}.html"
+      #     slack-message: "Hello World"
+      #     payload: |
+      #       {
+      #         "foo": "bar"
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+
+
+    - name: Post to a Slack channel
+      id: slack
+      uses: slackapi/slack-github-action@v1.23.0
+      with:
+        # Slack channel id, channel name, or user id to post message.
+        # See also: https://api.slack.com/methods/chat.postMessage#channels
+        # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+        channel-id: 'api-test-alerts'
+        # For posting a simple plain text message
+        slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+      env:
+        SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       # - name: Upload to Slack
       #   uses: MeilCli/slack-upload-file@v3
