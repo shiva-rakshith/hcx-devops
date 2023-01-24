@@ -65,6 +65,11 @@ jobs:
           channel-id: 'api-test-alerts'
           # slack-message: "API Test Alerts - https://dev-hcx-test-reports.s3.ap-south-1.amazonaws.com/newman_${{ github.run_number }}.html"
           slack-message: "Hello World"
+          payload: |
+            {
+              "key": "value",
+              "foo": "bar"
+            }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
