@@ -80,6 +80,9 @@ jobs:
         aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
         export IMAGE_TAG="$(cat /tmp/tag.txt)"
 
+    - name: Print the environment variable
+      run: echo ${{ env.IMAGE_TAG }}
+
     - name: 'Deploy'
       uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
       # uses: vimeda/helm@v1.6.8
