@@ -1,0 +1,102 @@
+name: Newman Test Run
+# on:
+#   push:
+#     branches:
+#     - master
+#     - staging
+#     - workflow
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Cluster Environment
+        default: dev
+        required: true
+# env:
+#   CI: false
+jobs:
+  newman:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+
+      - name: Checkout private
+        uses: actions/checkout@v3
+        with:
+          # repository: Swasth-Digital-Health-Foundation/DevOps
+          repository: Swasth-Digital-Health-Foundation/DevOps
+          ref: 'workflow'
+          ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          submodules: recursive
+          path: DevOps
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '19'
+          # collectionID: 7596548-a3da24e1-d5f8-48b2-9301-3a71cc9d204a
+          # environmentID: 17596548-3fe923e0-c5ce-4eea-a943-339b28b01a22
+      - run: npm install -g newman
+        # env:
+        #  CI: false
+      - run: npm install -g newman-reporter-htmlextra
+      #- run: newman run "https://api.getpostman.com/collections/7596548-a3da24e1-d5f8-48b2-9301-3a71cc9d204a?apikey=PMAT-01GQF54HSA7E1B8YMK338380QZ" --environment "https://api.getpostman.com/environments/17596548-3fe923e0-c5ce-4eea-a943-339b28b01a22?apikey=PMAT-01GQF54HSA7E1B8YMK338380QZ"
+      # - run: newman run application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/newman/environment.json -r htmlextra --reporter-htmlextra-export /tmp/newman.html
+      - run: newman run application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/dev/newman/environment.json -r htmlextra --reporter-htmlextra-export /tmp/newman.html
+      # - run: newman run application/pipelines/deploy/newman/collection.json -e DevOps/hcx/ansible/inventory/dev/newman/environment.json
+        continue-on-error: true
+
+
+      # - name: AWS Credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      #     aws-region: ap-south-1
+
+      - name: Push Newman report to S3 bucket
+        run: |
+          mv /tmp/newman.html /tmp/newman_${{ github.run_number }}.html
+          aws s3 cp /tmp/newman_${{ github.run_number }}.html s3://dev-hcx-test-reports/newman_${{ github.run_number }}.html
+
+
+      # - name: Send custom JSON data to Slack workflow
+      #   id: slack
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   with:
+      #     channel-id: 'api-test-alerts'
+      #     # slack-message: "API Test Alerts - https://dev-hcx-test-reports.s3.ap-south-1.amazonaws.com/newman_${{ github.run_number }}.html"
+      #     slack-message: "Hello World"
+      #     payload: |
+      #       {
+      #         "foo": "bar"
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+
+      - name: Post to a Slack channel
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          # Slack channel id, channel name, or user id to post message.
+          # See also: https://api.slack.com/methods/chat.postMessage#channels
+          # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+          channel-id: 'api-test-alerts'
+          # For posting a simple plain text message
+          slack-message: "Dev HCX API test results : https://dev-hcx-test-reports.s3.ap-south-1.amazonaws.com/newman_${{ github.run_number }}.html"
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+      # - name: Upload to Slack
+      #   uses: MeilCli/slack-upload-file@v3
+      #   with:
+      #     slack_token: ${{ secrets.SLACK_TOKEN }}
+      #     file_path: '/tmp/newman.html'
+      #     channel_id: ${{ secrets.SLACK_CHANNEL_ID }}

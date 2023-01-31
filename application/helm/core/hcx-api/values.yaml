@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: maheshkg/hcx-apis
+  repository: swasth2021/hcx-apis
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "7bcf2018_37"
 
 imagePullSecrets: []
 nameOverride: ""
