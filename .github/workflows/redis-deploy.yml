@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy workflow for Redis.
 on:
   workflow_dispatch:
     inputs:

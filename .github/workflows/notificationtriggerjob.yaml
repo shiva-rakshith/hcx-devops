@@ -1,4 +1,5 @@
-name: Deploy workflow for HCX Mock Service
+name: Deploy worflow for Notifications Trigger Job.
+
 on:
   workflow_dispatch:
     inputs:
@@ -18,34 +19,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
-          # aws-profile: hcx
-          # role-to-assume: arn:aws:iam::131795456882:role/OrganizationAccountAccessRole
-      # - uses: actions/checkout@v1
 
-      # - name: Checkout Private Repo
-      #   run: |
-      #     eval `ssh-agent -s`
-      #     ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
-      # - uses: actions/checkout@v1
-      #   with:
-      #     repository: organization_name/repo_name
-      #     token: ${{ secrets.ACCESS_TOKEN }}
-
-
-      # - uses: shaunco/ssh-agent@git-repo-mapping # this action will configure git to use the right SSH key per each repository.
-      #   with:
-      #     ssh-private-key: |
-      #       ${{ secrets.SSH_PRIVATE_KEY }}
-      #     repo-mappings: |
-      #       github.com/Swasth-Digital-Health-Foundation/DevOps
-
-
-      # - uses: actions/checkout@v2
-      #   with:
-      #     submodules: recursive
-
-      # - name: Check file structure
-      #   run: ls -lrt ${{ github.workspace }}
 
       - name: Checkout private
         uses: actions/checkout@v3
@@ -57,10 +31,17 @@ jobs:
           submodules: recursive
           path: DevOps
 
+
+      - name: Cat private repo file
+        run: cat ${{ github.workspace }}/DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
       - name: Pull image tag from S3 bucket
         run: |
           aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
-          export IMAGE_TAG="$(cat /tmp/tag.txt)"
+          cat /tmp/tag.txt
+
+      - name: Set an environment variable from a file
+        # run: env MY_VARIABLE="$(cat /tmp/tag.txt)"
+        run: echo "IMAGE_TAG=$(cat /tmp/tag.txt)" >> $GITHUB_ENV
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
@@ -72,15 +53,13 @@ jobs:
           aws-region: ap-south-1
           # aws-profile: git-deploy
           cluster-name: dev-cluster
-          name: 'hcx-mock-service'
-          namespace: 'dev'
-          # release: hcx-mock-service
-          chart-path: 'application/helm/core/hcx-mock-service/'
-          config-files: 'application/helm/core/hcx-mock-service/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+          name: 'notificationtriggerjob'
+          namespace: 'flink'
+          chart-path: 'application/helm/flink/notificationtriggerjob/'
+          config-files: 'application/helm/flink/notificationtriggerjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
           values: |
             image.tag=${{ env.IMAGE_TAG }}
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 
-###
 
