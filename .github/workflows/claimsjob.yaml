@@ -1,12 +1,16 @@
 name: Deploy worflow for ClaimsJob.
 
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         description: Cluster Environment
+#         default: dev
+#         required: true
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: Cluster Environment
-        default: dev
-        required: true
+  push:
+    branches:
+      - "workflow"
 jobs:
   deployment:
     runs-on: 'ubuntu-latest'
