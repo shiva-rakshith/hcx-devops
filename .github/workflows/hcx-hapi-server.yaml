@@ -1,4 +1,4 @@
-name: Deploy HCX Demo application
+name: Deploy workflow for HCX Hapi application
 on:
   workflow_dispatch:
     inputs:

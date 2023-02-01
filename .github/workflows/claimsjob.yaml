@@ -1,4 +1,4 @@
-name: Deploy worflow for HCX applications.
+name: Deploy worflow for ClaimsJob.
 
 on:
   workflow_dispatch:
@@ -42,10 +42,10 @@ jobs:
       - name: Set an environment variable from a file
         # run: env MY_VARIABLE="$(cat /tmp/tag.txt)"
         run: echo "IMAGE_TAG=$(cat /tmp/tag.txt)" >> $GITHUB_ENV
-
-      - name: Print the environment variable
-        run: echo ${{ env.IMAGE_TAG }}
-
+      - name: Print env vars
+        run: |
+          echo env.IMAGE_TAG
+          echo ${{ env.IMAGE_TAG }}
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
         # uses: vimeda/helm@v1.6.8
@@ -62,7 +62,8 @@ jobs:
           config-files: 'application/helm/flink/claimsjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
           # token: '${{ github.token }}'
           values: |
-            image.tag=64ad206d_129
+            image:
+              tag: env.IMAGE_TAG
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 

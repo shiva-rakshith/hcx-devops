@@ -1,4 +1,4 @@
-name: Deploy HCX Demo application
+name: Deploy workflow for Nginx Ingress
 on:
   workflow_dispatch:
     inputs:

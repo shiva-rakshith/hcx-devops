@@ -1,4 +1,4 @@
-name: Newman Test Run
+name: Deploy workflow for API Test
 # on:
 #   push:
 #     branches:

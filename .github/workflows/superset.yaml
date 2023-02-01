@@ -1,4 +1,4 @@
-name: Deploy HCX Demo application
+name: Deploy workflow for Superset
 on:
   workflow_dispatch:
     inputs:

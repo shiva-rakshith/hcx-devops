@@ -1,4 +1,4 @@
-name: Deploy HCX Demo application
+name: Deploy HCX Onboard application
 on:
   workflow_dispatch:
     inputs:
