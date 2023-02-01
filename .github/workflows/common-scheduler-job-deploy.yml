@@ -82,8 +82,7 @@ jobs:
           chart-path: 'application/helm/core/common-scheduler-job/'
           config-files: 'application/helm/core/common-scheduler-job/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
           values: |
-            image.
-              tag: ${{ env.IMAGE_TAG }}
+            image.tag=${{ env.IMAGE_TAG }}
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 

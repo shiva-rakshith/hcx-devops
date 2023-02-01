@@ -64,8 +64,7 @@ jobs:
           chart-path: 'application/helm/core/demo-app/'
           config-files: 'application/helm/core/demo-app/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml' 
           values: |
-            image:
-              tag: env.IMAGE_TAG
+            image.tag=${{ env.IMAGE_TAG }}
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 

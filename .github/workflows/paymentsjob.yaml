@@ -58,8 +58,7 @@ jobs:
           chart-path: 'application/helm/flink/paymentsjob/'
           config-files: 'application/helm/flink/paymentsjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
           values: |
-            image:
-              tag: env.IMAGE_TAG
+            image.tag=${{ env.IMAGE_TAG }}
         env:
           KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 
