@@ -75,12 +75,12 @@ jobs:
           # cluster-role-arn: arn:aws:iam::131795456882:user/hcx
           aws-region: ap-south-1
           # aws-profile: git-deploy
-          cluster-name: dev-cluster
+          cluster-name: ${{ github.event.inputs.environment }}-cluster
           name: 'common-scheduler-job'
-          namespace: 'dev'
+          namespace: '${{ github.event.inputs.environment }}'
           # release: common-scheduler-job
           chart-path: 'application/helm/core/common-scheduler-job/'
-          config-files: 'application/helm/core/common-scheduler-job/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+          config-files: 'application/helm/core/common-scheduler-job/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
           values: |
             image.tag=${{ env.IMAGE_TAG }}
         env:

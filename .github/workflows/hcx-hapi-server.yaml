@@ -61,7 +61,7 @@ jobs:
           namespace: ${{ github.event.inputs.environment }}
           # release: hcx-hapi-server
           chart-path: 'application/helm/core/hcx-hapi-server/'
-          config-files: 'application/helm/core/hcx-hapi-server/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+          config-files: 'application/helm/core/hcx-hapi-server/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
           values: |
             image.tag=${{ env.IMAGE_TAG }}
         env:

@@ -4,7 +4,7 @@ on:
     inputs:
       environment:
         description: Cluster Environment
-        default: dev
+        default: ${{ github.event.inputs.environment }}
         required: true
 jobs:
   deployment:
@@ -61,7 +61,7 @@ jobs:
           namespace: ${{ github.event.inputs.environment }}
           # release: hcx-onboard
           chart-path: 'application/helm/core/hcx-onboard/'
-          config-files: 'application/helm/core/hcx-onboard/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+          config-files: 'application/helm/core/hcx-onboard/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
           values: |
             image.tag=${{ env.IMAGE_TAG }}
         env:
