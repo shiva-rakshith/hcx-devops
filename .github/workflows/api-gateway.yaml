@@ -1,4 +1,4 @@
-name: Deploy worflow for HCX API Gateway.
+name: Deploy workflow for HCX API Gateway.
 
 on:
   workflow_dispatch:

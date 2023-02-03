@@ -1,4 +1,4 @@
-name: Deploy worflow for RetryJob.
+name: Deploy workflow for RetryJob.
 
 on:
   workflow_dispatch:

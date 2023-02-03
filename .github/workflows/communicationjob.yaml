@@ -1,4 +1,4 @@
-name: Deploy worflow for Communication Job.
+name: Deploy workflow for Communication Job.
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Deploy worflow for PredeterminationJob.
+name: Deploy workflow for PredeterminationJob.
 
 on:
   workflow_dispatch:

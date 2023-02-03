@@ -1,4 +1,4 @@
-name: Deploy worflow for Status Job.
+name: Deploy workflow for Status Job.
 
 on:
   workflow_dispatch:

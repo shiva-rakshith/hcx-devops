@@ -1,4 +1,4 @@
-name: Deploy worflow for PreAuthJob.
+name: Deploy workflow for PreAuthJob.
 
 on:
   workflow_dispatch:

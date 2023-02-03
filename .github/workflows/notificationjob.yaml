@@ -1,4 +1,4 @@
-name: Deploy worflow for NotificationsJob.
+name: Deploy workflow for NotificationsJob.
 
 on:
   workflow_dispatch:

@@ -1,4 +1,4 @@
-name: Deploy worflow for PaymentsJob.
+name: Deploy workflow for PaymentsJob.
 
 on:
   workflow_dispatch:

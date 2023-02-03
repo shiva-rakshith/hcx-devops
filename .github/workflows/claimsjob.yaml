@@ -1,4 +1,4 @@
-name: Deploy worflow for ClaimsJob.
+name: Deploy workflow for ClaimsJob.
 
 on:
   workflow_dispatch:

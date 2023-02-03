@@ -1,4 +1,4 @@
-name: Deploy worflow for SearchJob.
+name: Deploy workflow for SearchJob.
 
 on:
   workflow_dispatch:

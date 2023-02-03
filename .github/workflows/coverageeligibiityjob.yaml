@@ -1,4 +1,4 @@
-name: Deploy worflow for Coverage Eligibility Job.
+name: Deploy workflow for Coverage Eligibility Job.
 
 on:
   workflow_dispatch:

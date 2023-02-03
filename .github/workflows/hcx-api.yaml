@@ -1,4 +1,4 @@
-name: Deploy worflow for HCX API.
+name: Deploy workflow for HCX API.
 on:
   workflow_dispatch:
     inputs:
