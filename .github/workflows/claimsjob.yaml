@@ -45,7 +45,7 @@ jobs:
 
 
 
-      - name: Deploy Helm
+      - name: Uninstall previous flink job
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}

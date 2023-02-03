@@ -42,6 +42,17 @@ jobs:
         # run: env MY_VARIABLE="$(cat /tmp/tag.txt)"
         run: echo "IMAGE_TAG=$(cat /tmp/tag.txt)" >> $GITHUB_ENV
 
+      - name: Uninstall previous flink job
+        uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+          action: uninstall
+          cluster-name: ${{ github.event.inputs.environment }}-cluster
+          namespace: 'flink'
+          name: 'searchresponsejob'
+
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
         # uses: vimeda/helm@v1.6.8
