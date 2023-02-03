@@ -71,12 +71,12 @@ jobs:
           # cluster-role-arn: arn:aws:iam::131795456882:user/hcx
           aws-region: ap-south-1
           # aws-profile: git-deploy
-          cluster-name: dev-cluster
+          cluster-name: ${{ github.event.inputs.environment }}-cluster
           name: 'hcx-mock-service'
-          namespace: 'dev'
+          namespace: '${{ github.event.inputs.environment }}'
           # release: hcx-mock-service
           chart-path: 'application/helm/core/hcx-mock-service/'
-          config-files: 'application/helm/core/hcx-mock-service/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+          config-files: 'application/helm/core/hcx-mock-service/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
           values: |
             image.tag=${{ env.IMAGE_TAG }}
         env:

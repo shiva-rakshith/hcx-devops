@@ -83,12 +83,12 @@ jobs:
 
         aws-region: ap-south-1
         # aws-profile: git-deploy
-        cluster-name: dev-cluster
+        cluster-name: ${{ github.event.inputs.environment }}-cluster
         name: 'hcx-api'
-        namespace: 'dev'
+        namespace: '${{ github.event.inputs.environment }}'
         # release: hcx-api
         chart-path: 'application/helm/core/hcx-api/'
-        config-files: 'application/helm/core/hcx-api/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+        config-files: 'application/helm/core/hcx-api/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
         values: |
           image.tag=${{ env.IMAGE_TAG }}
       env:

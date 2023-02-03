@@ -56,7 +56,7 @@ jobs:
           namespace: ${{ github.event.inputs.environment }}
           # release: kibana
           chart-path: 'application/helm/core/kibana/'
-          config-files: 'application/helm/core/kibana/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+          config-files: 'application/helm/core/kibana/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
           # values: |
           #   image:
           #     tag: env.IMAGE_TAG

@@ -32,8 +32,7 @@ jobs:
           path: DevOps
 
 
-      - name: Cat private repo file
-        run: cat ${{ github.workspace }}/DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml
+
       - name: Pull image tag from S3 bucket
         run: |
           aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
@@ -42,6 +41,17 @@ jobs:
       - name: Set an environment variable from a file
         # run: env MY_VARIABLE="$(cat /tmp/tag.txt)"
         run: echo "IMAGE_TAG=$(cat /tmp/tag.txt)" >> $GITHUB_ENV
+
+      - name: Uninstall previous flink job
+        uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+          action: uninstall
+          cluster-name: ${{ github.event.inputs.environment }}-cluster
+          namespace: 'flink'
+          name: 'paymentsjob'
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
@@ -52,11 +62,11 @@ jobs:
           # cluster-role-arn: arn:aws:iam::131795456882:user/hcx
           aws-region: ap-south-1
           # aws-profile: git-deploy
-          cluster-name: dev-cluster
+          cluster-name: ${{ github.event.inputs.environment }}-cluster
           name: 'paymentsjob'
           namespace: 'flink'
           chart-path: 'application/helm/flink/paymentsjob/'
-          config-files: 'application/helm/flink/paymentsjob/values.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/dev.yaml, DevOps/hcx/ansible/inventory/dev/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/dev/group_vars/dev.yaml'
+          config-files: 'application/helm/flink/paymentsjob/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
           values: |
             image.tag=${{ env.IMAGE_TAG }}
         env:
