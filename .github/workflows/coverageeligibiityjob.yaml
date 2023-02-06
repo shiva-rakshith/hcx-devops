@@ -57,7 +57,7 @@ jobs:
           action: uninstall
           cluster-name: ${{ github.event.inputs.environment }}-cluster
           namespace: 'flink'
-          name: 'coverageeligibilityjob'
+          name: 'coverageeligibility'
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
