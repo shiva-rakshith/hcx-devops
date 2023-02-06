@@ -6,6 +6,12 @@ on:
         description: Cluster Environment
         default: dev
         required: true
+# on:
+#   push:
+#     branches:
+#     - master
+#     - staging
+#     - workflow
 jobs:
   deployment:
     if: github.actor == 'SadanandGowda' || github.actor ==  'AbhiGaddi' || github.actor == 'shiva-rakshith'

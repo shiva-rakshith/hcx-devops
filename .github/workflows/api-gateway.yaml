@@ -7,7 +7,6 @@ on:
         description: Cluster Environment
         default: dev
         required: true
-
 # on:
 #   push:
 #     branches:

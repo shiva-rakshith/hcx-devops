@@ -1,12 +1,18 @@
 name: Deploy workflow for NotificationsJob.
 
+# on:
+#   workflow_dispatch:
+#     inputs:
+#       environment:
+#         description: Cluster Environment
+#         default: dev
+#         required: true
 on:
-  workflow_dispatch:
-    inputs:
-      environment:
-        description: Cluster Environment
-        default: dev
-        required: true
+  push:
+    branches:
+    - master
+    - staging
+    - workflow
 jobs:
   deployment:
     if: github.actor == 'SadanandGowda' || github.actor ==  'AbhiGaddi' || github.actor == 'shiva-rakshith'
