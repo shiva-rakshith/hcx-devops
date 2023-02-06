@@ -1,4 +1,4 @@
-name: Deploy worflow for Common Scheduler Job.
+name: Deploy workflow for Common Scheduler Job.
 on:
   workflow_dispatch:
     inputs:
@@ -6,8 +6,15 @@ on:
         description: Cluster Environment
         default: dev
         required: true
+# on:
+#   push:
+#     branches:
+#     - master
+#     - staging
+#     - workflow
 jobs:
   deployment:
+    if: github.actor == 'SadanandGowda' || github.actor ==  'AbhiGaddi' || github.actor == 'shiva-rakshith'
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v2
@@ -63,8 +70,11 @@ jobs:
       - name: Pull image tag from S3 bucket
         run: |
           aws s3 cp s3://build-tags/tag.txt /tmp/tag.txt
-          export IMAGE_TAG="$(cat /tmp/tag.txt)"
-          echo env.IMAGE_TAG
+          cat /tmp/tag.txt
+
+      - name: Set an environment variable from a file
+        # run: env MY_VARIABLE="$(cat /tmp/tag.txt)"
+        run: echo "IMAGE_TAG=$(cat /tmp/tag.txt)" >> $GITHUB_ENV
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0

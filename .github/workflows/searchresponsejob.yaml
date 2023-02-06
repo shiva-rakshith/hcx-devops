@@ -1,4 +1,4 @@
-name: Deploy worflow for SearchResponseJob.
+name: Deploy workflow for SearchResponseJob.
 
 on:
   workflow_dispatch:
@@ -7,8 +7,15 @@ on:
         description: Cluster Environment
         default: dev
         required: true
+# on:
+#   push:
+#     branches:
+#     - master
+#     - staging
+#     - workflow
 jobs:
   deployment:
+    if: github.actor == 'SadanandGowda' || github.actor ==  'AbhiGaddi' || github.actor == 'shiva-rakshith'
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v2

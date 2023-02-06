@@ -1,4 +1,4 @@
-name: Deploy worflow for Coverage Eligibility Job.
+name: Deploy workflow for Coverage Eligibility Job.
 
 on:
   workflow_dispatch:
@@ -7,8 +7,15 @@ on:
         description: Cluster Environment
         default: dev
         required: true
+# on:
+#   push:
+#     branches:
+#     - master
+#     - staging
+#     - workflow
 jobs:
   deployment:
+    if: github.actor == 'SadanandGowda' || github.actor ==  'AbhiGaddi' || github.actor == 'shiva-rakshith'
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v2
@@ -50,7 +57,7 @@ jobs:
           action: uninstall
           cluster-name: ${{ github.event.inputs.environment }}-cluster
           namespace: 'flink'
-          name: 'coverageeligibilityjob'
+          name: 'coverageeligibility'
 
       - name: 'Deploy'
         uses: bitovi/github-actions-deploy-eks-helm@v1.1.0
@@ -62,10 +69,10 @@ jobs:
           aws-region: ap-south-1
           # aws-profile: git-deploy
           cluster-name: ${{ github.event.inputs.environment }}-cluster
-          name: 'coverageeligibilityjob'
+          name: 'coverageeligibility'
           namespace: 'flink'
-          chart-path: 'application/helm/flink/coverageeligibilityjob/'
-          config-files: 'application/helm/flink/coverageeligibilityjob/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
+          chart-path: 'application/helm/flink/coverageeligibility/'
+          config-files: 'application/helm/flink/coverageeligibility/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
           # token: '${{ github.token }}'
           values: |
             image.tag=${{ env.IMAGE_TAG }}

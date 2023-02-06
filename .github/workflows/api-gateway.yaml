@@ -1,4 +1,4 @@
-name: Deploy worflow for HCX API Gateway.
+name: Deploy workflow for HCX API Gateway.
 
 on:
   workflow_dispatch:
@@ -7,7 +7,6 @@ on:
         description: Cluster Environment
         default: dev
         required: true
-
 # on:
 #   push:
 #     branches:
@@ -16,6 +15,7 @@ on:
 #     - workflow
 jobs:
   deployment:
+    if: github.actor == 'SadanandGowda' || github.actor ==  'AbhiGaddi' || github.actor == 'shiva-rakshith'
     runs-on: 'ubuntu-latest'
     steps:
     - uses: actions/checkout@v2
