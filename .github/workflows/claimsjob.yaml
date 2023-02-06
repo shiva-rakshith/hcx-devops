@@ -10,6 +10,7 @@ on:
 
 jobs:
   deployment:
+    if: github.actor == 'SadanandGowda' || github.actor ==  'AbhiGaddi' || github.actor == 'shiva-rakshith'
     runs-on: 'ubuntu-latest'
     steps:
       - uses: actions/checkout@v2
