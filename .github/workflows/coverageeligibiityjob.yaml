@@ -69,10 +69,10 @@ jobs:
           aws-region: ap-south-1
           # aws-profile: git-deploy
           cluster-name: ${{ github.event.inputs.environment }}-cluster
-          name: 'coverageeligibilityjob'
+          name: 'coverageeligibility'
           namespace: 'flink'
-          chart-path: 'application/helm/flink/coverageeligibilityjob/'
-          config-files: 'application/helm/flink/coverageeligibilityjob/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
+          chart-path: 'application/helm/flink/coverageeligibility/'
+          config-files: 'application/helm/flink/coverageeligibility/values.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml, DevOps/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/config-flink.yaml' #, https://github.com/Swasth-Digital-Health-Foundation/DevOps/blob/workflow/hcx/ansible/inventory/${{ github.event.inputs.environment }}/group_vars/${{ github.event.inputs.environment }}.yaml'
           # token: '${{ github.token }}'
           values: |
             image.tag=${{ env.IMAGE_TAG }}
