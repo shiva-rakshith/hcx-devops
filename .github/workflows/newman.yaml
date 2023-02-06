@@ -1,17 +1,17 @@
 name: Deploy workflow for API Test
-on:
-  push:
-    branches:
-    - master
-    - staging
-    - workflow
 # on:
-#   workflow_dispatch:
-#     inputs:
-#       environment:
-#         description: Cluster Environment
-#         default: dev
-#         required: true
+#   push:
+#     branches:
+#     - master
+#     - staging
+#     - workflow
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Cluster Environment
+        default: dev
+        required: true
 # env:
 #   CI: false
 jobs:
