@@ -79,7 +79,5 @@ jobs:
           # token: '${{ github.token }}'
           values: |
             image.tag=${{ env.IMAGE_TAG }}
-        env:
-          KUBECONFIG_FILE: '${{ secrets.KUBECONFIG }}'
 
 
