@@ -112,6 +112,7 @@ flink_job_configs:
       hcx {
         instanceName = {{ hcx_instance_name }}
       }
+      tag = ""
 
   coverageeligibility:
     coverageeligibility: |+
