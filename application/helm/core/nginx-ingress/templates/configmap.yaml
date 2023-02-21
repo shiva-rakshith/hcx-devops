@@ -65,7 +65,7 @@ data:
     }
      server {
        listen              443 ssl;
-       server_name {{.Values.domainName}};
+       server_name {{.Values.nginx_ingress.domainName}};
        ssl_certificate     /etc/nginx/secrets/tls.crt;
        ssl_certificate_key /etc/nginx/secrets/tls.key;
        include /etc/nginx/conf.d/location.list;
