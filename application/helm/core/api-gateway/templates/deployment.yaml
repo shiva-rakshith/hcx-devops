@@ -36,7 +36,7 @@ spec:
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.api_gateway.image.repository }}:{{ .Values.api_gateway.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.api_gateway.image.repository }}:{{ .Values.common.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.api_gateway.image.pullPolicy }}
           ports:
             - name: http
