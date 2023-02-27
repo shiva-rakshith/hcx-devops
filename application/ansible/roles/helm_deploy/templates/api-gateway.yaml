@@ -11,7 +11,7 @@ env:
   JWT_NS_PATH : "$.realm_access.roles"
   HCX_API_BASEPATH : http://hcx-api.{{ env }}.svc.cluster.local:8080
   HCX_ONBOARD_BASEPATH : http://hcx-onboard.{{ env }}.svc.cluster.local:8082
-  HCX_MOCK_SERVICE_BASEPATH : http://hcx-mock_service.{{ env }}.svc.cluster.local:8080
+  HCX_MOCK_SERVICE_BASEPATH : http://hcx-mock-service.{{ env }}.svc.cluster.local:8080
   REGISTRY_BASE_PATH : http://hcx-registry.{{ env }}.svc.cluster.local:8081
   REGISTRY_HCX_CODE: "{{ registry_hcx_code }}"
   REGISTRY_HCX_ROLE: HIE/HIO.HCX
