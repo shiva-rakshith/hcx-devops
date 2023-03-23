@@ -30,13 +30,13 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           env:
-          {{- range $k, $v := .Values.env }}
+          {{- range $k, $v := .Values.hcx_api }}
           - name: {{ $k }}
             value: {{ $v }}
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.hcx_api.image.repository }}:{{ .Values.hcx_api.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
