@@ -30,14 +30,14 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           env:
-          {{- range $k, $v := .Values.env }}
+          {{- range $k, $v := .Values.api_gateway }}
           - name: {{ $k }}
             value: '{{ $v }}'
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.api_gateway.image.repository }}:{{ .Values.common.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.api_gateway.image.pullPolicy }}
           ports:
             - name: http
               containerPort: 8095

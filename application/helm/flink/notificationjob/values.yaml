@@ -1,12 +1,12 @@
 image:
-  repository: maheshkg/hcx-apis
+  repository: "swasth2021/hcx-pipeline-jobs"
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "latest"
+  tag: "64ad206d_129"
 namespace: flink
 imagePullSecrets: []
-dockerhub: "maheshkg"
-repository: "hcx-flink-jobs"
+dockerhub: "swasth2021"
+repository: "hcx-pipeline-jobs"
 serviceMonitor:
   enabled: false
 replicaCount: 1
