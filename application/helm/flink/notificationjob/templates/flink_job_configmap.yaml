@@ -5,10 +5,91 @@ metadata:
   namespace: {{ .Values.namespace }}
   labels:
     app: flink
-data:
+data: 
   base-config: |+
-{{ .Values.base_config | indent 4 }}
+    kafka {
+      broker-servers = "{{ .Values.common.kafka_host }}:9092"
+      zookeeper = "{{ .Values.common.kafka_host }}:2181"
+        producer {
+          max-request-size = 1572864
+        }
+      }
+      job {
+        env = "{{ .Values.common.env }}"
+        enable.distributed.checkpointing = false
+        statebackend {
+          blob {
+            storage {
+              account = "local.blob.core.windows.net"
+              container = "local"
+              checkpointing.dir = "checkpoint"
+            }
+          }
+          base.url = "wasbs://"${job.statebackend.blob.storage.container}"@"${job.statebackend.blob.storage.account}"/"${job.statebackend.blob.storage.checkpointing.dir}
+        }
+      }
+      task {
+        parallelism = 1
+        consumer.parallelism = 1
+        checkpointing.compressed = true
+        checkpointing.interval = 60000
+        checkpointing.pause.between.seconds = 30000
+        restart-strategy.attempts = 3
+        restart-strategy.delay = 30000
+      }
+      postgres {
+        host = "{{ .Values.common.keycloak_postgresql_host }}"
+        port = 5432
+        maxConnections = 2
+        user = "{{ .Values.common.keycloak_postgresql_user }}"
+        password = "{{ .Values.common.keycloak_postgresql_password }}"
+        database: postgres
+        table: payload
+      }
+      redis {
+        host = redis-master.{{ .Values.common.env }}.svc.cluster.local
+        port = 6379
+        expires = 3600
+      }
+      redisdb{
+        connection {
+          timeout: 30000
+          }
+        assetstore {
+          id = 0
+          }
+      }
+      es {
+        basePath = "{{ .Values.common.es_host }}:9200"
+        batchSize = 1000
+      }
+      registry {
+        hcx.code = "{{ .Values.common.registry_hcx_code }}"
+      }
+      hcx-apis{
+        endPointUrl = "http://hcx-api.{{ .Values.common.env }}.svc.cluster.local:8080"
+      }
+      max.retry = 3
+      allowedEntitiesForRetry = ["coverageeligibility", "preauth", "claim"]
+      audit {
+        index = "hcx_audit"
+        alias = "hcx_audit"
+        timezone = "IST"
+      }
+      jwt-token {
+        privateKey = "{{ .Values.hcx_onboard.hcx_private_key }}"
+        expiryTime = 300000
+      }
+      errorCodes {
+        successCodes = [200, 202]
+        errorCodes = [400, 401, 403, 404]
+      }
+      hcx {
+        instanceName = {{ .Values.common.hcx_instance_name }}
+      }
+
 {{- $name := .Release.Name }}
 {{ index .Values $name | toYaml | indent 2 }}
-  log4j_console_properties: |+
+
+  log4j_console_properties: |
 {{ .Values.log4j_console_properties | indent 4 }}

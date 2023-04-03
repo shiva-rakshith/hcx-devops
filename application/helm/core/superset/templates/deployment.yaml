@@ -80,6 +80,9 @@ spec:
           env:
             - name: "SUPERSET_PORT"
               value: {{ .Values.service.port | quote}}
+            {{- range $key, $value := .Values.superset }}
+            - name: {{ $key | quote}}
+              value: {{ $value | quote }}
             {{- range $key, $value := .Values.extraEnv }}
             - name: {{ $key | quote}}
               value: {{ $value | quote }}
