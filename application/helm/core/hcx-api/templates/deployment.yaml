@@ -36,7 +36,7 @@ spec:
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.hcx_api.image.repository }}:{{ .Values.hcx_api.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.hcx_api.image.repository }}:{{ .Values.common.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
