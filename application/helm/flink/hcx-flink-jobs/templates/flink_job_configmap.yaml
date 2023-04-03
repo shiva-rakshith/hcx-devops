@@ -87,7 +87,7 @@ data:
       hcx {
         instanceName = {{ .Values.common.hcx_instance_name }}
       }
-
+      tag = ""
 {{- $name := .Release.Name }}
 {{ index .Values $name | toYaml | indent 2 }}
 
