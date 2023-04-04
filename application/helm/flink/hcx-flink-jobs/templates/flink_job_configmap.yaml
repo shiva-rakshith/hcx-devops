@@ -17,6 +17,7 @@ data:
       job {
         env = "{{ .Values.common.env }}"
         enable.filesystem.checkpointing = true
+        state.backend.type = "filesystem"
         checkpoint.store {
           s3 {
             storage {
