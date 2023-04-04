@@ -24,7 +24,7 @@ data:
               checkpointing.dir = "flink-jobs"
             }
           }
-          base.url = "s3://pipeline-jobs-checkpoint/flink-jobs"
+          base.url = "https://pipeline-jobs-checkpoint.s3.ap-south-1.amazonaws.com/flink-jobs/"
         }
         enable.distributed.checkpointing = true
     }
