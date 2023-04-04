@@ -20,7 +20,7 @@ data:
         checkpoint.store {
           s3 {
             storage {
-              container = pipeline-jobs-checkpoint
+              container = "pipeline-jobs-checkpoint"
               checkpointing.dir = "flink-jobs"
             }
           }
