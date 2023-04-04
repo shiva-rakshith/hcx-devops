@@ -28,7 +28,6 @@ data:
         }
         enable.distributed.checkpointing = true
     }
-      }
       task {
         parallelism = 1
         consumer.parallelism = 1
