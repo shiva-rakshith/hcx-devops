@@ -17,12 +17,13 @@ data:
       job {
         env = "{{ .Values.common.env }}"
         enable.filesystem.checkpointing = true
-        state.backend.type = "filesystem"
+        
         checkpoint.store {
           s3 {
             storage {
               container = "pipeline-jobs-checkpoint"
               checkpointing.dir = "flink-jobs"
+              state.backend.type = "filesystem"
             }
           }
           base.url = "https://pipeline-jobs-checkpoint.s3.ap-south-1.amazonaws.com/flink-jobs/"
