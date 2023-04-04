@@ -16,17 +16,18 @@ data:
       }
       job {
         env = "{{ .Values.common.env }}"
-        enable.distributed.checkpointing = false
-        statebackend {
-          blob {
+        enable.filesystem.checkpointing = true
+        checkpoint.store {
+          s3 {
             storage {
-              account = "local.blob.core.windows.net"
-              container = "local"
-              checkpointing.dir = "checkpoint"
+              container = pipeline-jobs-checkpoint
+              checkpointing.dir = "flink-jobs"
             }
           }
-          base.url = "wasbs://"${job.statebackend.blob.storage.container}"@"${job.statebackend.blob.storage.account}"/"${job.statebackend.blob.storage.checkpointing.dir}
+          base.url = "s3://pipeline-jobs-checkpoint/flink-jobs"
         }
+        enable.distributed.checkpointing = true
+    }
       }
       task {
         parallelism = 1
