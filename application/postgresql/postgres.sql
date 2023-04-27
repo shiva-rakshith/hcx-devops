@@ -1,0 +1,4 @@
+\c postgres hcxpostgresql
+
+
+\q
