@@ -34,9 +34,9 @@ spec:
           - name: {{ $k }}
             value: '{{ $v }}'
           {{- end }}
-          {{- range $k, $v := .Values.common }}
-          - name: {{ $k }}
-            value: '{{ $v }}'
+          {{- range $i, $j := .Values.common }}
+          - name: {{ $i }}
+            value: '{{ $j }}'
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
