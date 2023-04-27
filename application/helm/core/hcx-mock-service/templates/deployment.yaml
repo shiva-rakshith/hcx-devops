@@ -34,6 +34,10 @@ spec:
           - name: {{ $k }}
             value: '{{ $v }}'
           {{- end }}
+          {{- range $k, $v := .Values.common }}
+          - name: {{ $k }}
+            value: '{{ $v }}'
+          {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.hcx_mock_service.image.repository }}:{{ .Values.common.image.tag | default .Chart.AppVersion }}"
