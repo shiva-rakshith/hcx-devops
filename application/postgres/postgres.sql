@@ -1,6 +1,6 @@
 \c postgres hcxpostgresql
 
-CREATE TABLE IF NOT EXISTS mock_participant(
+CREATE TABLE IF NOT EXISTS mock_participants(
     parent_participant_code char varying , 
     child_participant_code char varying primary key, 
     primary_email char varying,
