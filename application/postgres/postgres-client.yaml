@@ -27,7 +27,13 @@ spec:
           configMapKeyRef:
             name: postgres-client-cm
             key: HOSTNAME
-      command: [ "/bin/sh", "-c", "psql -U $POSTGRES_USER -d $POSTGRES_DB -h $HOSTNAME -f /tmp/sql/postgres.sql" ]
+      command: [ "/bin/sh", "-c", "psql -U $POSTGRES_USER -d $POSTGRES_DB -h $HOSTNAME -f /tmp/sql/postgres.sql",
+               "if [ $? -eq 0 ]
+                then 
+                  exit 0
+                else
+                  exit 1
+                fi" ]
       volumeMounts:
       - name: config-volume
         mountPath: /tmp/sql/
