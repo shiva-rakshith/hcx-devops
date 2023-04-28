@@ -12,7 +12,7 @@ spec:
           configMapKeyRef:
             name: postgres-client-cm
             key: POSTGRES_USER
-      - name: POSTGRES_PASSWORD
+      - name: PGPASSWORD
         valueFrom:
           configMapKeyRef:
             name: postgres-client-cm
@@ -27,7 +27,7 @@ spec:
           configMapKeyRef:
             name: postgres-client-cm
             key: HOSTNAME
-      command: [ "/bin/sh", "-c", "psql -U $POSTGRES_USER -d $POSTGRES_DB -h $HOSTNAME -f /tmp/sql/postgres.sql" ]
+      command: [ "/bin/sh", "-c", "sleep 600", "psql -U $POSTGRES_USER -d $POSTGRES_DB -h $HOSTNAME -f /tmp/sql/postgres.sql" ]
       volumeMounts:
       - name: config-volume
         mountPath: /tmp/sql/
