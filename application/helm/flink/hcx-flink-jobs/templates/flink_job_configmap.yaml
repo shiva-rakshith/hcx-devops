@@ -16,20 +16,11 @@ data:
       }
       job {
         env = "{{ .Values.common.env }}"
-        enable.filesystem.checkpointing = true
-        
-        checkpoint.store {
-          s3 {
-            storage {
-              container = "pipeline-jobs-checkpoint"
-              checkpointing.dir = "flink-jobs"
-              state.backend.type = "filesystem"
-            }
-          }
-          base.url = "https://pipeline-jobs-checkpoint.s3.ap-south-1.amazonaws.com/flink-jobs/"
+        enable.distributed.checkpointing = false
+        statebackend {
+          base.url = "s3://pipeline-jobs-checkpoint"
         }
-        enable.distributed.checkpointing = true
-    }
+      }
       task {
         parallelism = 1
         consumer.parallelism = 1
