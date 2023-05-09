@@ -109,10 +109,17 @@ spec:
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: Always
         workingDir: /opt/flink
+        env: 
+        - name: JOB_CLASSNAME
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Release.Name }}-config
+              key: job_classname
+        
         command: ["/opt/flink/bin/standalone-job.sh"]
         args:
         - start-foreground
-        - --job-classname={{ .Values.job_classname }}
+        - --job-classname="org.swasth.dp.coverageeligiblity.task.CoverageEligibilityStreamTask"
         - -Dweb.submit.enable=false
         - -Dmetrics.reporter.prom.class=org.apache.flink.metrics.prometheus.PrometheusReporter
         - -Dmetrics.reporter.prom.port={{ .Values.jobmanager.prom_port }}
