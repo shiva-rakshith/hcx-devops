@@ -104,6 +104,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- $name := .Release.Name }}
       containers:
       - name: {{ .Release.Name }}-jobmanager
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -112,7 +113,7 @@ spec:
         command: ["/opt/flink/bin/standalone-job.sh"]
         args:
         - start-foreground
-        - --job-classname={{ .Values.{{ .Release.Name }}.job_classname }}
+        - --job-classname="org.swasth.dp.claims.task.ClaimsStreamTask"
         - -Dweb.submit.enable=false
         - -Dmetrics.reporter.prom.class=org.apache.flink.metrics.prometheus.PrometheusReporter
         - -Dmetrics.reporter.prom.port={{ .Values.jobmanager.prom_port }}
