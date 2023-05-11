@@ -2,7 +2,7 @@ image:
   repository: "swasth2021/hcx-pipeline-jobs"
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "64ad206d_129"
+  tag: "cd496db1_103"
 namespace: flink
 imagePullSecrets: []
 dockerhub: "swasth2021"
