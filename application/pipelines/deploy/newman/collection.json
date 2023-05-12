@@ -1008,7 +1008,7 @@
 											"listen": "test",
 											"script": {
 												"exec": [
-													"pm.test(\"Api call id cannot be null, empty and other than \\'String\\'\", function () {\r",
+													"pm.test(\"Api call id cannot be null, empty and other than 'String'\", function () {\r",
 													"    var response = pm.response.json()\r",
 													"    pm.response.to.have.status(400);\r",
 													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_API_CALL_ID\");\r",
@@ -4594,7 +4594,7 @@
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Request exist with same api call id\", function () {\r",
+															"pm.test(\"Api call id cannot be null, empty and other than 'String'\", function () {\r",
 															"    var response = pm.response.json()\r",
 															"    pm.response.to.have.status(400);\r",
 															"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_API_CALL_ID\");\r",
