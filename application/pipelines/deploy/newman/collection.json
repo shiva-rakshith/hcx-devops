@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "89c6762c-f3cd-4c74-af3a-774d6e83345f",
-		"name": "Poc HCX APIs",
+		"name": "HCX APIs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "22548295"
 	},
