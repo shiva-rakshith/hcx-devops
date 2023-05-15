@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-client
+spec:
+  containers:
+    - name: postgres-container
+      image: postgres
+      env:
+      - name: POSTGRES_USER
+        valueFrom:
+          configMapKeyRef:
+            name: postgres-client-cm
+            key: POSTGRES_USER
+      - name: PGPASSWORD
+        valueFrom:
+          configMapKeyRef:
+            name: postgres-client-cm
+            key: POSTGRES_PASSWORD
+      - name: POSTGRES_DB
+        valueFrom:
+          configMapKeyRef:
+            name: postgres-client-cm
+            key: POSTGRES_DB
+      - name: HOSTNAME
+        valueFrom:
+          configMapKeyRef:
+            name: postgres-client-cm
+            key: HOSTNAME
+      command: [ "/bin/sh", "-c", "psql -U $POSTGRES_USER -d $POSTGRES_DB -h $HOSTNAME -f /tmp/sql/postgres.sql",
+               "if [ $? -eq 0 ]
+                then 
+                  exit 0
+                else
+                  exit 1
+                fi" ]
+      volumeMounts:
+      - name: config-volume
+        mountPath: /tmp/sql/
+  volumes:
+    - name: config-volume
+      configMap:
+        # Provide the name of the ConfigMap containing the files you want
+        # to add to the container
+        name: postgres-client-cm
+  restartPolicy: Never
