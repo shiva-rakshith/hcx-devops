@@ -1437,6 +1437,192 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Eligibility Check-Sender blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"blocked_sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Sender\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_SENDER\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{blocked_provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eligibility Check-Recipient blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"blocked_recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Recipient\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_RECIPIENT\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/coverageeligibility/check",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"coverageeligibility",
+												"check"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"auth": {
@@ -2309,6 +2495,192 @@
 												"body": {
 													"mode": "raw",
 													"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIiLCJ4LWhjeC1zdGF0dXMiOiJyZXF1ZXN0LmNvbXBsZXRlIn0=.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/{{api-version}}/hcx/status",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"{{api-version}}",
+														"hcx",
+														"status"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Status request-Sender blocked",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var uuid = require('uuid');\r",
+															"var moment = require('moment');\r",
+															"var req = JSON.parse(pm.request.body.raw);\r",
+															"var payload = req.payload.split(\".\");\r",
+															"var headers = payload[0];\r",
+															"var decoded = JSON.parse(atob(headers));\r",
+															"//generating the payload\r",
+															"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+															"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+															"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"blocked_sender_code\");\r",
+															"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+															"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+															"encoded = btoa(JSON.stringify(decoded));\r",
+															"payload[0] = encoded;\r",
+															"encoded_string = payload.join(\".\");\r",
+															"\r",
+															"req.payload = encoded_string;\r",
+															"pm.request.body.raw = req;\r",
+															"console.log(\"modified request \", pm.request.body.raw);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Blocked Sender\", function () {\r",
+															"    var response = pm.response.json()\r",
+															"    pm.response.to.have.status(400);\r",
+															"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_SENDER\");\r",
+															"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{blocked_provider_token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "default"
+													},
+													{
+														"key": "x-mock-match-request-body",
+														"value": "true",
+														"type": "default",
+														"disabled": true
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{host}}/{{api-version}}/hcx/status",
+													"host": [
+														"{{host}}"
+													],
+													"path": [
+														"{{api-version}}",
+														"hcx",
+														"status"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Status Request-Recipient blocked",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var uuid = require('uuid');\r",
+															"var moment = require('moment');\r",
+															"var req = JSON.parse(pm.request.body.raw);\r",
+															"var payload = req.payload.split(\".\");\r",
+															"var headers = payload[0];\r",
+															"var decoded = JSON.parse(atob(headers));\r",
+															"//generating the payload\r",
+															"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+															"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+															"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+															"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"blocked_recipient_code\");\r",
+															"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+															"encoded = btoa(JSON.stringify(decoded));\r",
+															"payload[0] = encoded;\r",
+															"encoded_string = payload.join(\".\");\r",
+															"\r",
+															"req.payload = encoded_string;\r",
+															"pm.request.body.raw = req;\r",
+															"console.log(\"modified request \", pm.request.body.raw);"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Blocked Recipient\", function () {\r",
+															"    var response = pm.response.json()\r",
+															"    pm.response.to.have.status(400);\r",
+															"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_RECIPIENT\");\r",
+															"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"auth": {
+													"type": "bearer",
+													"bearer": [
+														{
+															"key": "token",
+															"value": "{{provider_token}}",
+															"type": "string"
+														}
+													]
+												},
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json",
+														"type": "default"
+													},
+													{
+														"key": "x-mock-match-request-body",
+														"value": "true",
+														"type": "default",
+														"disabled": true
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -4408,11 +4780,11 @@
 													"listen": "test",
 													"script": {
 														"exec": [
-															"pm.test(\"Request exist with same api call id\", function () {\r",
+															"pm.test(\"Api call id cannot be null, empty and other than 'String'\", function () {\r",
 															"    var response = pm.response.json()\r",
 															"    pm.response.to.have.status(400);\r",
 															"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_API_CALL_ID\");\r",
-															"    pm.expect(response.error[\"message\"]).to.include(\"Api call id cannot be null, empty and other than 'String'\");\r",
+															"    pm.expect(response.error[\"message\"]).to.include(\"Request exist with same api call id\");\r",
 															"});"
 														],
 														"type": "text/javascript"
@@ -7204,6 +7576,192 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "Predetermination Submit-Sender blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"blocked_sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Sender\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_SENDER\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{blocked_provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/predetermination/submit",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"predetermination",
+												"submit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Predetermination  Submit-Recipient blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"blocked_recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Recipient\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_RECIPIENT\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/predetermination/submit",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"predetermination",
+												"submit"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
@@ -8913,6 +9471,192 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "PreAuth Submit-Sender blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"blocked_sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Sender\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_SENDER\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{blocked_provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/preauth/submit",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"preauth",
+												"submit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "PreAuth Submit-Recipient blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"blocked_recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Recipient\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_RECIPIENT\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/preauth/submit",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"preauth",
+												"submit"
+											]
+										}
+									},
+									"response": []
 								}
 							]
 						},
@@ -10618,6 +11362,192 @@
 												"{{api-version}}",
 												"coverageeligibility",
 												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Claim Submit-Sender blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"blocked_sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Sender\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_SENDER\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{blocked_provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/preauth/submit",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"preauth",
+												"submit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Claim Submit-Recipient blocked",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var uuid = require('uuid');\r",
+													"var moment = require('moment');\r",
+													"var req = JSON.parse(pm.request.body.raw);\r",
+													"var payload = req.payload.split(\".\");\r",
+													"var headers = payload[0];\r",
+													"var decoded = JSON.parse(atob(headers));\r",
+													"//generating the payload\r",
+													"decoded[\"x-hcx-correlation_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-api_call_id\"] = uuid.v4();\r",
+													"decoded[\"x-hcx-sender_code\"] = pm.environment.get(\"sender_code\");\r",
+													"decoded[\"x-hcx-recipient_code\"] = pm.environment.get(\"blocked_recipient_code\");\r",
+													"decoded[\"x-hcx-timestamp\"] = moment().subtract(1, 'minutes').format(\"YYYY-MM-DDTHH:mm:ss.SSSZZ\");\r",
+													"encoded = btoa(JSON.stringify(decoded));\r",
+													"payload[0] = encoded;\r",
+													"encoded_string = payload.join(\".\");\r",
+													"\r",
+													"req.payload = encoded_string;\r",
+													"pm.request.body.raw = req;\r",
+													"console.log(\"modified request \", pm.request.body.raw);"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Blocked Recipient\", function () {\r",
+													"    var response = pm.response.json()\r",
+													"    pm.response.to.have.status(400);\r",
+													"    pm.expect(response.error[\"code\"]).to.eql(\"ERR_INVALID_RECIPIENT\");\r",
+													"    pm.expect(response.error[\"message\"]).to.include(\"Participant with status: [Active] only can make an API call. Current status: Blocked\");\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{provider_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "default"
+											},
+											{
+												"key": "x-mock-match-request-body",
+												"value": "true",
+												"type": "default",
+												"disabled": true
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"payload\":\"eyJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAiLCJ4LWhjeC1zZW5kZXJfY29kZSI6IjEtM2EzYmQ2OGEtODQ4YS00ZDUyLTllYzItMDdhOTJkNzY1ZmI0IiwieC1oY3gtcmVjaXBpZW50X2NvZGUiOiIxLTdiYTA3ZTMxLWNlYmItNDc1MS1iMmI3LWZlMDUwZDlkMmMwMCIsIngtaGN4LWNvcnJlbGF0aW9uX2lkIjoiODU0ZmU0MWItMjEyZi00YTU1LWJlMmYtMTBiZGE4ZGFkYzk1IiwieC1oY3gtdGltZXN0YW1wIjoiMjAyMi0wNS0xMlQxNToyNjoxOS42MjcrMDUzMCIsIngtaGN4LWFwaV9jYWxsX2lkIjoiYWExZTNmOWItOTBhNy00ZWQ5LTk4MjEtMDMwNmYxYmNiNzQ2IiwieC1oY3gtd29ya2Zsb3dfaWQiOiI1ZTkzNGY5MC0xMTFkLTRmMGItYjAxNi1jMjJkODIwNjc0ZTIifQ==.6KB707dM9YTIgHtLvtgWQ8mKwboJW3of9locizkDTHzBC2IlrT1oOQ.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.KDlTtXchhZTGufMYmOYGS4HffxPSUrfmqCHXaI9wOGY.Mz-VPPyU4RlcuYv1IwIvzw\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{host}}/{{api-version}}/claim/submit",
+											"host": [
+												"{{host}}"
+											],
+											"path": [
+												"{{api-version}}",
+												"claim",
+												"submit"
 											]
 										}
 									},
