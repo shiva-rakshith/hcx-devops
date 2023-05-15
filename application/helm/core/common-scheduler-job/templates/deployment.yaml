@@ -30,7 +30,7 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           env:
-          {{- range $k, $v := .Values.common }}
+          {{- range $k, $v := .Values.common_scheduler_jobs }}
           - name: {{ $k }}
             value: '{{ $v }}'
           {{- end }}
