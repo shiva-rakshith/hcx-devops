@@ -30,13 +30,13 @@ spec:
       containers:
         - name: {{ .Chart.Name }}
           env:
-          {{- range $k, $v := .Values.common }}
+          {{- range $k, $v := .Values.common_scheduler_jobs }}
           - name: {{ $k }}
             value: '{{ $v }}'
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.hcx-scheduler-jobs.image.repository }}:{{ .Values.common.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.common_scheduler_jobs.image.repository }}:{{ .Values.common.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
