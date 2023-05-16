@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   creationTimestamp: null
   name: realm
-  namespace: keycloak
+  namespace: {{ .Release.Namespace }}
 data:
   realm-export.json: |-
 {{ .Files.Get "realm-export.json" | indent 4}}
