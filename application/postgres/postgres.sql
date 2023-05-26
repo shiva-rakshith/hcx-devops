@@ -18,7 +18,8 @@ CREATE TABLE IF NOT EXISTS payersystem_data
      status character varying,
      additional_info JSON,
      created_on bigInt,
-     updated_on bigInt
+     updated_on bigInt,
+     on_action_status character varying
  ); 
 
 CREATE TABLE IF NOT EXISTS mock_participant(
