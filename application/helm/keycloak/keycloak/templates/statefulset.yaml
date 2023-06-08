@@ -34,7 +34,7 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           env:
-            {{- range $key, $val := .Values.env }}
+            {{- range $key, $val := .Values.keycloak }}
             - name: "{{ $key }}"
               value: "{{ $val }}"
             {{- end }}
