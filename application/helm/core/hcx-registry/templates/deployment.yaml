@@ -54,7 +54,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.hcx_registry.resources | nindent 12 }}
           volumeMounts:
           - name: registryschemas
             mountPath: /home/opensaber/config/public/_schemas
