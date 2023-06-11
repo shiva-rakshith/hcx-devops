@@ -57,7 +57,7 @@ data:
         batchSize = 1000
       }
       registry {
-        hcx.code = "{{ .Values.common.registry_hcx_code }}"
+        hcx.code = "{{ .Values.common.REGISTRY_HCX_CODE }}"
       }
       hcx-apis{
         endPointUrl = "http://hcx-api.{{ .Values.common.env }}.svc.cluster.local:8080"
