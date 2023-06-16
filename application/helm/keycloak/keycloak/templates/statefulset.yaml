@@ -44,7 +44,7 @@ spec:
               containerPort: 8080
               protocol: TCP
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.keycloak.resources | nindent 12 }}
           volumeMounts:
           - name: realm
             mountPath: /opt/jboss/keycloak/imports/realm-export.json

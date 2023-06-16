@@ -54,7 +54,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            {{- toYaml .Values.api_gateway.resources | nindent 12 }}
           volumeMounts:
             - name: {{ .Values.rbacVolume.name }}
               mountPath: {{ .Values.rbacVolume.path }}
