@@ -35,7 +35,7 @@ Common labels
 */}}
 {{- define "hcx-mock-service.labels" -}}
 helm.sh/chart: {{ include "hcx-mock-service.chart" . }}
-date: {{ now | unixEpoch | quote }}
+
 {{ include "hcx-mock-service.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -49,7 +49,7 @@ Selector labels
 {{- define "hcx-mock-service.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "hcx-mock-service.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-date: {{ now | unixEpoch | quote }}
+
 {{- end }}
 
 {{/*

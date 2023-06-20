@@ -40,7 +40,7 @@ Common labels
 */}}
 {{- define "datapipeline_jobs.labels" -}}
 helm.sh/chart: {{ include "datapipeline_jobs.chart" . }}
-date: {{ now | unixEpoch | quote }}
+
 {{ include "datapipeline_jobs.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -54,7 +54,7 @@ Selector labels
 {{- define "datapipeline_jobs.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "datapipeline_jobs.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-date: {{ now | unixEpoch | quote }}
+
 {{- end -}}
 
 {{/*

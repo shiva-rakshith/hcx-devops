@@ -35,7 +35,7 @@ Common labels
 */}}
 {{- define "hcx-hapi-server.labels" -}}
 helm.sh/chart: {{ include "hcx-hapi-server.chart" . }}
-date: {{ now | unixEpoch | quote }}
+
 {{ include "hcx-hapi-server.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -49,7 +49,7 @@ Selector labels
 {{- define "hcx-hapi-server.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "hcx-hapi-server.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-date: {{ now | unixEpoch | quote }}
+
 {{- end }}
 
 {{/*

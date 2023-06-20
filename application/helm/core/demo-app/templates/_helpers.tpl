@@ -35,7 +35,7 @@ Common labels
 */}}
 {{- define "demo-app.labels" -}}
 helm.sh/chart: {{ include "demo-app.chart" . }}
-date: {{ now | unixEpoch | quote }}
+
 {{ include "demo-app.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
@@ -49,7 +49,7 @@ Selector labels
 {{- define "demo-app.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "demo-app.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
-date: {{ now | unixEpoch | quote }}
+
 {{- end }}
 
 {{/*
