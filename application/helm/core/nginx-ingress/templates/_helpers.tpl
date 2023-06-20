@@ -35,6 +35,7 @@ Common labels
 */}}
 {{- define "nginx-ingress.labels" -}}
 helm.sh/chart: {{ include "nginx-ingress.chart" . }}
+date: {{ now | unixEpoch | quote }}
 {{ include "nginx-ingress.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}

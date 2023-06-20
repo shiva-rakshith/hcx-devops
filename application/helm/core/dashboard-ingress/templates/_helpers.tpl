@@ -35,6 +35,7 @@ Common labels
 */}}
 {{- define "dashboard-ingress.labels" -}}
 helm.sh/chart: {{ include "dashboard-ingress.chart" . }}
+date: {{ now | unixEpoch | quote }}
 {{ include "dashboard-ingress.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
