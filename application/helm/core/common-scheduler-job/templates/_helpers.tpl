@@ -35,7 +35,6 @@ Common labels
 */}}
 {{- define "common-scheduler-job.labels" -}}
 helm.sh/chart: {{ include "common-scheduler-job.chart" . }}
-date: {{ now | unixEpoch | quote }}
 {{ include "common-scheduler-job.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}

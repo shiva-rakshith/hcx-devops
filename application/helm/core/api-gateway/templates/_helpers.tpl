@@ -35,7 +35,6 @@ Common labels
 */}}
 {{- define "api-gateway.labels" -}}
 helm.sh/chart: {{ include "api-gateway.chart" . }}
-date: {{ now | unixEpoch | quote }}
 {{ include "api-gateway.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
