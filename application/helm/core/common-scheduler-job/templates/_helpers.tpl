@@ -49,6 +49,7 @@ Selector labels
 {{- define "common-scheduler-job.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "common-scheduler-job.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+date: {{ now | unixEpoch | quote }}
 {{- end }}
 
 {{/*

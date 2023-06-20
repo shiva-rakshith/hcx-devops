@@ -49,6 +49,7 @@ Selector labels
 {{- define "hcx-onboard.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "hcx-onboard.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+date: {{ now | unixEpoch | quote }}
 {{- end }}
 
 {{/*

@@ -49,6 +49,7 @@ Selector labels
 {{- define "api-gateway.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "api-gateway.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+date: {{ now | unixEpoch | quote }}
 {{- end }}
 
 {{/*

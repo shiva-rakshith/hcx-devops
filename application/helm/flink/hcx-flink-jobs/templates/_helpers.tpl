@@ -54,6 +54,7 @@ Selector labels
 {{- define "datapipeline_jobs.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "datapipeline_jobs.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+date: {{ now | unixEpoch | quote }}
 {{- end -}}
 
 {{/*

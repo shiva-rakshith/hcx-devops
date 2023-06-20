@@ -49,6 +49,7 @@ Selector labels
 {{- define "dashboard-ingress.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "dashboard-ingress.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+date: {{ now | unixEpoch | quote }}
 {{- end }}
 
 {{/*

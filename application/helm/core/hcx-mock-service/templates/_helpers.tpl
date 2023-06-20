@@ -49,6 +49,7 @@ Selector labels
 {{- define "hcx-mock-service.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "hcx-mock-service.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+date: {{ now | unixEpoch | quote }}
 {{- end }}
 
 {{/*

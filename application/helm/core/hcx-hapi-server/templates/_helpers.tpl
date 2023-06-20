@@ -49,6 +49,7 @@ Selector labels
 {{- define "hcx-hapi-server.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "hcx-hapi-server.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
+date: {{ now | unixEpoch | quote }}
 {{- end }}
 
 {{/*
