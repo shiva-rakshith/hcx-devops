@@ -35,6 +35,7 @@ Common labels
 */}}
 {{- define "hcx-registry.labels" -}}
 helm.sh/chart: {{ include "hcx-registry.chart" . }}
+date: {{ now | unixEpoch | quote }}
 {{ include "hcx-registry.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
