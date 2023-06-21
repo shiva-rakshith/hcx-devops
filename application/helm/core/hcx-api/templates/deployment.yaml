@@ -56,3 +56,18 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+      - name: particpant-user
+        mountPath: /src/main/resources
+      secret:
+        secretName: particpant-realm
+        items:
+        - key: participant_realm.der
+          path: participant_realm.der
+      # - name: user-realm
+      #   mountPath: /src/main/resources
+      # secret:
+      #   secretName: user-realm
+      #   items:
+      #   - key: user_realm.der
+      #     path: user_realm.der
