@@ -59,11 +59,11 @@ spec:
       volumes:
       - name: particpant-user
         mountPath: /src/main/resources
-      secret:
-        secretName: particpant-realm
-        items:
-        - key: participant_realm.der
-          path: participant_realm.der
+        secret:
+          secretName: particpant-realm
+          items:
+          - key: participant_realm.der
+            path: participant_realm.der
       # - name: user-realm
       #   mountPath: /src/main/resources
       # secret:
