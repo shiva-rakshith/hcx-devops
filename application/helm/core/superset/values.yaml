@@ -59,7 +59,7 @@ envFromSecrets: []
 ## Extra environment variables that will be passed into pods
 ##
 extraEnv:
-  OIDC_OPENID_REALM: 'swasth-health-claim-exchange'
+  OIDC_OPENID_REALM: 'swasth-hcx-participants'
   # Extend timeout to allow long running queries.
   # GUNICORN_TIMEOUT: 300
 
@@ -105,7 +105,7 @@ sso_admin_client_secret: ""
 
 extraSecrets:
   client_secret.json: |
-    {  "web": {    "issuer": "{{ .Values.keycloak_url }}/realms/swasth-health-claim-exchange",    "auth_uri": "{{ .Values.keycloak_url }}/realms/swasth-health-claim-exchange/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": "{{ .Values.sso_admin_client_secret }}",    "redirect_uris": [      "{{ .Values.domain_base_url }}/*"    ],    "userinfo_uri": "{{ .Values.keycloak_url }}/realms/swasth-health-claim-exchange/protocol/openid-connect/userinfo",    "token_uri": "{{ .Values.keycloak_url }}/realms/swasth-health-claim-exchange/protocol/openid-connect/token",    "token_introspection_uri": "{{ .Values.keycloak_url }}/realms/swasth-health-claim-exchange/protocol/openid-connect/token/introspect"  }}
+    {  "web": {    "issuer": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants",    "auth_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": "{{ .Values.sso_admin_client_secret }}",    "redirect_uris": [      "{{ .Values.domain_base_url }}/*"    ],    "userinfo_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/userinfo",    "token_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token",    "token_introspection_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token/introspect"  }}
   keycloak_security_manager.py: |
     from flask_appbuilder.security.manager import AUTH_OID
     from superset.security import SupersetSecurityManager
