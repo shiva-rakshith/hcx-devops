@@ -45,10 +45,7 @@ spec:
           resources:
             {{- toYaml .Values.hcx_api.resources | nindent 12 }}
           volumeMounts:
-          - name: participant-realm
-            mountPath: /src/main/resources
-            readOnly: true
-          - name: user-realm
+          - name: secrets-realm
             mountPath: /src/main/resources
             readOnly: true
       {{- with .Values.nodeSelector }}
@@ -64,15 +61,16 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-      - name: participant-realm
-        secret:
-          secretName: participant-realm
-          items:
-          - key: participant_realm.der
-            path: participant_realm.der
-      - name: user-realm
-        secret:
-          secretName: user-realm
-          items:
-          - key: user_realm.der
-            path: user_realm.der
+      - name: secrets-realm
+        projected:
+          sources:
+          - secret:
+              secretName: participant-realm
+              items:
+              - key: participant_realm.der
+                path: participant_realm.der
+          - secret:
+              secretName: user-realm
+              items:
+              - key: user_realm.der
+                path: user_realm.der
