@@ -65,12 +65,12 @@ spec:
         projected:
           sources:
           - secret:
-              secretName: participant-realm
+              name: participant-realm
               items:
               - key: participant_realm.der
                 path: participant_realm.der
           - secret:
-              secretName: user-realm
+              name: user-realm
               items:
               - key: user_realm.der
                 path: user_realm.der
