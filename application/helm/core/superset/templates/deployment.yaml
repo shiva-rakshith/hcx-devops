@@ -83,6 +83,7 @@ spec:
             {{- range $key, $value := .Values.superset }}
             - name: {{ $key | quote}}
               value: {{ $value | quote }}
+            {{- end }}
             {{- range $key, $value := .Values.extraEnv }}
             - name: {{ $key | quote}}
               value: {{ $value | quote }}

@@ -59,10 +59,9 @@ envFromSecrets: []
 ## Extra environment variables that will be passed into pods
 ##
 extraEnv:
-  OIDC_OPENID_REALM: 'swasth-hcx-participants'
+  OIDC_OPENID_REALM: "swasth-hcx-participants"
   # Extend timeout to allow long running queries.
   # GUNICORN_TIMEOUT: 300
-
 
   # OAUTH_HOME_DOMAIN: ..
   # # If a whitelist is not set, any address that can use your OAuth2 endpoint will be able to login.
@@ -71,7 +70,8 @@ extraEnv:
 
 ## Extra environment variables in RAW format that will be passed into pods
 ##
-extraEnvRaw: []
+extraEnvRaw:
+  []
   # Load DB password from other secret (e.g. for zalando operator)
   # - name: DB_PASS
   #   valueFrom:
@@ -81,13 +81,15 @@ extraEnvRaw: []
 
 ## Extra environment variables to pass as secrets
 ##
-extraSecretEnv: {}
+extraSecretEnv:
+  {}
   # MAPBOX_API_KEY: ...
   # # Google API Keys: https://console.cloud.google.com/apis/credentials
 # GOOGLE_KEY: ...
 # GOOGLE_SECRET: ...
 
-extraConfigs: {}
+extraConfigs:
+  {}
   # import_datasources.yaml: |
   #     databases:
   #     - allow_file_upload: true
@@ -105,7 +107,7 @@ sso_admin_client_secret: ""
 
 extraSecrets:
   client_secret.json: |
-    {  "web": {    "issuer": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants",    "auth_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": "{{ .Values.sso_admin_client_secret }}",    "redirect_uris": [      "{{ .Values.domain_base_url }}/*"    ],    "userinfo_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/userinfo",    "token_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token",    "token_introspection_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token/introspect"  }}
+    {  "web": {    "issuer": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants",    "auth_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": "{{ .Values.superset.sso_admin_client_secret }}",    "redirect_uris": [      "{{ .Values.superset.domain_base_url }}/*"    ],    "userinfo_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/userinfo",    "token_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token",    "token_introspection_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token/introspect"  }}
   keycloak_security_manager.py: |
     from flask_appbuilder.security.manager import AUTH_OID
     from superset.security import SupersetSecurityManager
@@ -116,34 +118,34 @@ extraSecrets:
     from flask_appbuilder.views import expose
     from flask import request, redirect
     import logging
-    
-    
+
+
     class OIDCSecurityManager(SupersetSecurityManager):
-    
+
         def __init__(self, appbuilder):
             super(OIDCSecurityManager, self).__init__(appbuilder)
             if self.auth_type == AUTH_OID:
                 self.oid = OpenIDConnect(self.appbuilder.get_app)
             self.authoidview = AuthOIDCView
-    
-    
+
+
     class AuthOIDCView(AuthOIDView):
-    
+
         @expose('/login/', methods=['GET', 'POST'])
         def login(self, flag=True):
             sm = self.appbuilder.sm
             oidc = sm.oid
             superset_roles = ["Admin", "Alpha", "Gamma", "Public", "granter", "sql_lab"]
-    
+
             @self.appbuilder.sm.oid.require_login
             def handle_login():
                 user = sm.auth_user_oid(oidc.user_getfield('email'))
-    
+
                 if user is None:
                     info = oidc.user_getinfo(['preferred_username', 'given_name', 'family_name', 'email', 'roles', 'realm_access'])
                     realm_roles = oidc.user_getfield('realm_access')["roles"];              
                     roles = [role for role in superset_roles if role in info.get('roles', [])]
-    
+
                     role_mapping = {"HIE/HIO.HCX": "Admin", "provider": "participant", "payor": "participant"}
                     for role in realm_roles:
                         if role in role_mapping:
@@ -152,25 +154,26 @@ extraSecrets:
                     logging.info(roles); 
                     user = sm.add_user(info.get('preferred_username'), info.get('given_name', ''), info.get('family_name', ''),
                                        info.get('email'), [sm.find_role(role) for role in roles])
-    
+
                 login_user(user, remember=False, force=True)
                 return redirect("/dashboard/list/")
-    
+
             return handle_login()
-    
+
         @expose('/logout/', methods=['GET', 'POST'])
         def logout(self):
             oidc = self.appbuilder.sm.oid
-    
+
             oidc.logout()
             super(AuthOIDCView, self).logout()
             redirect_url = request.url_root.strip('/')
             # redirect_url = request.url_root.strip('/') + self.appbuilder.get_url_for_login
-    
-            return redirect(
-                oidc.client_secrets.get('issuer') + '/protocol/openid-connect/logout?redirect_uri=' + quote(redirect_url))    
 
-extraVolumes: []
+            return redirect(
+                oidc.client_secrets.get('issuer') + '/protocol/openid-connect/logout?redirect_uri=' + quote(redirect_url))
+
+extraVolumes:
+  []
   # - name: customConfig
   #   configMap:
   #     name: '{{ template "superset.fullname" . }}-custom-config'
@@ -179,7 +182,8 @@ extraVolumes: []
 #     secretName: my-secret
 #     defaultMode: 0600
 
-extraVolumeMounts: []
+extraVolumeMounts:
+  []
   # - name: customConfig
   #   mountPath: /mnt/config
   #   readOnly: true
@@ -199,7 +203,6 @@ configOverrides:
 configOverridesFiles: {}
 # extend_timeout: extend_timeout.py
 # enable_oauth: enable_oauth.py
-
 
 configMountPath: "/app/pythonpath"
 
@@ -227,7 +230,8 @@ service:
 ingress:
   enabled: false
   # ingressClassName: nginx
-  annotations: {}
+  annotations:
+    {}
     # kubernetes.io/tls-acme: "true"
     ## Extend timeout to allow long running queries.
     # nginx.ingress.kubernetes.io/proxy-connect-timeout: "300"
@@ -242,7 +246,8 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
+  {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -264,7 +269,6 @@ hostAliases: []
 #   - nodns.my.lan
 #   ip: 18.27.36.45
 
-
 ##
 ## Superset node configuration
 supersetNode:
@@ -274,11 +278,11 @@ supersetNode:
     - ". {{ .Values.configMountPath }}/superset_bootstrap.sh; /usr/bin/run-server.sh"
   connections:
     # Change in case of bringing your own redis and then also set redis.enabled:false
-    redis_host: ''
+    redis_host: ""
     # redis_password: superset
     redis_port: "6379"
     # You need to change below configuration incase bringing own PostgresSQL instance and also set postgresql.enabled:false
-    db_host: ''
+    db_host: ""
     db_port: "5432"
     db_user: superset
     db_pass: superset$123
@@ -293,7 +297,8 @@ supersetNode:
   ## Labels to be added to supersetNode pods
   podLabels: {}
   # Resource settings for the supersetNode pods - these settings overwrite might existing values from the global resources object defined above.
-  resources: {}
+  resources:
+    {}
     # limits:
     #  cpu: 100m
     #  memory: 128Mi
@@ -316,7 +321,8 @@ supersetWorker:
   ## Labels to be added to supersetWorker pods
   podLabels: {}
   # Resource settings for the supersetWorker pods - these settings overwrite might existing values from the global resources object defined above.
-  resources: {}
+  resources:
+    {}
     # limits:
     #  cpu: 100m
     #  memory: 128Mi
@@ -341,7 +347,8 @@ supersetCeleryBeat:
   ## Labels to be added to supersetCeleryBeat pods
   podLabels: {}
   # Resource settings for the CeleryBeat pods - these settings overwrite might existing values from the global resources object defined above.
-  resources: {}
+  resources:
+    {}
     # limits:
     #  cpu: 100m
     #  memory: 128Mi
@@ -356,7 +363,8 @@ init:
   # cause the process to be killed due to OOM if it exceeds limit
   # Make sure you are giving a strong password for the admin user creation( else make sure you are changing after setup)
   # Also change the admin email to your own custom email.
-  resources: {}
+  resources:
+    {}
     # limits:
     #   cpu:
     #   memory:
@@ -423,7 +431,6 @@ postgresql:
     password: superset
     ## PostgreSQL name for a custom database to create
     database: superset
-
 
   ## PostgreSQL Primary parameters
   primary:
