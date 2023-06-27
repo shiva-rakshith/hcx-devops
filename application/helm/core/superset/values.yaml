@@ -107,7 +107,7 @@ sso_admin_client_secret: ""
 
 extraSecrets:
   client_secret.json: |
-    {  "web": {    "issuer": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants",    "auth_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": "{{ .Values.sso_admin_client_secret }}",    "redirect_uris": [      "{{ .Values.superset.domain_base_url }}/*"    ],    "userinfo_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/userinfo",    "token_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token",    "token_introspection_uri": "{{ .Values.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token/introspect"  }}
+    {  "web": {    "issuer": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants",    "auth_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": "{{ .Values.superset.sso_admin_client_secret }}",    "redirect_uris": [      "{{ .Values.superset.domain_base_url }}/*"    ],    "userinfo_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/userinfo",    "token_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token",    "token_introspection_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token/introspect"  }}
   keycloak_security_manager.py: |
     from flask_appbuilder.security.manager import AUTH_OID
     from superset.security import SupersetSecurityManager
