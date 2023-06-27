@@ -46,7 +46,7 @@ spec:
             {{- toYaml .Values.hcx_api.resources | nindent 12 }}
           volumeMounts:
           - name: secrets-realm
-            mountPath: /src/main/resources
+            mountPath: /config/keys
             readOnly: true
       {{- with .Values.nodeSelector }}
       nodeSelector:
