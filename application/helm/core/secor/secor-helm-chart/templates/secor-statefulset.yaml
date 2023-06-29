@@ -4,7 +4,8 @@ kind: StatefulSet
 metadata:
   annotations:
     configmap.reloader.stakater.com/reload: {{ .Release.Name }}-config
-  name: {{ .Release.Name }}
+  name: "{{ .Release.Name }}-{{ .Values.secor.secor_env }}"
+  namespace: {{ .Values.namespace }}
   labels:
     app: secor
     chart: {{ .Chart.Name }}-{{ .Chart.Version }}
@@ -14,7 +15,7 @@ spec:
   serviceName: secor
   updateStrategy:
     type: RollingUpdate
-  replicas: {{ get (get $.Values.secor_jobs $.Release.Name) "replicas" }}
+  replicas: {{ get (get $.Values.secor.secor_jobs $.Release.Name) "replicas" }}
   selector:
     matchLabels:
       app: secor
@@ -25,10 +26,9 @@ spec:
         app: secor
         release: {{ .Release.Name }}
     spec:
-          {{- with .Values.image.imagepullsecrets}}
-      imagePullSecrets:
-      - name: {{ .Values.imagepullsecrets }}
-          {{- end}}
+      serviceAccountName: {{ .Values.secor.secor_env }}-sa-secor-sa
+      # imagePullSecrets:
+      # - name: {{ .Values.imagepullsecrets }}
       initContainers:
       - name: change-pv-dir-ownership
         image: alpine:3
@@ -39,14 +39,15 @@ spec:
           mountPath: /mnt/data
       containers:
         - name: {{ .Release.Name }}-secor
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ .Values.image_repository }}:{{ .Values.image_tag }}
+          imagePullPolicy: {{ .Values.pullPolicy }}
           env:
             - name: "CONFIG_FILE"
               value: "/opt/secor/config/secor.partition.properties"
             - name: "LOG4J_CONFIGURATION"
               value: "/opt/secor/config/log4j.docker.properties"
-
+            - name: "JVM_MEMORY"
+              value: "{{ .Values.jvm_memory }}"
           volumeMounts:
            - mountPath: /opt/secor/config
              name: secor-config
@@ -54,19 +55,20 @@ spec:
              mountPath: /mnt/data
           resources:
             requests:
-              cpu: {{ get (get (get $.Values.secor_jobs $.Release.Name) "requests") "cpu" }}
-              memory: {{ get (get (get $.Values.secor_jobs $.Release.Name) "requests") "memory"}}
+              cpu: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "requests") "cpu" }}
+              memory: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "requests") "memory"}}
+            limits:
+              cpu: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "limits") "cpu" }}
+              memory: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "limits") "memory"}}
           securityContext:
             runAsUser: 9999
-
       volumes:
         - configMap:
             name: {{ .Release.Name }}-config
           name: secor-config
-
   volumeClaimTemplates:
     - metadata:
-        name: data-path
+        name: {{ .Values.describedobject.name }}
         labels:
           app: secor
       spec:
@@ -75,5 +77,5 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: {{ get (get (get $.Values.secor_jobs $.Release.Name) "storage") "size" }}
+            storage: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "storage") "size" }}
 

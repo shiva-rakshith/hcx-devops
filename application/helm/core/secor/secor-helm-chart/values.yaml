@@ -1,0 +1,20 @@
+namespace: "secor"
+storageClass: "gp2"
+image_repository: "manjudr/secor"
+region: "ap-south-1"
+pullPolicy: "Always"
+jvm_memory: 1024m
+image_tag: "0.29.1"
+describedobject:
+  name: "data-path"
+
+alertrules:
+    enabled: false
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
