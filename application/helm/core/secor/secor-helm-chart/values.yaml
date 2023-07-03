@@ -1,20 +1,23 @@
-namespace: "secor"
-storageClass: "gp2"
-image_repository: "manjudr/secor"
-region: "ap-south-1"
-pullPolicy: "Always"
+cloud_store_provider: "${cloud_store_provider}"
+upload_manager: "${upload_manager}"
+cloud_storage_bucket: "${cloud_storage_bucket}"
+namespace: "${secor_namespace}"
+storageClass: "${storage_class}"
+secor_env: "${deployment_stage}"
+image_repository: "${image_repository}"
+region: "${region}"
+pullPolicy: "IfNotPresent"
 jvm_memory: 1024m
-image_tag: "0.29.1"
+image_tag: "0.29.11"
+message_timezone: "UTC"
+parser_timezone: "Asia/Kolkata"
+
+alertrules:
+  enabled: false
+
 describedobject:
   name: "data-path"
 
-alertrules:
-    enabled: false
 serviceAccount:
-  # Specifies whether a service account should be created
-  create: false
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  create: true
+  name: secor-sa

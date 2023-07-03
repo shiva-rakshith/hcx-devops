@@ -4,7 +4,7 @@ kind: StatefulSet
 metadata:
   annotations:
     configmap.reloader.stakater.com/reload: {{ .Release.Name }}-config
-  name: "{{ .Release.Name }}-{{ .Values.secor.secor_env }}"
+  name: "{{ .Release.Name }}-{{ .Values.secor_env }}"
   namespace: {{ .Values.namespace }}
   labels:
     app: secor
@@ -15,7 +15,7 @@ spec:
   serviceName: secor
   updateStrategy:
     type: RollingUpdate
-  replicas: {{ get (get $.Values.secor.secor_jobs $.Release.Name) "replicas" }}
+  replicas: {{ get (get $.Values.secor_jobs $.Release.Name) "replicas" }}
   selector:
     matchLabels:
       app: secor
@@ -26,7 +26,7 @@ spec:
         app: secor
         release: {{ .Release.Name }}
     spec:
-      serviceAccountName: {{ .Values.secor.secor_env }}-sa-secor-sa
+      serviceAccountName: {{ .Values.namespace }}-sa
       # imagePullSecrets:
       # - name: {{ .Values.imagepullsecrets }}
       initContainers:
@@ -55,11 +55,11 @@ spec:
              mountPath: /mnt/data
           resources:
             requests:
-              cpu: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "requests") "cpu" }}
-              memory: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "requests") "memory"}}
+              cpu: {{ get (get (get $.Values.secor_jobs $.Release.Name) "requests") "cpu" }}
+              memory: {{ get (get (get $.Values.secor_jobs $.Release.Name) "requests") "memory"}}
             limits:
-              cpu: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "limits") "cpu" }}
-              memory: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "limits") "memory"}}
+              cpu: {{ get (get (get $.Values.secor_jobs $.Release.Name) "limits") "cpu" }}
+              memory: {{ get (get (get $.Values.secor_jobs $.Release.Name) "limits") "memory"}}
           securityContext:
             runAsUser: 9999
       volumes:
@@ -77,5 +77,5 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: {{ get (get (get $.Values.secor.secor_jobs $.Release.Name) "storage") "size" }}
+            storage: {{ get (get (get $.Values.secor_jobs $.Release.Name) "storage") "size" }}
 
