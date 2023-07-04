@@ -1,0 +1,23 @@
+cloud_store_provider: "${cloud_store_provider}"
+upload_manager: "${upload_manager}"
+cloud_storage_bucket: "${cloud_storage_bucket}"
+namespace: "${secor_namespace}"
+storageClass: "${storage_class}"
+secor_env: "${deployment_stage}"
+image_repository: "${image_repository}"
+region: "${region}"
+pullPolicy: "IfNotPresent"
+jvm_memory: 1024m
+image_tag: "0.29.11"
+message_timezone: "UTC"
+parser_timezone: "Asia/Kolkata"
+
+alertrules:
+  enabled: false
+
+describedobject:
+  name: "data-path"
+
+serviceAccount:
+  create: true
+  name: secor-sa

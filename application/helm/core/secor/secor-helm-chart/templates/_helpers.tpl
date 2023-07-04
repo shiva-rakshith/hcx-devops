@@ -2,8 +2,12 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "alertrules.name" -}}
+{{- define "secor.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "name" -}}
+{{- default .Release.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -11,7 +15,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "alertrules.fullname" -}}
+{{- define "secor.fullname" -}}
 {{- if .Values.fullnameOverride -}}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
 {{- else -}}
@@ -27,36 +31,43 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "alertrules.chart" -}}
+{{- define "secor.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{/*
+App config names
+*/}}
+{{- define "secor.appConfigName" -}}
+{{- $.Release.Name -}}
 {{- end -}}
 
 {{/*
 Common labels
 */}}
-{{- define "alertrules.labels" -}}
-helm.sh/chart: {{ include "alertrules.chart" . }}
-{{ include "alertrules.selectorLabels" . }}
+{{- define "secor.labels" -}}
+helm.sh/chart: {{ include "secor.chart" . }}
+{{ include "secor.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end -}}
+{{- end }}
 
 {{/*
 Selector labels
 */}}
-{{- define "alertrules.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "alertrules.name" . }}
+{{- define "secor.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "secor.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "alertrules.serviceAccountName" -}}
+{{- define "secor.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create -}}
-    {{ default (include "alertrules.fullname" .) .Values.serviceAccount.name }}
+    {{ default (include "secor.fullname" .) .Values.serviceAccount.name }}
 {{- else -}}
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
