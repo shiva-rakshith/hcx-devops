@@ -6,7 +6,7 @@ metadata:
     {{- include "hcx-api.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.common.replicaCount }}
+  replicas: {{ .Values.hcx_api.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
