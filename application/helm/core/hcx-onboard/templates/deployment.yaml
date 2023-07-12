@@ -6,7 +6,7 @@ metadata:
     {{- include "hcx-onboard.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.hcx_onboard.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
@@ -32,7 +32,7 @@ spec:
           env:
           {{- range $k, $v := .Values.hcx_onboard }}
           - name: {{ $k }}
-            value: {{ $v }}
+            value: '{{ $v }}'
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}

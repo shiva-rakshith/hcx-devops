@@ -6,7 +6,7 @@ metadata:
     {{- include "api-gateway.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.api_gateway.replicaCount }}
   {{- end }}
   selector:
     matchLabels:

@@ -6,7 +6,7 @@ metadata:
     {{- include "hcx-mock-service.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.hcx_mock_service.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
