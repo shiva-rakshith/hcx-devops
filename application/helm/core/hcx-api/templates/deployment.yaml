@@ -32,7 +32,7 @@ spec:
           env:
           {{- range $k, $v := .Values.hcx_api }}
           - name: {{ $k }}
-            value: {{ $v }}
+            value: '{{ $v }}'
           {{- end }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
