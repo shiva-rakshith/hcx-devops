@@ -30,7 +30,7 @@ jobmanager:
   heap_memory: "1024"
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   # If you want a private LB in azure, add the following
   # annotations:
   #   service.beta.kubernetes.io/azure-load-balancer-internal: "true"
