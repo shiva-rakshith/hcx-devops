@@ -120,16 +120,10 @@ extraSecrets:
 
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
-            redirect_url = self.appbuilder.get_url_for_index
-            if request.args.get('redirect') is not None:
-                redirect_url = request.args.get('redirect') 
-
             if request.args.get('username') is not None:
                 user = self.appbuilder.sm.find_user(username=request.args.get('username'))
-                login_user(user, remember=False)
-                return redirect(redirect_url)
-            elif g.user is not None and g.user.is_authenticated():
-                return redirect(redirect_url)
+                login_user(user, remember=False, force=True)
+                return redirect('/dashboard/list')
             else:
                 flash('Unable to auto login', 'warning')
                 return super(CustomAuthDBView,self).login()
