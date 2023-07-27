@@ -65,6 +65,7 @@ from flask_appbuilder.security.manager import AUTH_OID
 from keycloak_security_manager import OIDCSecurityManager
 import os
 from cachelib.redis import RedisCache
+from security import CustomSecurityManager
 ENABLE_CORS = True
 CORS_OPTIONS = {
     'supports_credentials': True,
@@ -135,7 +136,6 @@ OIDC_ID_TOKEN_COOKIE_SECURE = False
 OIDC_REQUIRE_VERIFIED_EMAIL = False
 OIDC_OPENID_REALM = env('OIDC_OPENID_REALM')
 # OIDC_INTROSPECTION_AUTH_METHOD = 'client_secret_post'
-from security import CustomSecurityManager
 CUSTOM_SECURITY_MANAGER = CustomSecurityManager
 AUTH_USER_REGISTRATION = True
 AUTH_USER_REGISTRATION_ROLE = 'Gamma'
