@@ -167,9 +167,6 @@ configOverrides:
       "ENABLE_TEMPLATE_PROCESSING": True,
       "DASHBOARD_RBAC": True
     }
-    
-    from security import CustomSecurityManager
-    CUSTOM_SECURITY_MANAGER = CustomSecurityManager
 # Same as above but the values are files
 configOverridesFiles: {}
 # extend_timeout: extend_timeout.py
