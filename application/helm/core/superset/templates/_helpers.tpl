@@ -65,7 +65,7 @@ from flask_appbuilder.security.manager import AUTH_OID
 from keycloak_security_manager import OIDCSecurityManager
 import os
 from cachelib.redis import RedisCache
-from security import CustomSecurityManager
+from my_security_manager import CustomSecurityManager
 ENABLE_CORS = True
 CORS_OPTIONS = {
     'supports_credentials': True,
