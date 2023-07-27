@@ -106,71 +106,39 @@ domain_base_url: ""
 sso_admin_client_secret: ""
 
 extraSecrets:
-  client_secret.json: |
-    {  "web": {    "issuer": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants",    "auth_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/auth",    "client_id": "admin-api",    "client_secret": "{{ .Values.superset.sso_admin_client_secret }}",    "redirect_uris": [      "{{ .Values.superset.domain_base_url }}/*"    ],    "userinfo_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/userinfo",    "token_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token",    "token_introspection_uri": "{{ .Values.superset.keycloak_url }}/realms/swasth-hcx-participants/protocol/openid-connect/token/introspect"  }}
-  keycloak_security_manager.py: |
-    from flask_appbuilder.security.manager import AUTH_OID
+  my_security_manager.py: |
+    from flask import redirect, g, flash, request
+    from flask_appbuilder.security.views import UserDBModelView,AuthDBView
     from superset.security import SupersetSecurityManager
-    from flask_oidc import OpenIDConnect
-    from flask_appbuilder.security.views import AuthOIDView
-    from flask_login import login_user
-    from urllib.parse import quote
-    from flask_appbuilder.views import expose
-    from flask import request, redirect
-    import logging
+    from flask_appbuilder.security.views import expose
+    from flask_appbuilder.security.manager import BaseSecurityManager
+    from flask_login import login_user, logout_user
 
 
-    class OIDCSecurityManager(SupersetSecurityManager):
-
-        def __init__(self, appbuilder):
-            super(OIDCSecurityManager, self).__init__(appbuilder)
-            if self.auth_type == AUTH_OID:
-                self.oid = OpenIDConnect(self.appbuilder.get_app)
-            self.authoidview = AuthOIDCView
-
-
-    class AuthOIDCView(AuthOIDView):
+    class CustomAuthDBView(AuthDBView):
+        login_template = 'appbuilder/general/security/login_db.html'
 
         @expose('/login/', methods=['GET', 'POST'])
-        def login(self, flag=True):
-            sm = self.appbuilder.sm
-            oidc = sm.oid
-            superset_roles = ["Admin", "Alpha", "Gamma", "Public", "granter", "sql_lab"]
+        def login(self):
+            redirect_url = self.appbuilder.get_url_for_index
+            if request.args.get('redirect') is not None:
+                redirect_url = request.args.get('redirect') 
 
-            @self.appbuilder.sm.oid.require_login
-            def handle_login():
-                user = sm.auth_user_oid(oidc.user_getfield('email'))
+            if request.args.get('username') is not None:
+                user = self.appbuilder.sm.find_user(username=request.args.get('username'))
+                login_user(user, remember=False)
+                return redirect(redirect_url)
+            elif g.user is not None and g.user.is_authenticated():
+                return redirect(redirect_url)
+            else:
+                flash('Unable to auto login', 'warning')
+                return super(CustomAuthDBView,self).login()
 
-                if user is None:
-                    info = oidc.user_getinfo(['preferred_username', 'given_name', 'family_name', 'email', 'roles', 'realm_access'])
-                    realm_roles = oidc.user_getfield('realm_access')["roles"];              
-                    roles = [role for role in superset_roles if role in info.get('roles', [])]
-
-                    role_mapping = {"HIE/HIO.HCX": "Admin", "provider": "participant", "payor": "participant"}
-                    for role in realm_roles:
-                        if role in role_mapping:
-                            roles.append(role_mapping[role]); 
-
-                    logging.info(roles); 
-                    user = sm.add_user(info.get('preferred_username'), info.get('given_name', ''), info.get('family_name', ''),
-                                       info.get('email'), [sm.find_role(role) for role in roles])
-
-                login_user(user, remember=False, force=True)
-                return redirect("/dashboard/list/")
-
-            return handle_login()
-
-        @expose('/logout/', methods=['GET', 'POST'])
-        def logout(self):
-            oidc = self.appbuilder.sm.oid
-
-            oidc.logout()
-            super(AuthOIDCView, self).logout()
-            redirect_url = request.url_root.strip('/')
-            # redirect_url = request.url_root.strip('/') + self.appbuilder.get_url_for_login
-
-            return redirect(
-                oidc.client_secrets.get('issuer') + '/protocol/openid-connect/logout?redirect_uri=' + quote(redirect_url))
+    class CustomSecurityManager(SupersetSecurityManager):
+        authdbview = CustomAuthDBView
+        def __init__(self, appbuilder):
+            super(CustomSecurityManager, self).__init__(appbuilder)
+    
 
 extraVolumes:
   []
@@ -199,6 +167,9 @@ configOverrides:
       "ENABLE_TEMPLATE_PROCESSING": True,
       "DASHBOARD_RBAC": True
     }
+    
+    from security import CustomSecurityManager
+    CUSTOM_SECURITY_MANAGER: CustomSecurityManager
 # Same as above but the values are files
 configOverridesFiles: {}
 # extend_timeout: extend_timeout.py
