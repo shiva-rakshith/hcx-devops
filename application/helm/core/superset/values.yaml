@@ -169,7 +169,7 @@ configOverrides:
     }
     
     from security import CustomSecurityManager
-    CUSTOM_SECURITY_MANAGER: CustomSecurityManager
+    CUSTOM_SECURITY_MANAGER = CustomSecurityManager
 # Same as above but the values are files
 configOverridesFiles: {}
 # extend_timeout: extend_timeout.py
