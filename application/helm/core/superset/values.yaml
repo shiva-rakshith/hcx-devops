@@ -113,6 +113,7 @@ extraSecrets:
     from flask_appbuilder.security.views import expose
     from flask_appbuilder.security.manager import BaseSecurityManager
     from flask_login import login_user, logout_user
+    import logging
 
 
     class CustomAuthDBView(AuthDBView):
@@ -121,6 +122,7 @@ extraSecrets:
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
             if request.args.get('username') is not None:
+                logging.info(self.appbuilder.sm.find_user(username=request.args.get('username')));
                 user = self.appbuilder.sm.add_user(
                 username=request.args.get('username'),
                 first_name='Test',
