@@ -122,14 +122,18 @@ extraSecrets:
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
             if request.args.get('username') is not None:
-                logging.info(self.appbuilder.sm.find_user(username=request.args.get('username')));
-                user = self.appbuilder.sm.add_user(
-                username=request.args.get('username'),
-                first_name='Test',
-                last_name='User',
-                email='test-email',
-                role=self.appbuilder.sm.find_role('participant')
-                )
+                is_user_exists = self.appbuilder.sm.find_user(username=request.args.get('username'))
+                if is_user_exists is None:
+                    logging.info('Creating new user {}', request.args.get('username'));
+                    user = self.appbuilder.sm.add_user(
+                    username=request.args.get('username'),
+                    first_name='Test',
+                    last_name='User',
+                    email="{}@gmail.com".format(username),
+                    role=self.appbuilder.sm.find_role('participant')
+                    )
+                else:
+                    user = is_user_exists
                 login_user(user, remember=False, force=True)
                 return redirect('/dashboard/list')
             else:
