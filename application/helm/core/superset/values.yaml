@@ -124,7 +124,6 @@ extraSecrets:
 
             if request.args.get('username') is not None:
                 user = sm.add_user(request.args.get('username'), '', '','test-email', 'participant')
-#                user = self.appbuilder.sm.find_user(username=request.args.get('username'))
                 login_user(user, remember=False, force=True)
                 return redirect('/dashboard/list')
             else:
