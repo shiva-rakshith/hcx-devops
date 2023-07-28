@@ -120,8 +120,11 @@ extraSecrets:
 
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
+            sm = self.appbuilder.sm
+
             if request.args.get('username') is not None:
-                user = self.appbuilder.sm.find_user(username=request.args.get('username'))
+                user = sm.add_user(request.args.get('username'), '', '','test-email', 'participant')
+#                user = self.appbuilder.sm.find_user(username=request.args.get('username'))
                 login_user(user, remember=False, force=True)
                 return redirect('/dashboard/list')
             else:
