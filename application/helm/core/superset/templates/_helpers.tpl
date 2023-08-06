@@ -66,6 +66,14 @@ from keycloak_security_manager import OIDCSecurityManager
 import os
 from cachelib.redis import RedisCache
 from my_security_manager import CustomSecurityManager
+from datetime import datetime
+
+def current_datetime():
+    return datetime.now().strftime("%Y-%m-%d")
+
+JINJA_CONTEXT_ADDONS = {
+    "current_datetime": current_datetime
+}
 ENABLE_CORS = True
 CORS_OPTIONS = {
     'supports_credentials': True,
