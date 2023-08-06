@@ -79,13 +79,13 @@ data = {
     "filters": {}
 }
 
-def getapi():
+def getapi(context,value):
     response = requests.post(url, headers=headers, json=data)
     if response.status_code == 200:
         result = response.json()
         # Process the result here
         print(result)
-        return result
+        return value
     else:
         print(f"Request failed with status code: {response.status_code}")
         print(response.text)
