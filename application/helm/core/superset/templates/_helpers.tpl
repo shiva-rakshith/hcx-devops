@@ -66,9 +66,6 @@ from keycloak_security_manager import OIDCSecurityManager
 import os
 from cachelib.redis import RedisCache
 from my_security_manager import CustomSecurityManager
-from superset.models.custom_user import CustomUser
-# Use the custom User model
-USER_MODEL = CustomUser
 ENABLE_CORS = True
 CORS_OPTIONS = {
     'supports_credentials': True,
