@@ -93,7 +93,7 @@ def getapi(user_id):
         result = response.json()
         # Process the result here
         print(result)
-        return result
+        
 
         roles_list = []
         users = api_response.get('users', [])
@@ -102,8 +102,9 @@ def getapi(user_id):
             roles = [role['role'] for role in tenant_roles]
             roles_list.extend(roles)  # Append roles to the list
 
-         # Now you can access the roles outside the loop
-         print("All Roles:", roles_list)
+        # Now you can access the roles outside the loop
+        print("All Roles:", roles_list)
+        return roles_list
     else:
         print(f"Request failed with status code: {response.status_code}")
         print(response.text)
