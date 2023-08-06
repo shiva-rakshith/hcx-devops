@@ -124,13 +124,18 @@ extraSecrets:
             if request.args.get('username') is not None:
                 is_user_exists = self.appbuilder.sm.find_user(username=request.args.get('username'))
                 if is_user_exists is None:
+                    extra_data = {
+                    'property1': 'value1',
+                    'property2': 'value2',
+                    }
                     logging.info('Creating new user %s', request.args.get('username'));
                     user = self.appbuilder.sm.add_user(
                     username=request.args.get('username'),
                     first_name='Test',
                     last_name='User',
                     email="{}@gmail.com".format(request.args.get('username')),
-                    role=self.appbuilder.sm.find_role('participant')
+                    role=self.appbuilder.sm.find_role('participant'),
+                    extra_data=extra_data
                     )
                 else:
                     user = is_user_exists
