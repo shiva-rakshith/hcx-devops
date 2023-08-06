@@ -96,7 +96,7 @@ def getapi(user_id):
         
 
         roles_list = []
-        users = api_response.get('users', [])
+        users = result.get('users', [])
         for user in users:
             tenant_roles = user.get('tenant_roles', [])
             roles = [role['role'] for role in tenant_roles]
