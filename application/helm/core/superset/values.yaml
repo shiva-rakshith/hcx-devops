@@ -106,6 +106,20 @@ domain_base_url: ""
 sso_admin_client_secret: ""
 
 extraSecrets:
+  custom_user.py: |
+    # superset/models/custom_user.py
+
+    from superset import db
+    from superset.models.core import User
+    from sqlalchemy import ARRAY
+
+    class CustomUser(User):
+        organisations = db.Column(ARRAY(db.String(255)))  # Change the data type as needed
+
+        def set_organisations(self, organisations):
+            self.organisations = organisations
+            db.session.commit()
+
   my_security_manager.py: |
     from flask import redirect, g, flash, request
     from flask_appbuilder.security.views import UserDBModelView,AuthDBView
@@ -113,11 +127,33 @@ extraSecrets:
     from flask_appbuilder.security.views import expose
     from flask_appbuilder.security.manager import BaseSecurityManager
     from flask_login import login_user, logout_user
+    from superset.models.custom_user import CustomUser
     import logging
 
 
     class CustomAuthDBView(AuthDBView):
+        user_model = CustomUser
         login_template = 'appbuilder/general/security/login_db.html'
+
+        def add_user(self, username, first_name, last_name, email, role, organisations=None):
+            # Process 'organisations' as needed before creating the user
+            user = self.find_user(username=username)
+            if user:
+                # Update the existing user's organisations
+                user.organisations = organisations
+            else:
+                # Create a new user with the provided organisations
+                user = super().add_user(
+                    username=username,
+                    first_name=first_name,
+                    last_name=last_name,
+                    email=email,
+                    role=role
+                )
+                user.organisations = organisations
+
+            db.session.commit()
+            return user
 
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
@@ -135,7 +171,7 @@ extraSecrets:
                     last_name='User',
                     email="{}@gmail.com".format(request.args.get('username')),
                     role=self.appbuilder.sm.find_role('participant'),
-                    extra_data=extra_data
+                    organisations=['apollo-hospitals']
                     )
                 else:
                     user = is_user_exists
