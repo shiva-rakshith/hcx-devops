@@ -80,16 +80,15 @@ data = {
 }
 
 def getapi():
-      response = requests.post(url, headers=headers, json=data)
-
-      if response.status_code == 200:
-      result = response.json()
-      # Process the result here
-      print(result)
-      return result
-      else:
-      print(f"Request failed with status code: {response.status_code}")
-      print(response.text)
+    response = requests.post(url, headers=headers, json=data)
+    if response.status_code == 200:
+        result = response.json()
+        # Process the result here
+        print(result)
+        return result
+    else:
+        print(f"Request failed with status code: {response.status_code}")
+        print(response.text)
 
 
 from datetime import datetime
