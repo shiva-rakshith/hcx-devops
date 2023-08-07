@@ -120,8 +120,8 @@ def get_emails(participant_codes_list):
     
     print("Participant request ", participant_request_filters)
     participant_response = requests.post(url=participant_search_url, headers=headers, json=participant_request_filters)
-    print("participant status" + participant_response.status_code)
-    print("participant response" + participant_response.json())
+    print("participant status",participant_response.status_code)
+    print("participant response",participant_response.json())
     if participant_response.status_code == 200:
         participant_result = participant_response.json()
         print("participant response" + participant_result)
