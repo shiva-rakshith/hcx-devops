@@ -69,7 +69,8 @@ from my_security_manager import CustomSecurityManager
 
 import requests
 
-url = 'https://dev-hcx.swasth.app/api/v0.8/user/search'
+user_search_url = 'https://dev-hcx.swasth.app/api/v0.8/user/search'
+participant_search_url = 'https://dev-hcx.swasth.app/api/v0.8/participant/search'
 headers = {
     'Content-Type': 'application/json',
     'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3Q1l0Z2VYMzA2NEQ3VUU0czdCQWlJZmUzN3hxczBtNEVSQnpmdzVuMzdNIn0.eyJleHAiOjE2OTMwNTYzMzksImlhdCI6MTY5MTMyODMzOSwianRpIjoiMjU2MmIzZGUtYmEzZC00OTAwLThmYTgtNzc0NzYxZWM2Y2Y0IiwiaXNzIjoiaHR0cDovL2Rldi1oY3guc3dhc3RoLmFwcC9hdXRoL3JlYWxtcy9zd2FzdGgtaGN4LXBhcnRpY2lwYW50cyIsInN1YiI6IjU5ZDQzZjliLTQyZTctNDQ4MC05ZWMyLWFhNmJkOTVjY2I1ZiIsInR5cCI6IkJlYXJlciIsImF6cCI6InJlZ2lzdHJ5LWZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6ImVjMDg5MmM0LWE5YzMtNDA1ZC1iYjY1LWQ0Mzc1YjNiNjE4OCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiSElFL0hJTy5IQ1giLCJkZWZhdWx0LXJvbGVzLW5kZWFyIl19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImhjeGdhdGV3YXlAc3dhc3RoLm9yZyIsImVudGl0eSI6WyJPcmdhbmlzYXRpb24iXSwiZW1haWwiOiJoY3hnYXRld2F5QHN3YXN0aC5vcmcifQ.HWlExZkFpOAtHJeyvaxVf2THKrzPMGkOWdvCa6efFtdpbtN6H4U5SAQVWZQZSffkC5zTgMGulrq3CWBJbkgmqgprImLPpxggdtgfXcS0Yi63YZiBsfcMjAzMcoOVmZ1o3eeGJ6GKgQsJzyzw8_cUcf0t2XdR3UeiRhNuQLecngm6DFecoR_p6VqZ82IIxGd1DeUPy8LLRbD2d3YKmDyGZe5HSDjiM5dumTRdcj1AU1pxoHcjvhwjptXLkRPNuZ9hTfer9y5eOo506CMu7ArPt47cyZsz9A1-otwni5ymhQp7AFxCo0iiAC5Joi7EGouAA0n7C5fJJ3XMvyvKmNhy7w'
@@ -77,7 +78,7 @@ headers = {
 
 
 
-def getapi(user_id):
+def get_participant_emails(user_id):
     data = {
       "filters": {
             "user_id": {
@@ -88,22 +89,41 @@ def getapi(user_id):
 
     print(data)
 
-    response = requests.post(url, headers=headers, json=data)
+    response = requests.post(user_search_url, headers=headers, json=data)
     if response.status_code == 200:
         result = response.json()
         # Process the result here
         print(result)  
 
-        roles_list = []
+        participant_codes_list = []
         users = result.get('users', [])
         for user in users:
             tenant_roles = user.get('tenant_roles', [])
-            roles = [role['role'] for role in tenant_roles]
-            roles_list.extend(roles)  # Append roles to the list
+            codes = [tenant['participant_code'] for tenant in tenant_roles]
+            participant_codes_list.extend(codes)  # Append roles to the list
 
         # Now you can access the roles outside the loop
-        print("All Roles:", roles_list)
-        return roles_list
+        print("Participant Codes:", participant_codes_list)
+        
+        participant_request_filters = {
+          "filters": {
+            "primary_email": {
+               "or": participant_codes_list
+          }
+         } 
+        }
+
+        participant_response = requests.post(participant_search_url, headers=headers, json=participant_request_filters)
+        
+        if participant_response.status_code == 200:
+            participant_result = response.json()
+            participants = participant_result.get('participants', [])
+            primary_emails = [participant.get('primary_email', None) for participant in participants]
+            emails_string = ', '.join(f"'{email}'" for email in primary_emails)
+            return emails_string
+        else:
+            print(f"Participant Search Request failed with status code: {response.status_code}")
+            print(response.text)    
     else:
         print(f"Request failed with status code: {response.status_code}")
         print(response.text)
@@ -115,7 +135,7 @@ def current_datetime():
     return datetime.now().strftime("%Y-%m-%d")
 
 JINJA_CONTEXT_ADDONS = {
-    "current_getapi": getapi
+    "current_get_participant_emails": get_participant_emails
 }
 
 ENABLE_CORS = True
