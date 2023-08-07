@@ -121,15 +121,16 @@ def get_emails(participant_codes_list):
     print("Participant request ", participant_request_filters)
     participant_response = requests.post(url=participant_search_url, headers=headers, json=participant_request_filters)
     print("participant status",participant_response.status_code)
-    print("participant response",participant_response.json())
     if participant_response.status_code == 200:
         participant_result = participant_response.json()
         participants = participant_result.get('participants', [])
         primary_emails = [participant.get('primary_email', None) for participant in participants]
         print("Participant emails ", primary_emails)
+        email_string = ','.join(primary_emails)
+        print(email_string)
         emails_string = ', '.join(f"'{email}'" for email in primary_emails)
         print("Participant Primary Emails ", primary_emails)
-        return emails_string
+        return email_string
     else:
         print(f"Participant Search Request failed with status code: {response.status_code}")
         print(response.text)   
