@@ -107,7 +107,7 @@ def get_participant_emails(user_id):
         
         participant_request_filters = {
           "filters": {
-            "primary_email": {
+            "participant_code": {
                "or": participant_codes_list
           }
          } 
