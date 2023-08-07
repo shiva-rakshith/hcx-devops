@@ -136,7 +136,7 @@ extraSecrets:
                 decoded_payload = decoded_payload_bytes.decode('utf-8')
                 decoded_payload = json.loads(decoded_payload)
                 entity = decoded_payload['entity']
-                realm_roles = decode_payload['realm_access']['roles']
+                realm_roles = decoded_payload['realm_access']['roles']
                 role = 'participant'
                 publickey = None
                 username = None
