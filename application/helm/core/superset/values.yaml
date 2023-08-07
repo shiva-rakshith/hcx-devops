@@ -122,14 +122,6 @@ extraSecrets:
     class CustomAuthDBView(AuthDBView):
         login_template = 'appbuilder/general/security/login_db.html'
 
-        def get_decode_payload(jwt_token):
-            header_b64, payload_b64, signature_b64 = jwt_token.split('.')
-            decoded_payload_bytes = base64.urlsafe_b64decode(payload_b64 + '=' * (4 - len(payload_b64) % 4))
-            decoded_payload = decoded_payload_bytes.decode('utf-8')
-            payload_dict = json.loads(decoded_payload)
-            print("Decoded Payload:", decoded_payload)  
-            return payload_dict
-
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
             decoded_token = None
@@ -137,7 +129,10 @@ extraSecrets:
                 login_user(self.appbuilder.sm.find_user(username=request.args.get('username')), remember=False, force=True)
                 return redirect('/dashboard/list')
             if request.args.get('jwt_token') is not None:
-                decoded_payload = get_decode_payload(request.args.get('jwt_token'))
+                header_b64, payload_b64, signature_b64 = request.args.get('jwt_token').split('.')
+                decoded_payload_bytes = base64.urlsafe_b64decode(payload_b64 + '=' * (4 - len(payload_b64) % 4))
+                decoded_payload = decoded_payload_bytes.decode('utf-8')
+                decoded_payload = json.loads(decoded_payload)
                 entity = decoded_payload['entity']
                 realm_roles = decode_payload['realm_access']['roles']
                 role = 'participant'
