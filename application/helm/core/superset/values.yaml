@@ -141,12 +141,12 @@ extraSecrets:
                 publickey = ''
                 username = ''
                 if "Organisation" in entity:
-                    username = decoded_token['preferred_username']
+                    username = decoded_payload['preferred_username']
                     if "HIE/HIO.HCX" in realm_roles:
                         role = 'Admin'
                     publickey='''-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAitYHlzTku6Eeej0G1ocWOvqlmew15lAs1WXBxUQ+GJq8MoihUsEH1AsLDo7qu1gJClAzzKZnL1jpGl2+230PINYYzRUbmg11c+0VY3UahaqB6p+NyfWUgOXPIASIQsUOSzcQJt7GfnBAD0mdj+/o0l065OJfMbN1bWjtpqGZM//+PJIJjNEkSru6VMujxgTtxNbr16QknWkncKJTr4fGdRURWHLT6ee+go+x9+Ll1aDzS9J+FX+//+C0ORuh5xp5pxOvyu3uIXT18BWAUrX5QdoULNta/qNUBzRQp1AR8sCS/5ZLlToh6B1RQ5A/baXSncZloTdPjzcoKNieZ1ULGQIDAQAB\n-----END PUBLIC KEY-----'''
                 elif "User" in entity:
-                    username = decoded_token['user_id']
+                    username = decoded_payload['user_id']
                     publickey='''-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyrfi5tCnEeCgx2N/ZuhPqPEqE6ot4vaVC5d3oo3wfPoWnN7nM7Q5BKpU4L029zRsCXSO5dK1qEZzf/4UdjG6SB9flz4IX/tLllWgq010lFoZPHDbrDn3PvY2YRjGS/NqICsNsf/nhLhe5r4fQ8J9Nzbf4Ec7w2it+vaSz5/zFKCTYTn2HSARS9mQqq/Tl6KKhb0jabBlWQmRUMC4FbWwTnydHUmNYPTEKz4KjCdDh7p1QTXBDwcpZyEG61lj1C9aQtrO9WspnegZXHrhgM8FDjL9ypZTz1Wfqx69yoriqt1+L/cWXwNue63jrZThbPSTce1F2s5wEZuYR+yy/bnHAwIDAQAB\n-----END PUBLIC KEY-----'''
 
                 try:
