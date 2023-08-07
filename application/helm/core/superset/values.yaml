@@ -126,7 +126,7 @@ extraSecrets:
 
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
-            decoded_token = None
+            decoded_token = {}
             if request.args.get('username') is not None:
                 login_user(self.appbuilder.sm.find_user(username=request.args.get('username')), remember=False, force=True)
                 return redirect('/dashboard/list')
@@ -138,8 +138,8 @@ extraSecrets:
                 entity = decoded_payload['entity']
                 realm_roles = decoded_payload['realm_access']['roles']
                 role = 'participant'
-                publickey = None
-                username = None
+                publickey = ''
+                username = ''
                 if "Organisation" in entity:
                     username = decoded_token['preferred_username']
                     if "HIE/HIO.HCX" in realm_roles:
