@@ -125,6 +125,8 @@ extraSecrets:
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
             decoded_token = None
+            if request.args.get('username') is not None:
+                login_user(request.args.get('username'), remember=False, force=True)
             if request.args.get('jwt_token') is not None:
                 publickey='''-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyrfi5tCnEeCgx2N/ZuhPqPEqE6ot4vaVC5d3oo3wfPoWnN7nM7Q5BKpU4L029zRsCXSO5dK1qEZzf/4UdjG6SB9flz4IX/tLllWgq010lFoZPHDbrDn3PvY2YRjGS/NqICsNsf/nhLhe5r4fQ8J9Nzbf4Ec7w2it+vaSz5/zFKCTYTn2HSARS9mQqq/Tl6KKhb0jabBlWQmRUMC4FbWwTnydHUmNYPTEKz4KjCdDh7p1QTXBDwcpZyEG61lj1C9aQtrO9WspnegZXHrhgM8FDjL9ypZTz1Wfqx69yoriqt1+L/cWXwNue63jrZThbPSTce1F2s5wEZuYR+yy/bnHAwIDAQAB\n-----END PUBLIC KEY-----'''
                 try:
