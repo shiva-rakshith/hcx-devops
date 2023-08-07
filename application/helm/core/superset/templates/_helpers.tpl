@@ -117,8 +117,12 @@ def get_participant_emails(user_id):
         
         if participant_response.status_code == 200:
             participant_result = response.json()
+            print("participant response" + participant_result)
             participants = participant_result.get('participants', [])
-            primary_emails = [participant.get('primary_email', None) for participant in participants]
+            primary_emails = []
+            for participant in participants:
+                primary_email = [participant.get('primary_email', None) for participant in participants]
+                primary_emails.extend(primary_email)
             print("Participant emails ", primary_emails)
             emails_string = ', '.join(f"'{email}'" for email in primary_emails)
             print("Participant Primary Emails " + primary_emails)
