@@ -87,13 +87,12 @@ def get_participant_emails(user_id):
       } 
     }
 
-    print(data)
+    print("User Request Body: ", data)
 
     response = requests.post(url=user_search_url, headers=headers, json=data)
     if response.status_code == 200:
         result = response.json()
-        # Process the result here
-        print(result)  
+        print("User Search Results",result)  
 
         participant_codes_list = []
         users = result.get('users', [])
@@ -102,7 +101,6 @@ def get_participant_emails(user_id):
             codes = [tenant['participant_code'] for tenant in tenant_roles]
             participant_codes_list.extend(codes)  # Append roles to the list
 
-        # Now you can access the roles outside the loop
         print("Participant Codes:", participant_codes_list)
         return get_emails(participant_codes_list)
     else:
@@ -120,7 +118,7 @@ def get_emails(participant_codes_list):
     
     print("Participant request ", participant_request_filters)
     participant_response = requests.post(url=participant_search_url, headers=headers, json=participant_request_filters)
-    print("participant status",participant_response.status_code)
+    print("participant status ",participant_response.status_code)
     if participant_response.status_code == 200:
         participant_result = participant_response.json()
         participants = participant_result.get('participants', [])
@@ -138,7 +136,7 @@ def current_datetime():
     return datetime.now().strftime("%Y-%m-%d")
 
 JINJA_CONTEXT_ADDONS = {
-    "current_get_participant_emails": get_participant_emails
+    "get_participant_emails": get_participant_emails
 }
 
 ENABLE_CORS = True
