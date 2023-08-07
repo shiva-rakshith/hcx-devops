@@ -122,6 +122,14 @@ extraSecrets:
     class CustomAuthDBView(AuthDBView):
         login_template = 'appbuilder/general/security/login_db.html'
 
+        def get_decode_payload(jwt_token):
+            header_b64, payload_b64, signature_b64 = jwt_token.split('.')
+            decoded_payload_bytes = base64.urlsafe_b64decode(payload_b64 + '=' * (4 - len(payload_b64) % 4))
+            decoded_payload = decoded_payload_bytes.decode('utf-8')
+            payload_dict = json.loads(decoded_payload)
+            print("Decoded Payload:", decoded_payload)  
+            return payload_dict
+
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
             decoded_token = None
@@ -129,7 +137,21 @@ extraSecrets:
                 login_user(self.appbuilder.sm.find_user(username=request.args.get('username')), remember=False, force=True)
                 return redirect('/dashboard/list')
             if request.args.get('jwt_token') is not None:
-                publickey='''-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyrfi5tCnEeCgx2N/ZuhPqPEqE6ot4vaVC5d3oo3wfPoWnN7nM7Q5BKpU4L029zRsCXSO5dK1qEZzf/4UdjG6SB9flz4IX/tLllWgq010lFoZPHDbrDn3PvY2YRjGS/NqICsNsf/nhLhe5r4fQ8J9Nzbf4Ec7w2it+vaSz5/zFKCTYTn2HSARS9mQqq/Tl6KKhb0jabBlWQmRUMC4FbWwTnydHUmNYPTEKz4KjCdDh7p1QTXBDwcpZyEG61lj1C9aQtrO9WspnegZXHrhgM8FDjL9ypZTz1Wfqx69yoriqt1+L/cWXwNue63jrZThbPSTce1F2s5wEZuYR+yy/bnHAwIDAQAB\n-----END PUBLIC KEY-----'''
+                decoded_payload = get_decode_payload(request.args.get('jwt_token'))
+                entity = decoded_payload['entity']
+                realm_roles = decode_payload['realm_access']['roles']
+                role = 'participant'
+                publickey = None
+                username = None
+                if "Organisation" in entity;
+                    username = decoded_token['preferred_username']
+                    if "HIE/HIO.HCX" in realm_roles:
+                        role = 'Admin'
+                    publickey='''-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAitYHlzTku6Eeej0G1ocWOvqlmew15lAs1WXBxUQ+GJq8MoihUsEH1AsLDo7qu1gJClAzzKZnL1jpGl2+230PINYYzRUbmg11c+0VY3UahaqB6p+NyfWUgOXPIASIQsUOSzcQJt7GfnBAD0mdj+/o0l065OJfMbN1bWjtpqGZM//+PJIJjNEkSru6VMujxgTtxNbr16QknWkncKJTr4fGdRURWHLT6ee+go+x9+Ll1aDzS9J+FX+//+C0ORuh5xp5pxOvyu3uIXT18BWAUrX5QdoULNta/qNUBzRQp1AR8sCS/5ZLlToh6B1RQ5A/baXSncZloTdPjzcoKNieZ1ULGQIDAQAB\n-----END PUBLIC KEY-----'''
+                elif "User" in entity:
+                    username = decoded_token['user_id']
+                    publickey='''-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyrfi5tCnEeCgx2N/ZuhPqPEqE6ot4vaVC5d3oo3wfPoWnN7nM7Q5BKpU4L029zRsCXSO5dK1qEZzf/4UdjG6SB9flz4IX/tLllWgq010lFoZPHDbrDn3PvY2YRjGS/NqICsNsf/nhLhe5r4fQ8J9Nzbf4Ec7w2it+vaSz5/zFKCTYTn2HSARS9mQqq/Tl6KKhb0jabBlWQmRUMC4FbWwTnydHUmNYPTEKz4KjCdDh7p1QTXBDwcpZyEG61lj1C9aQtrO9WspnegZXHrhgM8FDjL9ypZTz1Wfqx69yoriqt1+L/cWXwNue63jrZThbPSTce1F2s5wEZuYR+yy/bnHAwIDAQAB\n-----END PUBLIC KEY-----'''
+
                 try:
                     decoded_token = jwt.decode(request.args.get('jwt_token'), publickey, algorithms=["RS256"], audience='account')
                     print("Token verification successful:", decoded_token)
@@ -140,7 +162,7 @@ extraSecrets:
                 except jwt.JWTError:
                     print("Token verification failed.")
                 
-                username = decoded_token['user_id']
+                
                 is_user_exists = self.appbuilder.sm.find_user(username=username)
                 if is_user_exists is None:
                     logging.info('Creating new   user %s', username);
@@ -149,7 +171,7 @@ extraSecrets:
                     first_name='Test',
                     last_name='User',
                     email=username,
-                    role=self.appbuilder.sm.find_role('participant')
+                    role=self.appbuilder.sm.find_role(role)
                     )
                 else:
                     user = is_user_exists
