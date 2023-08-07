@@ -126,10 +126,7 @@ def get_emails(participant_codes_list):
         participants = participant_result.get('participants', [])
         primary_emails = [participant.get('primary_email', None) for participant in participants]
         print("Participant emails ", primary_emails)
-        email_string = ','.join(primary_emails)
-        print(email_string)
-        emails_string = ', '.join(f"'{email}'" for email in primary_emails)
-        print("Participant Primary Emails ", primary_emails)
+        email_string = "','".join(primary_emails)
         return email_string
     else:
         print(f"Participant Search Request failed with status code: {response.status_code}")
