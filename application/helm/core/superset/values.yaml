@@ -143,7 +143,7 @@ extraSecrets:
                 role = 'participant'
                 publickey = None
                 username = None
-                if "Organisation" in entity;
+                if "Organisation" in entity:
                     username = decoded_token['preferred_username']
                     if "HIE/HIO.HCX" in realm_roles:
                         role = 'Admin'
