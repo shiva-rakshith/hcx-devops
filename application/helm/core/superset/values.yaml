@@ -117,7 +117,7 @@ extraSecrets:
     from flask_appbuilder.security.manager import BaseSecurityManager
     from flask_login import login_user, logout_user
     import logging
-
+    import jwt
 
     class CustomAuthDBView(AuthDBView):
         login_template = 'appbuilder/general/security/login_db.html'
