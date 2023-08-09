@@ -69,9 +69,9 @@ from my_security_manager import CustomSecurityManager
 
 import requests
 
-user_search_url = {{ .Values.hcx_url }}/{{ .Values.api_version }}/user/search
-participant_search_url = {{ .Values.hcx_url }}/{{ .Values.api_version }}/participant/search
-token_url = {{ .Values.hcx_url }}/{{ .Values.api_version }}/participant/auth/token/generate
+user_search_url = '{{ .Values.hcx_url }}/{{ .Values.api_version }}/user/search'
+participant_search_url = '{{ .Values.hcx_url }}/{{ .Values.api_version }}/participant/search'
+token_url = '{{ .Values.hcx_url }}/{{ .Values.api_version }}/participant/auth/token/generate'
 
 
 def get_participant_emails(user_id):
@@ -79,8 +79,8 @@ def get_participant_emails(user_id):
       'content-type': 'application/x-www-form-urlencoded'
     }
     token_body = {
-      'username': {{ .Values.hcx_admin_username }},
-      'password': {{ .Values.hcx_admin_password }}
+      'username': '{{ .Values.hcx_admin_username }}',
+      'password': '{{ .Values.hcx_admin_password }}'
     }
 
     keycloak_response = requests.post(url=token_url, headers=token_headers, json=token_body)

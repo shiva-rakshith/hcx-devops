@@ -128,9 +128,6 @@ extraSecrets:
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
             decoded_token = {}
-            if request.args.get('username') is not None:
-                login_user(self.appbuilder.sm.find_user(username=request.args.get('username')), remember=False, force=True)
-                return redirect('/dashboard/list')
             if request.args.get('jwt_token') is not None:
                 header_b64, payload_b64, signature_b64 = request.args.get('jwt_token').split('.')
                 decoded_payload_bytes = base64.urlsafe_b64decode(payload_b64 + '=' * (4 - len(payload_b64) % 4))
@@ -145,7 +142,7 @@ extraSecrets:
                     username = decoded_payload['preferred_username']
                     if "HIE/HIO.HCX" in realm_roles:
                         role = 'Admin'
-                    keycloak_response = requests.get({{ .Values.hcx_url }}'/auth/realms/'{{ .Values.participant_realm }})
+                    keycloak_response = requests.get('{{ .Values.hcx_url }}/auth/realms/{{ .Values.participant_realm }}')
                     public_key=''
                     if keycloak_response.status_code == 200:
                         print("Request was successful!")
@@ -156,7 +153,7 @@ extraSecrets:
                     publickey=f"-----BEGIN PUBLIC KEY-----\n{public_key}\n-----END PUBLIC KEY-----""
                 elif "User" in entity:
                     username = decoded_payload['user_id']
-                    keycloak_response = requests.get({{ .Values.hcx_url }}'/auth/realms/'{{ .Values.user_realm }})
+                    keycloak_response = requests.get('{{ .Values.hcx_url }}/auth/realms/{{ .Values.user_realm }}')
                     public_key=''
                     if keycloak_response.status_code == 200:
                         print("Request was successful!")
