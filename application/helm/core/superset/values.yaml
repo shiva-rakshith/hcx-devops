@@ -150,7 +150,7 @@ extraSecrets:
                     else:
                         print(f"Keycloak cert request failed with status code: {response.status_code}")
                         print(response.text)    
-                    publickey=f"-----BEGIN PUBLIC KEY-----\n{public_key}\n-----END PUBLIC KEY-----""
+                    publickey=f"-----BEGIN PUBLIC KEY-----\n{public_key}\n-----END PUBLIC KEY-----"
                 elif "User" in entity:
                     username = decoded_payload['user_id']
                     keycloak_response = requests.get('{{ .Values.hcx_url }}/auth/realms/{{ .Values.user_realm }}')
@@ -161,7 +161,7 @@ extraSecrets:
                     else:
                         print(f"Keycloak cert request failed with status code: {response.status_code}")
                         print(response.text)    
-                    publickey=f"-----BEGIN PUBLIC KEY-----\n{public_key}\n-----END PUBLIC KEY-----""
+                    publickey=f"-----BEGIN PUBLIC KEY-----\n{public_key}\n-----END PUBLIC KEY-----"
 
                 try:
                     decoded_token = jwt.decode(request.args.get('jwt_token'), publickey, algorithms=["RS256"], audience='account')
