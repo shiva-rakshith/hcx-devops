@@ -147,13 +147,10 @@ extraSecrets:
                     if keycloak_response.status_code == 200:
                         print("Request was successful!")
                         public_key = keycloak_response.json().get('public_key')
-                        print("---------public key-------",public_key)
-                        print(keycloak_response.json())
                     else:
                         print(f"Keycloak cert request failed with status code: {keycloak_response.status_code}")
                         print(keycloak_response.text)    
                     publickey=f"-----BEGIN PUBLIC KEY-----\n{public_key}\n-----END PUBLIC KEY-----"
-                    print("---------public key-------",publickey)
                 elif "User" in entity:
                     username = decoded_payload['user_id']
                     keycloak_response = requests.get('{{ .Values.hcx_url }}/auth/realms/{{ .Values.user_realm }}')
@@ -161,13 +158,10 @@ extraSecrets:
                     if keycloak_response.status_code == 200:
                         print("Request was successful!")
                         public_key = keycloak_response.json().get('public_key')
-                        print("---------public key-------",public_key)
-                        print(keycloak_response.json())
                     else:
                         print(f"Keycloak cert request failed with status code: {keycloak_response.status_code}")
                         print(keycloak_response.text)    
                     publickey=f"-----BEGIN PUBLIC KEY-----\n{public_key}\n-----END PUBLIC KEY-----"
-                    print("---------public key-------",publickey)
 
                 try:
                     decoded_token = jwt.decode(request.args.get('jwt_token'), publickey, algorithms=["RS256"], audience='account')
@@ -185,8 +179,8 @@ extraSecrets:
                     logging.info('Creating new   user %s', username);
                     user = self.appbuilder.sm.add_user(
                     username=username,
-                    first_name='Test',
-                    last_name='User',
+                    first_name=username,
+                    last_name='',
                     email=username,
                     role=self.appbuilder.sm.find_role(role)
                     )
