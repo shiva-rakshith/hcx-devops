@@ -141,7 +141,7 @@ extraSecrets:
                 if "Organisation" in entity:
                     username = decoded_payload['preferred_username']
                     if "HIE/HIO.HCX" in realm_roles:
-                        role = 'Admin'
+                        role = 'Admin'    
                     keycloak_response = requests.get('{{ .Values.hcx_url }}/auth/realms/{{ .Values.participant_realm }}')
                     public_key=''
                     if keycloak_response.status_code == 200:

@@ -69,9 +69,9 @@ from my_security_manager import CustomSecurityManager
 
 import requests
 
-user_search_url = '{{ .Values.hcx_url }}/{{ .Values.api_version }}/user/search'
-participant_search_url = '{{ .Values.hcx_url }}/{{ .Values.api_version }}/participant/search'
-token_url = '{{ .Values.hcx_url }}/{{ .Values.api_version }}/participant/auth/token/generate'
+user_search_url = '{{ .Values.hcx_url }}/api/{{ .Values.api_version }}/user/search'
+participant_search_url = '{{ .Values.hcx_url }}/api/{{ .Values.api_version }}/participant/search'
+token_url = '{{ .Values.hcx_url }}/api/{{ .Values.api_version }}/participant/auth/token/generate'
 
 
 def get_participant_emails(user_id):
