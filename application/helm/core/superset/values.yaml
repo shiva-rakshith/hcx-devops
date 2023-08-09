@@ -148,8 +148,8 @@ extraSecrets:
                         print("Request was successful!")
                         public_key = keycloak_response.json().get('public_key')
                     else:
-                        print(f"Keycloak cert request failed with status code: {response.status_code}")
-                        print(response.text)    
+                        print(f"Keycloak cert request failed with status code: {keycloak_response.status_code}")
+                        print(keycloak_response.text)    
                     publickey=f"-----BEGIN PUBLIC KEY-----\n{public_key}\n-----END PUBLIC KEY-----"
                 elif "User" in entity:
                     username = decoded_payload['user_id']
@@ -159,8 +159,8 @@ extraSecrets:
                         print("Request was successful!")
                         public_key = keycloak_response.json().get('public_key')
                     else:
-                        print(f"Keycloak cert request failed with status code: {response.status_code}")
-                        print(response.text)    
+                        print(f"Keycloak cert request failed with status code: {keycloak_response.status_code}")
+                        print(keycloak_response.text)    
                     publickey=f"-----BEGIN PUBLIC KEY-----\n{public_key}\n-----END PUBLIC KEY-----"
 
                 try:
