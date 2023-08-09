@@ -149,10 +149,6 @@ def get_emails(participant_codes_list):
         print(f"Participant Search Request failed with status code: {response.status_code}")
         print(response.text)   
 
-from datetime import datetime
-
-def current_datetime():
-    return datetime.now().strftime("%Y-%m-%d")
 
 JINJA_CONTEXT_ADDONS = {
     "get_participant_emails": get_participant_emails
