@@ -69,16 +69,35 @@ from my_security_manager import CustomSecurityManager
 
 import requests
 
-user_search_url = 'https://dev-hcx.swasth.app/api/v0.8/user/search'
-participant_search_url = 'https://dev-hcx.swasth.app/api/v0.8/participant/search'
-headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI3Q1l0Z2VYMzA2NEQ3VUU0czdCQWlJZmUzN3hxczBtNEVSQnpmdzVuMzdNIn0.eyJleHAiOjE2OTMwNTYzMzksImlhdCI6MTY5MTMyODMzOSwianRpIjoiMjU2MmIzZGUtYmEzZC00OTAwLThmYTgtNzc0NzYxZWM2Y2Y0IiwiaXNzIjoiaHR0cDovL2Rldi1oY3guc3dhc3RoLmFwcC9hdXRoL3JlYWxtcy9zd2FzdGgtaGN4LXBhcnRpY2lwYW50cyIsInN1YiI6IjU5ZDQzZjliLTQyZTctNDQ4MC05ZWMyLWFhNmJkOTVjY2I1ZiIsInR5cCI6IkJlYXJlciIsImF6cCI6InJlZ2lzdHJ5LWZyb250ZW5kIiwic2Vzc2lvbl9zdGF0ZSI6ImVjMDg5MmM0LWE5YzMtNDA1ZC1iYjY1LWQ0Mzc1YjNiNjE4OCIsImFjciI6IjEiLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsiSElFL0hJTy5IQ1giLCJkZWZhdWx0LXJvbGVzLW5kZWFyIl19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsInByZWZlcnJlZF91c2VybmFtZSI6ImhjeGdhdGV3YXlAc3dhc3RoLm9yZyIsImVudGl0eSI6WyJPcmdhbmlzYXRpb24iXSwiZW1haWwiOiJoY3hnYXRld2F5QHN3YXN0aC5vcmcifQ.HWlExZkFpOAtHJeyvaxVf2THKrzPMGkOWdvCa6efFtdpbtN6H4U5SAQVWZQZSffkC5zTgMGulrq3CWBJbkgmqgprImLPpxggdtgfXcS0Yi63YZiBsfcMjAzMcoOVmZ1o3eeGJ6GKgQsJzyzw8_cUcf0t2XdR3UeiRhNuQLecngm6DFecoR_p6VqZ82IIxGd1DeUPy8LLRbD2d3YKmDyGZe5HSDjiM5dumTRdcj1AU1pxoHcjvhwjptXLkRPNuZ9hTfer9y5eOo506CMu7ArPt47cyZsz9A1-otwni5ymhQp7AFxCo0iiAC5Joi7EGouAA0n7C5fJJ3XMvyvKmNhy7w'
-}
-
+user_search_url = {{ .Values.hcx_url }}/{{ .Values.api_version }}/user/search
+participant_search_url = {{ .Values.hcx_url }}/{{ .Values.api_version }}/participant/search
+token_url = {{ .Values.hcx_url }}/{{ .Values.api_version }}/participant/auth/token/generate
 
 
 def get_participant_emails(user_id):
+    token_headers = {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
+    token_body = {
+      'username': {{ .Values.hcx_admin_username }},
+      'password': {{ .Values.hcx_admin_password }}
+    }
+
+    keycloak_response = requests.post(url=token_url, headers=token_headers, json=token_body)
+    
+    access_token = ''
+    if keycloak_response.status_code == 200:
+        response_data = keycloak_response.json()
+        access_token = f"Bearer {response_data.get('access_token')}" 
+    else:
+        print(f"Not able to generate keycloak token, status code: {response.status_code}")
+        print(response.text)
+
+    headers = {
+    'Content-Type': 'application/json',
+    'Authorization': access_token
+    }
+
     data = {
       "filters": {
             "user_id": {
