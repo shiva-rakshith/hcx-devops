@@ -74,12 +74,6 @@ participant_search_url = '{{ .Values.hcx_url }}/api/{{ .Values.api_version }}/pa
 token_url = '{{ .Values.hcx_url }}/api/{{ .Values.api_version }}/participant/auth/token/generate'
 
 
-
-headers = {
-  'Content-Type': 'application/json',
-  'Authorization': 'Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI1OWQ0M2Y5Yi00MmU3LTQ0ODAtOWVjMi1hYTZiZDk1Y2NiNWYiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImlzcyI6Imh0dHA6XC9cL2tleWNsb2FrLmtleWNsb2FrLnN2Yy5jbHVzdGVyLmxvY2FsOjgwODBcL2F1dGhcL3JlYWxtc1wvc3dhc3RoLWhjeC1wYXJ0aWNpcGFudHMiLCJ0eXAiOiJCZWFyZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoY3hnYXRld2F5QHN3YXN0aC5vcmciLCJhdWQiOiJhY2NvdW50IiwiYWNyIjoiMSIsInJlYWxtX2FjY2VzcyI6eyJyb2xlcyI6WyJISUVcL0hJTy5IQ1giLCJkZWZhdWx0LXJvbGVzLW5kZWFyIl19LCJhenAiOiJyZWdpc3RyeS1mcm9udGVuZCIsInBhcnRpY2lwYW50X2NvZGUiOiJoY3hnYXRld2F5LnN3YXN0aEBzd2FzdGgtaGN4LWRldiIsInNjb3BlIjoicHJvZmlsZSBlbWFpbCIsImV4cCI6MTY5MzM3NzY3NSwic2Vzc2lvbl9zdGF0ZSI6Ijg3ZWRlMjQzLTEzYjItNDc1Yi04ODhmLWU1MWU4MzVmZGY4NyIsImlhdCI6MTY5MTY0OTY3NSwianRpIjoiYWZhYTU0MmEtMzE4ZS00OWEyLWI4MGMtMGVjNDMwNTdhNGU4IiwiZW50aXR5IjpbIk9yZ2FuaXNhdGlvbiJdLCJlbWFpbCI6ImhjeGdhdGV3YXlAc3dhc3RoLm9yZyJ9.LxjpQNvYGs76bSQdlaRZiueTaT7_tHDWslBVMZKM67YPknOnqk9B-gFqEDLsi4aljjnOX1ID8HiD_ABb_k9fDW1XW4xPXdofVNJVJzrNWt7SHgk72L591gRq_PNA6cVowftEmHiOtB_EQiqDEkvi-X8xa01b4ANRGfSIsopTLUSJelPnnkYXq_sgrwxzpmdp5iFrzGbAVvsT_TvAGQWb0M7JIBBK3VC5IycDAAdQA6NS5RJxv4dkzmTt-kKnhKDnTvE960h6kUcnXV9d_IoIkYsgl-pfuu00zKAFXpxHj-302HA3pNxBS6WBajDsrYDiywWR2DlWVgsdiy0gFJQ9kA'
-}
-
 def get_participant_emails(user_id):
     token_headers = {
       'content-type': 'application/x-www-form-urlencoded'
@@ -98,11 +92,15 @@ def get_participant_emails(user_id):
     if keycloak_response.status_code == 200:
         response_data = keycloak_response.json()
         access_token = f"Bearer {response_data.get('access_token')}" 
-        print("Access token", access_token)
     else:
         print(f"Not able to generate keycloak token, status code: {keycloak_response.status_code}")
         print(keycloak_response.text)
-   
+    
+    headers = {
+      'Content-Type': 'application/json',
+      'Authorization': access_token
+    }
+
     data = {
       "filters": {
             "user_id": {
@@ -126,12 +124,12 @@ def get_participant_emails(user_id):
             participant_codes_list.extend(codes)  # Append roles to the list
 
         print("Participant Codes:", participant_codes_list)
-        return get_emails(participant_codes_list)
+        return get_emails(participant_codes_list,headers)
     else:
         print(f"Request failed with status code: {response.status_code}")
         print(response.text)
 
-def get_emails(participant_codes_list):
+def get_emails(participant_codes_list,headers):
     participant_request_filters = {
           "filters": {
             "participant_code": {
