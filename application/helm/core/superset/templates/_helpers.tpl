@@ -90,8 +90,8 @@ def get_participant_emails(user_id):
         response_data = keycloak_response.json()
         access_token = f"Bearer {response_data.get('access_token')}" 
     else:
-        print(f"Not able to generate keycloak token, status code: {response.status_code}")
-        print(response.text)
+        print(f"Not able to generate keycloak token, status code: {keycloak_response.status_code}")
+        print(keycloak_response.text)
 
     headers = {
     'Content-Type': 'application/json',
