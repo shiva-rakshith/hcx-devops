@@ -84,8 +84,6 @@ def get_participant_emails(user_id):
       'password': '{{ .Values.hcx_admin_password }}'
     }
 
-    print("keycloak token body",token_body)
-
     keycloak_response = requests.post(url=token_url, headers=token_headers, data=token_body)
         
     access_token = ''

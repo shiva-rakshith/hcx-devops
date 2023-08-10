@@ -128,9 +128,9 @@ extraSecrets:
         @expose('/login/', methods=['GET', 'POST'])
         def login(self):
             decoded_token = {}
-            if request.args.get('username') is not None:
-                login_user(self.appbuilder.sm.find_user(username=request.args.get('username')), remember=False, force=True)
-                return redirect('/dashboard/list')
+            # if request.args.get('username') is not None:
+            #     login_user(self.appbuilder.sm.find_user(username=request.args.get('username')), remember=False, force=True)
+            #     return redirect('/dashboard/list')
             if request.args.get('jwt_token') is not None:
                 header_b64, payload_b64, signature_b64 = request.args.get('jwt_token').split('.')
                 decoded_payload_bytes = base64.urlsafe_b64decode(payload_b64 + '=' * (4 - len(payload_b64) % 4))
