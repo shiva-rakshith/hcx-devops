@@ -50,7 +50,6 @@ spec:
             - /bin/sh
             - -c
             - touch /tmp/healthy; sleep 30; rm -rf /tmp/healthy; sleep 600
-          livenessProbe:
             failureThreshold: 3
             httpGet:
               path: /service/health
