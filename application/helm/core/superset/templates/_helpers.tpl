@@ -73,27 +73,6 @@ user_search_url = '{{ .Values.hcx_url }}/api/{{ .Values.api_version }}/user/sear
 participant_search_url = '{{ .Values.hcx_url }}/api/{{ .Values.api_version }}/participant/search'
 token_url = '{{ .Values.hcx_url }}/api/{{ .Values.api_version }}/participant/auth/token/generate'
 
-token_headers = {
-  'content-type': 'application/x-www-form-urlencoded'
-}
-
-token_body = {
-  'username': '{{ .Values.hcx_admin_username }}',
-  'password': '{{ .Values.hcx_admin_password }}'
-}
-
-print("keycloak token body",token_body)
-
-keycloak_response = requests.post(url=token_url, headers=token_headers, json=token_body)
-    
-access_token = ''
-if keycloak_response.status_code == 200:
-    response_data = keycloak_response.json()
-    access_token = f"Bearer {response_data.get('access_token')}" 
-    print("Access token", access_token)
-else:
-    print(f"Not able to generate keycloak token, status code: {keycloak_response.status_code}")
-    print(keycloak_response.text)
 
 
 headers = {
@@ -102,8 +81,28 @@ headers = {
 }
 
 def get_participant_emails(user_id):
- 
+    token_headers = {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
 
+    token_body = {
+      'username': '{{ .Values.hcx_admin_username }}',
+      'password': '{{ .Values.hcx_admin_password }}'
+    }
+
+    print("keycloak token body",token_body)
+
+    keycloak_response = requests.post(url=token_url, headers=token_headers, json=token_body)
+        
+    access_token = ''
+    if keycloak_response.status_code == 200:
+        response_data = keycloak_response.json()
+        access_token = f"Bearer {response_data.get('access_token')}" 
+        print("Access token", access_token)
+    else:
+        print(f"Not able to generate keycloak token, status code: {keycloak_response.status_code}")
+        print(keycloak_response.text)
+   
     data = {
       "filters": {
             "user_id": {
