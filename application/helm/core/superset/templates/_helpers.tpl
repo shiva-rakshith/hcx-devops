@@ -92,7 +92,7 @@ def get_participant_emails(user_id):
 
     print("keycloak token body",token_body)
 
-    keycloak_response = requests.post(url=token_url, headers=token_headers, json=token_body)
+    keycloak_response = requests.post(url=token_url, headers=token_headers, data=token_body)
         
     access_token = ''
     if keycloak_response.status_code == 200:
